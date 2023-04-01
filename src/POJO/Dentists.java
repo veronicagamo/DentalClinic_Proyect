@@ -12,7 +12,7 @@ public class Dentists implements Serializable{
 	private String bank_account;
 	private Integer doc_mobile;
 	private String doc_email;
-	// private List<Appointment> appointments;
+	private List<Appointment> appointments;
 	
 	
 }
