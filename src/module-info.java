@@ -6,4 +6,7 @@
  *
  */
 module DentalClinic_Proyect {
+	
+	requires java.sql;
+	
 }
