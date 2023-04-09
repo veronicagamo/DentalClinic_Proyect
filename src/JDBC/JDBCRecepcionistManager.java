@@ -1,7 +1,6 @@
 package JDBC;
 
-import Interfaces.Client;
-import Interfaces.List;
+import POJO.Client;
 import Interfaces.RecepcionistManager;
 import POJO.Recepcionist;
 
@@ -19,13 +18,14 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 		this.manager=m;
 	}
 	
+	@Override
 	public void addClient(Client c) throws Exception {
 		
 	
 		String sql= "INSERT INTO client (id, name, health_number, address, email) "
 			+ " VALUES(?,?,?,?,?)";
 	
-		PreparedStatement prep= this.manager.getConnection().prepareStatement(sql);
+		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 	
 		prep.setString(1, c.getId());
 		prep.setString(2, c.getName());
@@ -37,35 +37,41 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 		
 	}
 	
+	@Override
 	public void deleteClient(int clientId) throws Exception{
 		
 		String sql= "DELETE FROM client "
 				+ " WHERE id= ?";
 		
-		PreparedStatement prep= this.manager.getConnection().prepareStatement(sql);
+		
+		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 	
-		prep.setString(1, clientId);
+		prep.setInt(1, clientId);
 
 		prep.executeUpdate();
 	
 	}
+	
+	@Override
 	public void updateClient(Client c) throws Exception{
 		
 		String sql="UPDATE client "
 				+ "SET name= ?, health_number=?, address=?, email=?"
 				+ "WHERE id= ?";
 		
-		PreparedStatement prep= this.manager.getConnection().prepareStatement(sql);
+		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
 		prep.setString(1, c.getName());
-		prep.setString(2, c.getHealthNumber());
+		prep.setInt(2, c.getHealthNumber());
 		prep.setString(3, c.getAddress());
 		prep.setString(4, c.getEmail());
-		prep.setString(5, c.getId());
+		prep.setInt(5, c.getId());
 
 		prep.executeUpdate();
 		
 	}
+	
+	@Override
 	public List<Client> listAllClients() throws Exception{
 		
 		List <Client> clients= new LinkedList<>();
@@ -95,8 +101,6 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 		return clients;
 		
 	}
-	public void assignDentist(int dentistId, int clientId){
-		
-		
-	}
+
+	
 }

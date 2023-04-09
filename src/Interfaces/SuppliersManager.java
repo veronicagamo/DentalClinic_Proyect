@@ -2,5 +2,5 @@ package Interfaces;
 
 public interface SuppliersManager {
 
-	public void orderSupplies(int suppliesId);
+	public void orderSupplies(int supplyId, int dentistId) throws Exception;
 }

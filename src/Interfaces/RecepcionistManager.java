@@ -2,11 +2,10 @@ package Interfaces;
 
 public interface RecepcionistManager {
 
-	public void addClient(Client c);
-	public void deleteClient(int clientId);
-	public void updateClient(int clientId);
-	public List<Client> listAllClients();
-	public void assignDentist(int dentistId, int clientId);
+	public void addClient(Client c) throws Exception;
+	public void deleteClient(int clientId) throws Exception;
+	public void updateClient(Client c) throws Exception;
+	public List<Client> listAllClients() throws Exception;
 
 	
 }

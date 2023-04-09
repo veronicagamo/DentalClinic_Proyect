@@ -18,6 +18,7 @@ public class JDBCSuppliesManager implements SuppliesManager{
 		this.manager = m;
 	}
 	
+	@Override
 	public void addSupply (Supplies s) throws Exception{
 		
 		String sql= "INSERT INTO supplies (id, name, amount) "
@@ -25,15 +26,16 @@ public class JDBCSuppliesManager implements SuppliesManager{
 		
 		PreparedStatement prep= this.manager.getConnection().prepareStatement(sql);
 		
-		prep.setString(1, s.getId());
+		prep.setInt(1, s.getId());
 		prep.setString(2, s.getName());
-		prep.setString(3, s.getAmount());
+		prep.setInt(3, s.getAmount());
 		
 		prep.executeUpdate();
 		
 	}
 	
 	//Returns a list with the supplies. It can be used to print the supplies in the menu
+	@Override
 	public List<Supplies> listAllSupplies() throws Exception{
 		
 		
