@@ -60,7 +60,7 @@ public class JDBCManager {
 						+ " name          TEXT NOT NULL,"
 						+ " bank_account  TEXT NOT NULL,"
 						+ " email         TEXT NOT NULL,"
-						+ " mobile        INTEGER NOT NULL,"
+						+ " mobile        TEXT NOT NULL,"
 					+ ");";
 			
 			stmt.executeUpdate(sql);
