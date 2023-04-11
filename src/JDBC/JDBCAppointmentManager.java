@@ -23,7 +23,7 @@ public class JDBCAppointmentManager implements AppointmentManager{
 		
 			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
-			prep.setDate(1, date);
+			prep.setDate(1, (java.sql.Date) date);
 			prep.setInt(2, room);
 			prep.setInt(3, dentistId);
 			prep.setInt(4, clientId);
@@ -56,7 +56,7 @@ public class JDBCAppointmentManager implements AppointmentManager{
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
-		prep.setDate(1, date);
+		prep.setDate(1, (java.sql.Date) date);
 		prep.setInt(2, room);
 		prep.setInt(3, dentistId);
 		prep.setInt(4, clientId);

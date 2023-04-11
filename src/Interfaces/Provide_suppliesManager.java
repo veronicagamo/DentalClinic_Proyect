@@ -1,6 +1,8 @@
 package Interfaces;
 
+import POJO.Supply;
+
 public interface Provide_suppliesManager {
 
-	public Supplies getSupplyById(int supplyId) throws Exception;
+	public Supply getSupplyById(int supplyId) throws Exception;
 }
