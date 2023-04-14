@@ -1,7 +1,8 @@
 package JDBC;
 
 import Interfaces.SuppliersManager;
-import POJO.Suppliers;
+
+
 
 import java.sql.PreparedStatement;
 

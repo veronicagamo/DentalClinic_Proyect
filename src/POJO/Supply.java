@@ -1,7 +1,6 @@
 package POJO;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Supply implements Serializable{
@@ -11,26 +10,17 @@ public class Supply implements Serializable{
 	private Integer item_id;
 	private String item_name;
 	private Integer item_amount;
-	private ArrayList<Order_supplies> ordered;
-	private ArrayList<Used_supplies> used;
-	private ArrayList<Provide_suplies> provided;
+
 	
-	public Supply(Integer item_id, String item_name, Integer item_amount, ArrayList<Order_supplies> ordered,
-			ArrayList<Used_supplies> used, ArrayList<Provide_suplies> provided) {
+	public Supply(Integer item_id, String item_name, Integer item_amount) {
 		super();
 		this.item_id = item_id;
 		this.item_name = item_name;
 		this.item_amount = item_amount;
-		this.ordered = ordered;
-		this.used = used;
-		this.provided = provided;
 	}
 
 	public Supply() {
 		super();
-		this.ordered= new ArrayList<Order_supplies>();
-		this.used= new ArrayList<Used_supplies> ();
-		this.provided= new ArrayList<Provide_suplies>();
 	}
 
 	@Override
@@ -79,29 +69,7 @@ public class Supply implements Serializable{
 		this.item_amount = item_amount;
 	}
 
-	public ArrayList<Order_supplies> getOrdered() {
-		return ordered;
-	}
 
-	public void setOrdered(ArrayList<Order_supplies> ordered) {
-		this.ordered = ordered;
-	}
-
-	public ArrayList<Used_supplies> getUsed() {
-		return used;
-	}
-
-	public void setUsed(ArrayList<Used_supplies> used) {
-		this.used = used;
-	}
-
-	public ArrayList<Provide_suplies> getProvided() {
-		return provided;
-	}
-
-	public void setProvided(ArrayList<Provide_suplies> provided) {
-		this.provided = provided;
-	}
 	
 	
 	

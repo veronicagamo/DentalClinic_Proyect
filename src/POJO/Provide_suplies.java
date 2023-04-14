@@ -1,15 +1,18 @@
 package POJO;
 
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
+
+
 
 public class Provide_suplies implements Serializable {
 
 	private static final long serialVersionUID = -1935718576864133405L;
 	private Integer id;
-	private Supplier supplier;
-	private Supply supply;
+	private Integer supplier;
+	private Integer supply;
 	private Integer amount;
 	private Date date;
 	
@@ -18,7 +21,7 @@ public class Provide_suplies implements Serializable {
 		super();
 	}
 
-	public Provide_suplies(Integer id, Supplier supplier, Supply supply, Integer amount, Date date) {
+	public Provide_suplies(Integer id, Integer supplier, Integer supply, Integer amount, Date date) {
 		super();
 		this.id = id;
 		this.supplier = supplier;
@@ -57,19 +60,19 @@ public class Provide_suplies implements Serializable {
 		this.id = id;
 	}
 
-	public Supplier getSupplier() {
+	public Integer getSupplier() {
 		return supplier;
 	}
 
-	public void setSupplier(Supplier supplier) {
+	public void setSupplier(Integer supplier) {
 		this.supplier = supplier;
 	}
 
-	public Supply getSupply() {
+	public Integer getSupply() {
 		return supply;
 	}
 
-	public void setSupply(Supply supply) {
+	public void setSupply(Integer supply) {
 		this.supply = supply;
 	}
 

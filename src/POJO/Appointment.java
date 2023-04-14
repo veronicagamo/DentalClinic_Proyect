@@ -1,7 +1,7 @@
 package POJO;
 
+
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
@@ -16,21 +16,18 @@ public class Appointment implements Serializable{
 	private Integer app_room;
 	private Double app_price;
 	private String app_treatment;
-	private Dentists dentist;
-	private Receptionist receptionist;
-	private Client patient;
-	private ArrayList<Used_supplies> used_supp;
+	private Integer dentist_id;
+	private Integer receptionist_id;
+	private Integer patient_id;
 	
 	
 	public Appointment() {
 		super();
-		this.used_supp= new ArrayList<Used_supplies>();
 	}
 
 
 	public Appointment(Integer app_id, Date app_date, Integer app_duration, Integer app_room, Double app_price,
-			String app_treatment, Dentists dentist, Receptionist receptionist, Client patient,
-			ArrayList<Used_supplies> used_supp) {
+			String app_treatment, Integer dentist_id, Integer receptionist, Integer patient_id) {
 		super();
 		this.app_id = app_id;
 		this.app_date = app_date;
@@ -38,10 +35,9 @@ public class Appointment implements Serializable{
 		this.app_room = app_room;
 		this.app_price = app_price;
 		this.app_treatment = app_treatment;
-		this.dentist = dentist;
-		this.receptionist = receptionist;
-		this.patient = patient;
-		this.used_supp = used_supp;
+		this.dentist_id = dentist_id;
+		this.receptionist_id = receptionist;
+		this.patient_id = patient_id;
 	}
 
 
@@ -131,44 +127,35 @@ public class Appointment implements Serializable{
 	}
 
 
-	public Dentists getDentist() {
-		return dentist;
+	public Integer getDentist() {
+		return dentist_id;
 	}
 
 
-	public void setDentist(Dentists dentist) {
-		this.dentist = dentist;
+	public void setDentist(Integer dentist) {
+		this.dentist_id = dentist;
 	}
 
 
-	public Receptionist getReceptionist() {
-		return receptionist;
+	public Integer getReceptionist() {
+		return receptionist_id;
 	}
 
 
-	public void setReceptionist(Receptionist receptionist) {
-		this.receptionist = receptionist;
+	public void setReceptionist(Integer receptionist) {
+		this.receptionist_id = receptionist;
 	}
 
 
-	public Client getPatient() {
-		return patient;
+	public Integer getPatient() {
+		return patient_id;
 	}
 
 
-	public void setPatient(Client patient) {
-		this.patient = patient;
+	public void setPatient(Integer patient) {
+		this.patient_id = patient;
 	}
 
-
-	public ArrayList<Used_supplies> getUsed_supp() {
-		return used_supp;
-	}
-
-
-	public void setUsed_supp(ArrayList<Used_supplies> used_supp) {
-		this.used_supp = used_supp;
-	}
 	
 	
 	

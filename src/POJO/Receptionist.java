@@ -1,7 +1,6 @@
 package POJO;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Receptionist implements Serializable {
@@ -13,22 +12,18 @@ public class Receptionist implements Serializable {
 	private String bank_account;
 	private String rep_email;
 	private Integer rep_mobile;
-	private ArrayList<Appointment> appointments;
 	
-	public Receptionist(Integer rep_id, Integer rep_name, String bank_account, String rep_email, Integer rep_mobile,
-			ArrayList<Appointment> appointments) {
+	public Receptionist(Integer rep_id, Integer rep_name, String bank_account, String rep_email, Integer rep_mobile) {
 		super();
 		this.rep_id = rep_id;
 		this.rep_name = rep_name;
 		this.bank_account = bank_account;
 		this.rep_email = rep_email;
 		this.rep_mobile = rep_mobile;
-		this.appointments = appointments;
 	}
 
 	public Receptionist() {
 		super();
-		this.appointments= new ArrayList<Appointment>();
 	}
 
 	@Override
@@ -88,13 +83,7 @@ public class Receptionist implements Serializable {
 		this.rep_mobile = rep_mobile;
 	}
 
-	public ArrayList<Appointment> getAppointments() {
-		return appointments;
-	}
 
-	public void setAppointments(ArrayList<Appointment> appointments) {
-		this.appointments = appointments;
-	}
 	 
 	
 	

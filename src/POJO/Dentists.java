@@ -1,7 +1,7 @@
 package POJO;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+
 import java.util.Objects;
 
 
@@ -12,29 +12,24 @@ public class Dentists implements Serializable{
 	
 	private Integer doc_id;
 	private String name;
-	private String bank_account;
+	private Integer bank_account;
 	private Integer doc_mobile;
 	private String doc_email;
-	private ArrayList<Appointment> appointments;
-	private ArrayList<Order_supplies> ordered;
 	
 	public Dentists() {
 		super();
-		appointments = new ArrayList<Appointment>();
-		ordered= new ArrayList<Order_supplies>();
 	}
 
-	public Dentists(Integer doc_id, String name, String bank_account, Integer doc_mobile, String doc_email,
-			ArrayList<Appointment> appointments, ArrayList<Order_supplies> ordered) {
+	public Dentists (Integer doc_id, String name, Integer bank_account, Integer doc_mobile, String doc_email) {
 		super();
 		this.doc_id = doc_id;
 		this.name = name;
 		this.bank_account = bank_account;
 		this.doc_mobile = doc_mobile;
 		this.doc_email = doc_email;
-		this.appointments = appointments;
-		this.ordered = ordered;
 	}
+	
+
 
 	@Override
 	public int hashCode() {
@@ -75,11 +70,11 @@ public class Dentists implements Serializable{
 		this.name = name;
 	}
 
-	public String getBank_account() {
+	public Integer getBank_account() {
 		return bank_account;
 	}
 
-	public void setBank_account(String bank_account) {
+	public void setBank_account(Integer bank_account) {
 		this.bank_account = bank_account;
 	}
 
@@ -99,23 +94,9 @@ public class Dentists implements Serializable{
 		this.doc_email = doc_email;
 	}
 
-	public ArrayList<Appointment> getAppointments() {
-		return appointments;
-	}
 
-	public void setAppointments(ArrayList<Appointment> appointments) {
-		this.appointments = appointments;
-	}
-
-	public ArrayList<Order_supplies> getOrdered() {
-		return ordered;
-	}
-
-	public void setOrdered(ArrayList<Order_supplies> ordered) {
-		this.ordered = ordered;
-	} 
 	
-	
+	 
 	
 	
 	

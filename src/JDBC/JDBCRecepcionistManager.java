@@ -1,13 +1,14 @@
 package JDBC;
 
-import POJO.Client;
+
 import Interfaces.RecepcionistManager;
-import POJO.Recepcionist;
+import POJO.Client;
 
 import java.sql.PreparedStatement;
+
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class JDBCRecepcionistManager implements RecepcionistManager {
 
@@ -29,10 +30,10 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 	
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 	
-		prep.setString(1, c.getName());
-		prep.setInt(2, c.getHealthNumber());
-		prep.setString(3, c.getAddress());
-		prep.setString(4, c.getEmail());
+		prep.setString(1, c.getPat_name());
+		prep.setInt(2, c.getHum());
+		prep.setString(3, c.getPat_address());
+		prep.setString(4, c.getPat_email());
 
 		prep.executeUpdate();
 		
@@ -62,20 +63,20 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
-		prep.setString(1, c.getName());
-		prep.setInt(2, c.getHealthNumber());
-		prep.setString(3, c.getAddress());
-		prep.setString(4, c.getEmail());
-		prep.setInt(5, c.getId());
+		prep.setString(1, c.getPat_name());
+		prep.setInt(2, c.getHum());
+		prep.setString(3, c.getPat_address());
+		prep.setString(4, c.getPat_email());
+		prep.setInt(5, c.getPat_id());
 
 		prep.executeUpdate();
 		
 	}
 	
 	@Override
-	public List<Client> listAllClients() throws Exception{
+	public ArrayList<Client> listAllClients() throws Exception{
 		
-		List <Client> clients= new LinkedList<>();
+		ArrayList <Client> clients= new ArrayList<>();
 		
 		Statement stmt= manager.getConnection().createStatement();	
 		

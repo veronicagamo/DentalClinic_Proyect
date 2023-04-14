@@ -5,7 +5,7 @@ import POJO.Client;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
+
 
 
 public class JDBCClientManager implements ClientManager {
@@ -39,7 +39,7 @@ public class JDBCClientManager implements ClientManager {
 			String address= rs.getString("address");
 			String email= rs.getString("email");
 			
-			client= new Client(id, name, healthNumber, address, email);
+			client= new Client(id, name, healthNumber, address, email, null);
 			
 		}
 

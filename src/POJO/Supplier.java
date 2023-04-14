@@ -1,7 +1,7 @@
 package POJO;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+
 import java.util.Objects;
 
 public class Supplier implements Serializable {
@@ -12,19 +12,17 @@ public class Supplier implements Serializable {
 	private Integer sup_id;
 	private String sup_name;
 	private String sup_address;
-	private ArrayList<Provide_suplies> provide;
+
 	
-	public Supplier(Integer sup_id, String sup_name, String sup_address, ArrayList<Provide_suplies> provide) {
+	public Supplier(Integer sup_id, String sup_name, String sup_address) {
 		super();
 		this.sup_id = sup_id;
 		this.sup_name = sup_name;
 		this.sup_address = sup_address;
-		this.provide = provide;
 	}
 
 	public Supplier() {
 		super();
-		this.provide= new ArrayList <Provide_suplies>();
 	}
 
 	@Override
@@ -73,13 +71,6 @@ public class Supplier implements Serializable {
 		this.sup_address = sup_address;
 	}
 
-	public ArrayList<Provide_suplies> getProvide() {
-		return provide;
-	}
-
-	public void setProvide(ArrayList<Provide_suplies> provide) {
-		this.provide = provide;
-	}
 	
 	
 	

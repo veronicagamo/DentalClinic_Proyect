@@ -1,11 +1,11 @@
 package JDBC;
 
 import java.sql.PreparedStatement;
+
 import java.sql.ResultSet;
 
 import Interfaces.Provide_suppliesManager;
-import Interfaces.Supplies;
-import POJO.Provide_supplies;
+import POJO.Supply;
 
 public class JDBCProvide_suppliesManager implements Provide_suppliesManager{
 	
@@ -17,16 +17,16 @@ public class JDBCProvide_suppliesManager implements Provide_suppliesManager{
 	}
 
 	@Override
-	public Supplies getSupplyById(int supplyId) throws Exception {
+	public Supply getSupplyById(int supplyId) throws Exception {
 
-		Supplies supplies= null;
+		Supply supplies= null;
 		
 		String sql= "SELECT * FROM supplies"
 				+ "WHERE id= ?";
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
-		prep.setString(1, id);
+		prep.setInt(1, supplyId);
 				
 		ResultSet rs= prep.executeQuery();
 		
@@ -36,7 +36,7 @@ public class JDBCProvide_suppliesManager implements Provide_suppliesManager{
 			String name= rs.getString("name");
 			int amount= rs.getInt("amount");
 			
-			supplies= new Supplies(id, name, amount);
+			supplies= new Supply(id, name, amount);
 			
 		}
 

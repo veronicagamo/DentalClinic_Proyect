@@ -2,30 +2,59 @@ package POJO;
 
 import java.io.Serializable;
 
-public class Order_supplies implements Serializable{
+public class Order_supplies implements Serializable {
 
+	
 	private static final long serialVersionUID = 4505893739020297802L;
 
-	private Supply item;
-	private Dentists doc;
-	private Integer id;
-	
+	private Integer order_supp_id;
+	 private Integer item_id;
+	 private Integer doc_id;
+	 
+	public Order_supplies(Integer order_supp_id, Integer item_id, Integer doc_id) {
+		super();
+		this.order_supp_id = order_supp_id;
+		this.item_id = item_id;
+		this.doc_id = doc_id;
+	}
+
 	public Order_supplies() {
 		super();
 	}
 
-	public Order_supplies(Supply item, Dentists doc, Integer id) {
-		super();
-		this.item = item;
-		this.doc = doc;
-		this.id = id;
+	public Integer getOrder_supp_id() {
+		return order_supp_id;
+	}
+
+	public void setOrder_supp_id(Integer order_supp_id) {
+		this.order_supp_id = order_supp_id;
+	}
+
+	public Integer getItem_id() {
+		return item_id;
+	}
+
+	public void setItem_id(Integer item_id) {
+		this.item_id = item_id;
+	}
+
+	public Integer getDoc_id() {
+		return doc_id;
+	}
+
+	public void setDoc_id(Integer doc_id) {
+		this.doc_id = doc_id;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((order_supp_id == null) ? 0 : order_supp_id.hashCode());
 		return result;
 	}
 
@@ -38,43 +67,18 @@ public class Order_supplies implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Order_supplies other = (Order_supplies) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (order_supp_id == null) {
+			if (other.order_supp_id != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!order_supp_id.equals(other.order_supp_id))
 			return false;
 		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Order_supplies [id=" + id + "]";
+		return "Order_supplies [order_supp_id=" + order_supp_id + ", item_id=" + item_id + ", doc_id=" + doc_id + "]";
 	}
-
-	public Supply getItem() {
-		return item;
-	}
-
-	public void setItem(Supply item) {
-		this.item = item;
-	}
-
-	public Dentists getDoc() {
-		return doc;
-	}
-
-	public void setDoc(Dentists doc) {
-		this.doc = doc;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
-	
-	
+	 
+	 
 }
