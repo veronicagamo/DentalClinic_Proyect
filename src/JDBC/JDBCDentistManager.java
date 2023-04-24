@@ -108,7 +108,7 @@ public class JDBCDentistManager implements DentistManager{
 		Dentists dentist= null;
 		
 		String sql= "SELECT * FROM dentist"
-				+ "WHERE doc_id=?";
+				+ "WHERE doc_id= " +id;
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
@@ -116,7 +116,7 @@ public class JDBCDentistManager implements DentistManager{
 				
 		ResultSet rs= prep.executeQuery();
 		
-		if(rs.next()) {
+		while(rs.next()) {
 			
 			String name= rs.getString("name");
 			Integer bankAccount= rs.getInt("bank account");
@@ -138,7 +138,7 @@ public class JDBCDentistManager implements DentistManager{
 	Dentists dentist= null;
 		
 		String sql= "SELECT * FROM dentist"
-				+ "WHERE name=?";
+				+ "WHERE name= " +dentistName;
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
@@ -146,7 +146,7 @@ public class JDBCDentistManager implements DentistManager{
 				
 		ResultSet rs= prep.executeQuery();
 		
-		if(rs.next()) {
+		while(rs.next()) {
 			
 			Integer id= rs.getInt("doc_id");
 			Integer bankAccount= rs.getInt("bank account");

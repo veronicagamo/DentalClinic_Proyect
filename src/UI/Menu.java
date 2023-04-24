@@ -35,6 +35,8 @@ public class Menu {
 				System.out.println("4. View an specific appointment");
 				System.out.println("5. View all appointments");
 				System.out.println("6. Create a patient");
+				System.out.println("7. View a patient by id");
+				System.out.println("8. View a patient by name");
 				System.out.println("0. Exit");
 
 				int choice = Integer.parseInt(r.readLine());
@@ -62,6 +64,14 @@ public class Menu {
 				}
                case 6: {
 					createPat();
+					break;
+				}
+               case 7: {
+					viewPatId();
+					break;
+				}
+               case 8: {
+					viewPatName();
 					break;
 				}
 				case 0: {
@@ -99,7 +109,7 @@ public class Menu {
 			System.out.println("Treatment(Implants/Cleaning/Braces/Tooth extractions/Whitening):");
 			treat= r.readLine();
 			}
-			while (treat.equals("Implants") ||treat.equals("Cleaning")||treat.equals("Braces")|| treat.equals("Tooth extractions")||treat.equals("Whitening"));
+			while (treat.equals("Implants") && treat.equals("Cleaning")&& treat.equals("Braces")&& treat.equals("Tooth extractions")&& treat.equals("Whitening"));
 			System.out.println("Name dentist:");
 			String docname= r.readLine();
 			Integer docId=null;;
@@ -136,18 +146,18 @@ public class Menu {
 			}
 		}
 	public static void createPat() throws IOException {
-		Client pat=null;
+Client pat=null;
 		
 		System.out.println("Please, input the client's data:");
-		System.out.println("Patient´s name:");
+		System.out.println("Name:");
 		String name=r.readLine();
-		System.out.println("Bank account:");
-		Integer bank = Integer.parseInt(r.readLine());
+		System.out.println("Health Number:");
+		Integer hum = Integer.parseInt(r.readLine());
 		System.out.println("Email:");
 		String email=r.readLine();
 		System.out.println("Address:");
 		String add=r.readLine();
-		pat=new Client(name,bank,add,email);
+		pat=new Client(name,hum,add,email);
 		try {
 			patMan.createClient(pat);
 		} catch (Exception e) {
@@ -155,7 +165,37 @@ public class Menu {
 			e.printStackTrace();
 		}
 		
+	
 	}
 	
+	public static void viewPatId() throws IOException {
+		Client pat=null;
+		System.out.println("Please, input the client's id :");
+		Integer id = Integer.parseInt(r.readLine());
+       try {
+		pat=patMan.getClientById(id);
+		System.out.println(pat);
+	} catch (Exception e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+	
+		
+	}
+	
+	public static void viewPatName() throws IOException {
+		Client pat=null;
+		System.out.println("Please, input the client's name:");
+		String name=r.readLine();
+       try {
+		pat=patMan.getClientByName(name);
+		System.out.println(pat);
+	} catch (Exception e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+	
+		
+	}
 
 }

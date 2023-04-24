@@ -27,8 +27,7 @@ public class JDBCClientManager implements ClientManager {
 		
 		Client client=null;
 		
-		String sql= "SELECT * FROM client"
-				+ "WHERE pat_id=?";
+		String sql= "SELECT * FROM client WHERE pat_id= ?";
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
@@ -60,8 +59,7 @@ public class JDBCClientManager implements ClientManager {
 		// TODO Auto-generated method stub
 		
 
-		String sql= "INSERT INTO client (pat_name, hum,pat_address,pat_email) "
-				+ " VALUES(?,?,?,?)";
+		String sql= "INSERT INTO client (pat_name,hum,pat_address,pat_email) VALUES (?,?,?,?)";
 		
 			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
@@ -169,16 +167,14 @@ public class JDBCClientManager implements ClientManager {
 		// TODO Auto-generated method stub
         Client cli= null;
 		
-		String sql= "SELECT * FROM client"
-				+ "WHERE pat_name=?";
+		String sql= "SELECT * FROM client WHERE pat_name= ?";
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
-		
-		prep.setString(2,clientName);
+		prep.setString(1,clientName);
 				
-		ResultSet rs= prep.executeQuery();
+		ResultSet rs= prep.executeQuery(sql);
 		
-		if(rs.next()) {
+		while(rs.next()) {
 			
 			Integer id= rs.getInt("pat_id");
 			Integer hum= rs.getInt("hum");
