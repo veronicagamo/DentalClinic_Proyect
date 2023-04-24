@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import Interfaces.DentistManager;
+import POJO.Appointment;
 import POJO.Dentists;
 
 public class JDBCDentistManager implements DentistManager{
@@ -23,24 +24,24 @@ public class JDBCDentistManager implements DentistManager{
 	@Override
 	public void addDentist(Dentists d) throws Exception {
 		
-		String sql= "INSERT INTO dentist (name, bank_account, email, mobile) "
+		String sql= "INSERT INTO dentist (name, bank_account, doc_mobile, doc_email) "
 				+ " VALUES(?,?,?,?)";
 		
 			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
 			prep.setString(1, d.getName());
-			prep.setString(2, d.getBank_account());
-			prep.setString(3, d.getDoc_email());
-			prep.setInt(4, d.getDoc_mobile());
+			prep.setInt(2, d.getBank_account());
+			prep.setInt(3, d.getDoc_mobile());
+			prep.setString(4, d.getDoc_email());
 
 			prep.executeUpdate();
 	}
 
 	@Override
-	public void deleteDentist(int dentistId) throws Exception {
+	public void deleteDentist(Integer dentistId) throws Exception {
 
 		String sql= "DELETE FROM dentist "
-				+ " WHERE id= ?";
+				+ " WHERE doc_id= ?";
 		
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
@@ -54,16 +55,16 @@ public class JDBCDentistManager implements DentistManager{
 	public void updateDentist(Dentists d) throws Exception {
 		
 		String sql= "UPDATE dentist "
-				+ "SET name=?, bank_account=?, email=?, mobile=?"
-				+ "WHERE id= ?";
+				+ "SET name=?, bank_account=?,doc_mobile=?, doc_email=?"
+				+ "WHERE doc_id= ?";
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
-		prep.setString(1, d.getName());
-		prep.setString(2, d.getBank_account());
-		prep.setString(3, d.getDoc_email());
+		prep.setInt(1, d.getDoc_id());
+		prep.setString(2, d.getName());
+		prep.setInt(3, d.getBank_account());
 		prep.setInt(4, d.getDoc_mobile());
-		prep.setInt(5, d.getDoc_id());
+		prep.setString(5, d.getDoc_email());
 
 		prep.executeUpdate();
 
@@ -83,11 +84,11 @@ public class JDBCDentistManager implements DentistManager{
 		
 		while (rs.next()){
 			
-			int id = rs.getInt("id");
+			Integer id = rs.getInt("doc_id");
 			String name = rs.getString("name");
-			String bankAccount = rs.getString("bank account");
-			String email = rs.getString("email");
-			int mobile = rs.getInt("mobile");
+			Integer bankAccount = rs.getInt("bank_account");
+			String email = rs.getString("doc_email");
+			Integer mobile = rs.getInt("doc_mobile");
 			
 			Dentists dentist = new Dentists (id, name, bankAccount, mobile, email);
 			
@@ -101,27 +102,26 @@ public class JDBCDentistManager implements DentistManager{
 	}
 
 	@Override
-	public Dentists getDentistByName(String dName) throws Exception {
+	public Dentists getDentistById(Integer id) throws Exception {
 
 
 		Dentists dentist= null;
 		
 		String sql= "SELECT * FROM dentist"
-				+ "WHERE name= ?";
+				+ "WHERE doc_id=?";
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
-		prep.setString(1, dName);
+		prep.setInt(1, id);
 				
 		ResultSet rs= prep.executeQuery();
 		
 		if(rs.next()) {
 			
-			int id=rs.getInt("id");
 			String name= rs.getString("name");
-			String bankAccount= rs.getString("bank account");
-			String email= rs.getString("email");
-			int mobile= rs.getInt("mobile");
+			Integer bankAccount= rs.getInt("bank account");
+			Integer mobile= rs.getInt("doc_mobile");
+			String email= rs.getString("doc_email");
 			
 			dentist= new Dentists(id, name, bankAccount,mobile, email);
 			
@@ -131,6 +131,61 @@ public class JDBCDentistManager implements DentistManager{
 		prep.close();
 		
 		return dentist;
+	}
+
+	@Override
+	public Dentists getDentistByName(String dentistName) throws Exception {
+	Dentists dentist= null;
+		
+		String sql= "SELECT * FROM dentist"
+				+ "WHERE name=?";
+		
+		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		
+		prep.setString(2,dentistName);
+				
+		ResultSet rs= prep.executeQuery();
+		
+		if(rs.next()) {
+			
+			Integer id= rs.getInt("doc_id");
+			Integer bankAccount= rs.getInt("bank account");
+			Integer mobile= rs.getInt("doc_mobile");
+			String email= rs.getString("doc_email");
+			
+			dentist= new Dentists(id, dentistName, bankAccount,mobile, email);
+			
+		}
+
+		rs.close();
+		prep.close();
+		
+		return dentist;
+	}
+
+	@Override
+	public ArrayList<Appointment> getAllAppFromDentist(Integer dentistId) throws Exception {
+		// TODO Auto-generated method stub
+		ArrayList <Appointment> appFromDentist= new  ArrayList<Appointment>();
+		JDBCAppointmentManager app= new JDBCAppointmentManager(manager.getConnection());
+		try {
+			String sql = "SELECT app_id FROM dentist LEFT JOIN appointment ON doc_id=dentist_id WHERE doc_id= ? GROUP BY doc_id";
+			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			prep.setInt(1, dentistId);
+			ResultSet rs = prep.executeQuery(sql);
+			
+			while(rs.next())
+			{
+				Integer appId= rs.getInt("app_id");
+				Appointment appointment=app.viewAppointment(appId);
+			    appFromDentist.add(appointment);
+				
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return appFromDentist;
 	}
 	
 	

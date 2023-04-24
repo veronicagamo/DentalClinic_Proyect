@@ -7,6 +7,7 @@ import POJO.Supply;
 public interface SuppliesManager {
 
 	public void addSupply(Supply s) throws Exception;
-	public ArrayList<Supply> listAllSupplies() throws Exception;
+	public void deleteSupply(Supply s) throws Exception;
+	public ArrayList<Supply> listAllSuppliesByAmount() throws Exception;
 
 }

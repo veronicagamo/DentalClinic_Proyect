@@ -8,12 +8,12 @@ public class Receptionist implements Serializable {
 	private static final long serialVersionUID = 7681173821305767706L;
 
 	private Integer rep_id;
-	private Integer rep_name;
-	private String bank_account;
+	private String rep_name;
+	private Integer bank_account;
 	private String rep_email;
 	private Integer rep_mobile;
 	
-	public Receptionist(Integer rep_id, Integer rep_name, String bank_account, String rep_email, Integer rep_mobile) {
+	public Receptionist(Integer rep_id, String rep_name, Integer bank_account, String rep_email, Integer rep_mobile) {
 		super();
 		this.rep_id = rep_id;
 		this.rep_name = rep_name;
@@ -51,19 +51,19 @@ public class Receptionist implements Serializable {
 		this.rep_id = rep_id;
 	}
 
-	public Integer getRep_name() {
+	public String getRep_name() {
 		return rep_name;
 	}
 
-	public void setRep_name(Integer rep_name) {
+	public void setRep_name(String rep_name) {
 		this.rep_name = rep_name;
 	}
 
-	public String getBank_account() {
+	public Integer getBank_account() {
 		return bank_account;
 	}
 
-	public void setBank_account(String bank_account) {
+	public void setBank_account(Integer bank_account) {
 		this.bank_account = bank_account;
 	}
 

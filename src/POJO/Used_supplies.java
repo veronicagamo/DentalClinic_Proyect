@@ -9,13 +9,15 @@ public class Used_supplies implements Serializable {
 	private Integer item_id;
 	private Integer app_id;
 	private Integer used_supp_id;
+	private Integer amount;
 	
 	
-	public Used_supplies(Integer item_id, Integer app_id, Integer used_supp_id) {
+	public Used_supplies(Integer item_id, Integer app_id, Integer used_supp_id, Integer amount) {
 		super();
 		this.item_id = item_id;
 		this.app_id = app_id;
 		this.used_supp_id = used_supp_id;
+		this.setAmount(amount);
 	}
 	
 	public Used_supplies() {
@@ -66,9 +68,19 @@ public class Used_supplies implements Serializable {
 		return true;
 	}
 
+
+	public Integer getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Integer amount) {
+		this.amount = amount;
+	}
+
 	@Override
 	public String toString() {
-		return "Used_supplies [item_id=" + item_id + ", app_id=" + app_id + ", used_supp_id=" + used_supp_id + "]";
+		return "Used_supplies [item_id=" + item_id + ", app_id=" + app_id + ", used_supp_id=" + used_supp_id
+				+ ", amount=" + amount + "]";
 	}
 	
 	

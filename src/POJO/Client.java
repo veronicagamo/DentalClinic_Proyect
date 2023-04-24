@@ -29,7 +29,13 @@ public class Client implements Serializable {
 		this.pat_email = pat_email;
 	}
 
-
+	public Client ( String pat_name, Integer hum, String pat_address, String pat_email) {
+		super();
+		this.pat_name = pat_name;
+		this.hum = hum;
+		this.pat_address = pat_address;
+		this.pat_email = pat_email;
+	}
 
 
 	@Override

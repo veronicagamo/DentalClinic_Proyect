@@ -10,12 +10,14 @@ public class Order_supplies implements Serializable {
 	private Integer order_supp_id;
 	 private Integer item_id;
 	 private Integer doc_id;
+	 private Integer amount;
 	 
-	public Order_supplies(Integer order_supp_id, Integer item_id, Integer doc_id) {
+	public Order_supplies(Integer order_supp_id, Integer item_id, Integer doc_id,Integer amount) {
 		super();
 		this.order_supp_id = order_supp_id;
 		this.item_id = item_id;
 		this.doc_id = doc_id;
+		this.amount=amount;
 	}
 
 	public Order_supplies() {
@@ -46,8 +48,13 @@ public class Order_supplies implements Serializable {
 		this.doc_id = doc_id;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	
+	public Integer getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Integer amount) {
+		this.amount = amount;
 	}
 
 	@Override
@@ -77,8 +84,11 @@ public class Order_supplies implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Order_supplies [order_supp_id=" + order_supp_id + ", item_id=" + item_id + ", doc_id=" + doc_id + "]";
+		return "Order_supplies [order_supp_id=" + order_supp_id + ", item_id=" + item_id + ", doc_id=" + doc_id
+				+ ", amount=" + amount + "]";
 	}
+
+	
 	 
 	 
 }

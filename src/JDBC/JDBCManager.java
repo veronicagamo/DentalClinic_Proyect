@@ -15,8 +15,9 @@ public class JDBCManager {
 					
 			//Open Database connection
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:./db/dental_clinic.db");
+			c = DriverManager.getConnection("jdbc:sqlite:./db/DentalClinic.db");
 			System.out.println("Database connection opened");
+			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			
 			this.createTables();
 			
@@ -56,19 +57,19 @@ public class JDBCManager {
 			Statement stmt = c.createStatement();
 			
 			String sql = "CREATE TABLE dentist ("
-						+ " id            INTEGER PRIMARY KEY AUTOINCREMENT,"
+						+ " doc_id            INTEGER PRIMARY KEY AUTOINCREMENT,"
 						+ " name          TEXT NOT NULL,"
-						+ " bank_account  TEXT NOT NULL,"
-						+ " email         TEXT NOT NULL,"
-						+ " mobile        TEXT NOT NULL,"
+						+ " bank_account  INTEGER NOT NULL,"
+						+ " doc_email         TEXT NOT NULL,"
+						+ " doc_mobile        TEXT NOT NULL"
 					+ ");";
 			
 			stmt.executeUpdate(sql);
 			
 			sql = "CREATE TABLE supplies ("
-					+ " id	  INTEGER PRIMARY KEY AUTOINCREMENT,"
+					+ " supplies_id	  INTEGER PRIMARY KEY AUTOINCREMENT,"
 					+ "	name	  TEXT NOT NULL,"
-					+ "	amount 	  INT NOT NULL,"
+					+ "	amount 	  INT NOT NULL"
 				+ ");";
 			
 			stmt.executeUpdate(sql);
@@ -81,31 +82,51 @@ public class JDBCManager {
 			
 			stmt.executeUpdate(sql);
 			
+			sql = "CREATE TABLE receptionist ("
+					+ "	recep_id      	  INTEGER PRIMARY KEY AUTOINCREMENT,"	
+					+ "	name	 	  TEXT NOT NULL,"
+					+ "	bank_account  INTEGER NOT NULL,"
+					+ "	email         TEXT NOT NULL,"	
+					+ "	mobile	      INTEGER NOT NULL"
+				+ ");";
+				
+			stmt.executeUpdate(sql);
+			
+			sql = "CREATE TABLE client ("
+					+ "	pat_id             INTEGER PRIMARY KEY AUTOINCREMENT,"	
+					+ "	pat_name	       TEXT NOT NULL,"
+					+ "	hum  INTEGER NOT NULL,"
+					+ "	pat_address        TEXT NOT NULL,"	
+					+ "	pat_email	       TEXT NOT NULL"
+				+ ");";
+				
+			stmt.executeUpdate(sql);
+			
 			sql = "CREATE TABLE order_supplies ("
 				+ "	id          INTEGER PRIMARY KEY AUTOINCREMENT,"	
 				+ "	supply_id   INTEGER NOT NULL,"
-				+ "	dentist_id  INTEGER NOT NULL,"
+				+ "	dentist_id  INTEGER NOT NULL,"+"amount INTEGER NOT NULL," +"amount INTEGER NOT NULL,"
 				
-				+ "	FOREIGN KEY(supply_id) REFERENCES supplies(id) ON DELETE CASCADE,"
-				+ "	FOREIGN KEY(dentist_id) REFERENCES dentist(id) ON DELETE CASCADE,"
+				+ "	FOREIGN KEY(supply_id) REFERENCES supplies(supplies_id) ON UPDATE CASCADE ON DELETE SET NULL,"
+				+ "	FOREIGN KEY(dentist_id) REFERENCES dentist(doc_id) ON UPDATE CASCADE ON DELETE SET NULL"
 			+ ");";
 			
 			stmt.executeUpdate(sql);
 			
 			sql = "CREATE TABLE appointment ("
-					+ "	id               INTEGER PRIMARY KEY AUTOINCREMENT,"	
-					+ "	date	         DATETIME NOT NULL,"
-					+ "	duration         INTEGER NOT NULL,"
-					+ "	room             INTEGER NOT NULL,"	
-					+ "	price	         REAL NOT NULL,"
-					+ "	treatment        TEXT NOT NULL,"
+					+ "	app_id               INTEGER PRIMARY KEY AUTOINCREMENT,"	
+					+ "	app_date	         DATETIME NOT NULL,"
+					+ "	app_duration         INTEGER NOT NULL,"
+					+ "	app_room             INTEGER NOT NULL,"	
+					+ "	app_price	         REAL NOT NULL,"
+					+ "	app_treatment        TEXT NOT NULL CHECK (app_treatment IN ('Implants','Cleaning','Braces','Tooth extractions','Whitening')),"
 					+ "	dentist_id       INTEGER NOT NULL,"	
 					+ "	recepcionist_id	 INTEGER NOT NULL,"
 					+ "	client_id       INTEGER NOT NULL,"
 					
-					+ "	FOREIGN KEY(dentist_id) REFERENCES dentist(id) ON DELETE CASCADE,"
-					+ "	FOREIGN KEY(recepcionist_id) REFERENCES receptionist(id) ON DELETE CASCADE,"
-					+ "	FOREIGN KEY(client_id) REFERENCES client(id) ON DELETE CASCADE,"
+					+ "	FOREIGN KEY(dentist_id) REFERENCES dentist(doc_id) ON UPDATE CASCADE ON DELETE SET NULL,"
+					+ "	FOREIGN KEY(recepcionist_id) REFERENCES receptionist(id) ON UPDATE CASCADE ON DELETE SET NULL,"
+					+ "	FOREIGN KEY(client_id) REFERENCES client(pat_id) ON UPDATE CASCADE ON DELETE SET NULL"
 				+ ");";
 				
 			stmt.executeUpdate(sql);
@@ -117,39 +138,20 @@ public class JDBCManager {
 					+ "	supply_id    INTEGER NOT NULL,"	
 					+ "	supplier_id	 INTEGER NOT NULL,"
 					
-					+ "	FOREIGN KEY(supply_id) REFERENCES supplies(id) ON DELETE CASCADE,"
-					+ "	FOREIGN KEY(supplier_id) REFERENCES suppliers(id) ON DELETE CASCADE,"
+					+ "	FOREIGN KEY(supply_id) REFERENCES supplies(supplies_id) ON UPDATE CASCADE ON DELETE SET NULL,"
+					+ "	FOREIGN KEY(supplier_id) REFERENCES suppliers(id) ON UPDATE CASCADE ON DELETE SET NULL"
 				+ ");";
 				
 			stmt.executeUpdate(sql);	
 			
-			sql = "CREATE TABLE receptionist ("
-					+ "	id      	  INTEGER PRIMARY KEY AUTOINCREMENT,"	
-					+ "	name	 	  TEXT NOT NULL,"
-					+ "	bank_account  TEXT NOT NULL,"
-					+ "	email         TEXT NOT NULL,"	
-					+ "	mobile	      INTEGER NOT NULL,"
-				+ ");";
-				
-			stmt.executeUpdate(sql);
-			
-			sql = "CREATE TABLE client ("
-					+ "	id             INTEGER PRIMARY KEY AUTOINCREMENT,"	
-					+ "	name	       TEXT NOT NULL,"
-					+ "	health_number  INTEGER NOT NULL,"
-					+ "	address        TEXT NOT NULL,"	
-					+ "	email	       TEXT NOT NULL,"
-				+ ");";
-				
-			stmt.executeUpdate(sql);
 			
 			sql = "CREATE TABLE used_supplies ("
 					+ "	id              INTEGER PRIMARY KEY AUTOINCREMENT,"	
 					+ "	supply_id	    INTEGER NOT NULL,"
 					+ "	appointment_id  INTEGER NOT NULL,"
 					
-					+ "	FOREIGN KEY(supply_id) REFERENCES supplies(id) ON DELETE CASCADE,"
-					+ "	FOREIGN KEY(appointment_id) REFERENCES appointment(id) ON DELETE CASCADE,"		
+					+ "	FOREIGN KEY(supply_id) REFERENCES supplies(supplies_id)  ON UPDATE CASCADE ON DELETE SET NULL,"
+					+ "	FOREIGN KEY(appointment_id) REFERENCES appointment(app_id)  ON UPDATE CASCADE ON DELETE SET NULL"		
 				+ ");";
 				
 			stmt.executeUpdate(sql);

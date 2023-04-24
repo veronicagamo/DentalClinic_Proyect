@@ -2,8 +2,11 @@ package POJO;
 
 
 import java.io.Serializable;
-import java.util.Date;
+
+import java.sql.Date;
 import java.util.Objects;
+
+
 
 public class Appointment implements Serializable{
 
@@ -37,6 +40,20 @@ public class Appointment implements Serializable{
 		this.app_treatment = app_treatment;
 		this.dentist_id = dentist_id;
 		this.receptionist_id = receptionist;
+		this.patient_id = patient_id;
+	}
+
+	
+	public Appointment(Date app_date, Integer app_duration, Integer app_room, Double app_price, String app_treatment,
+			Integer dentist_id, Integer receptionist_id, Integer patient_id) {
+		super();
+		this.app_date = app_date;
+		this.app_duration = app_duration;
+		this.app_room = app_room;
+		this.app_price = app_price;
+		this.app_treatment = app_treatment;
+		this.dentist_id = dentist_id;
+		this.receptionist_id = receptionist_id;
 		this.patient_id = patient_id;
 	}
 
