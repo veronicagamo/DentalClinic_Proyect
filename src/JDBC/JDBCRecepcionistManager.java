@@ -44,8 +44,7 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 	@Override
 	public void deleteReceptionist(Integer ReceptionistId) throws Exception{
 		
-		String sql= "DELETE FROM receptionist "
-				+ " WHERE recep_id= ?";
+		String sql= "DELETE FROM receptionist WHERE recep_id= ?";
 		
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
@@ -60,8 +59,7 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 	public void updateReceptionist(Receptionist r) throws Exception{
 		
 		String sql="UPDATE receptionist"
-				+ "SET name= ?, bank_account=?, email=?, mobile=?"
-				+ "WHERE recep_id= ?";
+				+ "SET name= ?, bank_account= ?, email= ?, mobile= ? WHERE recep_id= ?";
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
@@ -110,12 +108,11 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 		// TODO Auto-generated method stub
        Receptionist rec= null;
 		
-		String sql= "SELECT * FROM receptionist"
-				+ "WHERE name=?";
+		String sql= "SELECT * FROM receptionist WHERE name= ?";
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
-		prep.setString(2,recepName);
+		prep.setString(1,recepName);
 				
 		ResultSet rs= prep.executeQuery();
 		
@@ -142,8 +139,7 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 
 		 Receptionist rec= null;
 		
-		String sql= "SELECT * FROM receptionist"
-				+ "WHERE recep_id=?";
+		String sql= "SELECT * FROM receptionist WHERE recep_id= ?";
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		

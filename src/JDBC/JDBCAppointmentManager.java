@@ -2,9 +2,9 @@ package JDBC;
 
 import Interfaces.AppointmentManager;
 
+
 import POJO.Appointment;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -13,22 +13,23 @@ import java.util.Date;
 
 public class JDBCAppointmentManager implements AppointmentManager{
 	
-	private Connection manager;
+private JDBCManager manager;
 	
-	public JDBCAppointmentManager(Connection manager) {
+	public JDBCAppointmentManager(JDBCManager m) {
 		
-		this.manager=manager;
+		this.manager=m;
 	}
 
 	@Override
-	public void createAppointment(Appointment app) throws Exception{
+	public Integer createAppointment(Appointment app) throws Exception {
 		
-		String sql= "INSERT INTO appointment (app_date, app_duration, app_room, app_price, app_treatment, dentist_id,receptionist_id, patient_id) "
+		
+		String sql= "INSERT INTO appointment (app_date, app_duration, app_room, app_price, app_treatment, dentist_id,recepcionist_id, client_id) "
 				+ " VALUES(?,?,?,?,?,?,?,?)";
 		
-			PreparedStatement prep= manager.prepareStatement(sql);
+			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
-			prep.setDate(1, (java.sql.Date) app.getApp_date());
+			prep.setDate(1, app.getApp_date());
 			prep.setInt(2, app.getApp_duration());
 			prep.setInt(3, app.getApp_room());
 			prep.setDouble(4, app.getApp_price());
@@ -37,6 +38,12 @@ public class JDBCAppointmentManager implements AppointmentManager{
 			prep.setInt(7, app.getReceptionist());
 			prep.setInt(8, app.getPatient());
 			prep.executeUpdate();
+			
+			String sql2= "SELECT app_id FROM appointment ORDER BY app_id DESC LIMIT 1";
+			PreparedStatement prep2= manager.getConnection().prepareStatement(sql2);
+			ResultSet rs= prep2.executeQuery();
+			Integer id=rs.getInt("app_id");
+			return id;
 		
 	}
 
@@ -46,7 +53,7 @@ public class JDBCAppointmentManager implements AppointmentManager{
 		String sql= "DELETE FROM appointment "
 				+ " WHERE app_id= ?";
 		
-		PreparedStatement prep= manager.prepareStatement(sql);
+		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 	
 		prep.setInt(1, appointmentId);
 
@@ -57,10 +64,9 @@ public class JDBCAppointmentManager implements AppointmentManager{
 	public void updateAppointment(Appointment app) throws Exception{
 		
 		String sql="UPDATE appointment "
-				+ "SET app_date=?, app_duration=?, app_room=?, app_price=?, app_treatment=?, dentist_id=?, receptionist_id=?, patient_id=? "
-				;
+				+ "SET app_date= ?, app_duration= ?, app_room= ?, app_price= ?, app_treatment= ?, dentist_id= ?, recepcionist_id= ?, client_id= ? ";
 		
-		PreparedStatement prep= manager.prepareStatement(sql);
+		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
 		prep.setDate(1, (java.sql.Date) app.getApp_date());
 		prep.setInt(2, app.getApp_duration());
@@ -79,10 +85,9 @@ public class JDBCAppointmentManager implements AppointmentManager{
 		
 		Appointment app = null;
 		
-		String sql="SELECT * "
-				+ "FROM appointment WHERE app_id="+appointmentId;
+		String sql="SELECT * FROM appointment WHERE app_id= ?";
 		
-	   Statement prep= manager.createStatement();
+	   PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 	   ResultSet rs = prep.executeQuery(sql);
 	   
 	   Date dat = rs.getDate("app_date");
@@ -91,13 +96,14 @@ public class JDBCAppointmentManager implements AppointmentManager{
 	   Double price= rs.getDouble("app_price");
 	   String treatment=  rs.getString("app_treatment");
 	   Integer den =  rs.getInt("dentist_id");
-	   Integer rec =rs.getInt("receptionist_id");
-	   Integer patient =rs.getInt("patient_id");
+	   Integer rec =rs.getInt("recepcionist_id");
+	   Integer patient =rs.getInt("client_id");
 	   
 	   app = new Appointment(appointmentId, (java.sql.Date) dat,duration, room, price, treatment, den, rec, patient);
-		
-	   
-	   return app;
+
+	   rs.close();
+		prep.close();
+		 return app;
 	
 		
 	}
@@ -106,7 +112,7 @@ public class JDBCAppointmentManager implements AppointmentManager{
 		
 		ArrayList<Appointment> all = new ArrayList<Appointment>();
 		try {
-			Statement stmt = manager.createStatement();
+			Statement stmt = manager.getConnection().createStatement();
 			String sql = "SELECT * FROM appointment";
 			ResultSet rs = stmt.executeQuery(sql);
 			
@@ -119,8 +125,8 @@ public class JDBCAppointmentManager implements AppointmentManager{
 				   Double price= rs.getDouble("app_price");
 				   String treatment=  rs.getString("app_treatment");
 				   Integer den =  rs.getInt("dentist_id");
-				   Integer rec =rs.getInt("receptionist_id");
-				   Integer patient =rs.getInt("patient_id");
+				   Integer rec =rs.getInt("recepcionist_id");
+				   Integer patient =rs.getInt("client_id");
 				   
 				   
 				  Appointment app = new Appointment(id, (java.sql.Date) dat,duration, room, price, treatment, den, rec, patient);
@@ -138,7 +144,8 @@ public class JDBCAppointmentManager implements AppointmentManager{
 		
 		return all;
 	}
-	
+
+
 
 
 }

@@ -21,6 +21,14 @@ public class Receptionist implements Serializable {
 		this.rep_email = rep_email;
 		this.rep_mobile = rep_mobile;
 	}
+  
+	public Receptionist(String rep_name, Integer bank_account, String rep_email, Integer rep_mobile) {
+		super();
+		this.rep_name = rep_name;
+		this.bank_account = bank_account;
+		this.rep_email = rep_email;
+		this.rep_mobile = rep_mobile;
+	}
 
 	public Receptionist() {
 		super();
@@ -83,7 +91,13 @@ public class Receptionist implements Serializable {
 		this.rep_mobile = rep_mobile;
 	}
 
+	@Override
+	public String toString() {
+		return "Receptionist [rep_id=" + rep_id + ", rep_name=" + rep_name + ", bank_account=" + bank_account
+				+ ", rep_email=" + rep_email + ", rep_mobile=" + rep_mobile + "]";
+	}
 
+   
 	 
 	
 	

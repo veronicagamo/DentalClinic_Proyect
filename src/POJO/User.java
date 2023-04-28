@@ -12,7 +12,11 @@ public class User implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6770446933122353723L;
+	private static final long serialVersionUID = 4171190990724826575L;
+	/**
+	 * 
+	 */
+
 	
 	@Id
 	@GeneratedValue(generator = "users")

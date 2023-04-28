@@ -17,7 +17,7 @@ public class Used_supplies implements Serializable {
 		this.item_id = item_id;
 		this.app_id = app_id;
 		this.used_supp_id = used_supp_id;
-		this.setAmount(amount);
+		this.amount=amount;
 	}
 	
 	public Used_supplies() {

@@ -19,6 +19,12 @@ public class Supply implements Serializable{
 		this.item_amount = item_amount;
 	}
 
+	public Supply(String item_name, Integer item_amount) {
+		super();
+		this.item_name = item_name;
+		this.item_amount = item_amount;
+	}
+
 	public Supply() {
 		super();
 	}

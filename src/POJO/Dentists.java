@@ -13,14 +13,14 @@ public class Dentists implements Serializable{
 	private Integer doc_id;
 	private String name;
 	private Integer bank_account;
-	private Integer doc_mobile;
+	private String doc_mobile;
 	private String doc_email;
 	
 	public Dentists() {
 		super();
 	}
 
-	public Dentists (Integer doc_id, String name, Integer bank_account, Integer doc_mobile, String doc_email) {
+	public Dentists (Integer doc_id, String name, Integer bank_account, String doc_mobile, String doc_email) {
 		super();
 		this.doc_id = doc_id;
 		this.name = name;
@@ -30,6 +30,14 @@ public class Dentists implements Serializable{
 	}
 	
 
+
+	public Dentists(String name, Integer bank_account, String doc_mobile, String doc_email) {
+		super();
+		this.name = name;
+		this.bank_account = bank_account;
+		this.doc_mobile = doc_mobile;
+		this.doc_email = doc_email;
+	}
 
 	@Override
 	public int hashCode() {
@@ -78,11 +86,11 @@ public class Dentists implements Serializable{
 		this.bank_account = bank_account;
 	}
 
-	public Integer getDoc_mobile() {
+	public String getDoc_mobile() {
 		return doc_mobile;
 	}
 
-	public void setDoc_mobile(Integer doc_mobile) {
+	public void setDoc_mobile(String doc_mobile) {
 		this.doc_mobile = doc_mobile;
 	}
 

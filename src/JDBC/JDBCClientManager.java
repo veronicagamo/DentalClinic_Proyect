@@ -89,8 +89,7 @@ public class JDBCClientManager implements ClientManager {
 		// TODO Auto-generated method stub
 		
 		String sql="UPDATE client "
-				+ "SET pat_name= ?, hum=?, pat_address=?, pat_email=?"
-				+ "WHERE pat_id= ?";
+				+ "SET pat_name= ?, hum= ?, pat_address= ?, pat_email= ? WHERE pat_id= ?";
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
@@ -98,6 +97,7 @@ public class JDBCClientManager implements ClientManager {
 		prep.setInt(2,client.getHum());
 		prep.setString(3,client.getPat_address());
 		prep.setString(4,client.getPat_email());
+		prep.setInt(5,client.getPat_id());
 
 		prep.executeUpdate();
 		
@@ -141,7 +141,7 @@ public class JDBCClientManager implements ClientManager {
 	public ArrayList<Appointment> getAllAppFromClient(Integer clientId) throws Exception {
 		// TODO Auto-generated method stub
 		ArrayList <Appointment> appFromClient= new  ArrayList<Appointment>();
-		JDBCAppointmentManager app= new JDBCAppointmentManager(manager.getConnection());
+		JDBCAppointmentManager app= new JDBCAppointmentManager(manager);
 		try {
 			String sql = "SELECT app_id FROM client LEFT JOIN appointment ON pat_id=patient_id WHERE pat_id= ? GROUP BY pat_id";
 			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
@@ -165,29 +165,31 @@ public class JDBCClientManager implements ClientManager {
 	@Override
 	public Client getClientByName(String clientName) throws Exception {
 		// TODO Auto-generated method stub
-        Client cli= null;
+          Client client=null;
 		
-		String sql= "SELECT * FROM client WHERE pat_name= ?";
+        String sql= "SELECT * FROM client WHERE pat_name= ?";
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		
 		prep.setString(1,clientName);
 				
-		ResultSet rs= prep.executeQuery(sql);
+		ResultSet rs= prep.executeQuery();
 		
-		while(rs.next()) {
-			
-			Integer id= rs.getInt("pat_id");
-			Integer hum= rs.getInt("hum");
+		while (rs.next()) {
+			Integer clientId = rs.getInt("pat_id");
+			String name= rs.getString("pat_name");
+			Integer healthNumber= rs.getInt("hum");
 			String address= rs.getString("pat_address");
 			String email= rs.getString("pat_email");
 			
-			cli= new Client(id, clientName, hum, address, email);
+			client= new Client(clientId, name, healthNumber, address, email);
 			
 		}
 
 		rs.close();
 		prep.close();
 		
-		return cli;
+		return client;
+		
 	}
 }

@@ -1,10 +1,13 @@
 package JDBC;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import Interfaces.Provide_suppliesManager;
+import POJO.Provide_suplies;
 import POJO.Supply;
 
 public class JDBCProvide_suppliesManager implements Provide_suppliesManager{
@@ -17,34 +20,40 @@ public class JDBCProvide_suppliesManager implements Provide_suppliesManager{
 	}
 
 	@Override
-	public Supply getSupplyById(int supplyId) throws Exception {
-
-		Supply supplies= null;
+	public void createProvide(Provide_suplies prov) throws Exception {
+		// TODO Auto-generated method stub
 		
-		String sql= "SELECT * FROM supplies"
-				+ "WHERE id= ?";
-		
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
-		
-		prep.setInt(1, supplyId);
-				
-		ResultSet rs= prep.executeQuery();
-		
-		if(rs.next()) {
-			
-			int id=rs.getInt("id");
-			String name= rs.getString("name");
-			int amount= rs.getInt("amount");
-			
-			supplies= new Supply(id, name, amount);
-			
-		}
-
-		rs.close();
-		prep.close();
-		
-		return supplies;
-
 	}
 
+	@Override
+	public void deleteProvide(Integer provideId) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateProvideDate(Integer provideId, Date date) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Provide_suplies getProvideById(Integer provideId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Provide_suplies> getAllSuppliesFromSupplier(Integer supplierId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Provide_suplies> getAll() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 }
