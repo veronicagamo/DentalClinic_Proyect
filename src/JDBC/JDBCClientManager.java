@@ -8,8 +8,12 @@ import POJO.Client;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import Exceptions.IdNotFoundException;
+import Exceptions.NameNotFoundException;
 
 
 
@@ -23,43 +27,78 @@ public class JDBCClientManager implements ClientManager {
 	}
 	
 	@Override
-	public Client getClientById(Integer clientId) throws Exception{
+	public Client getClientById(Integer clientId){
 		
 		Client client=null;
+		PreparedStatement prep=null;
+		ResultSet rs= null;
 		
-		String sql= "SELECT * FROM client WHERE pat_id= ?";
+		try {
+			
+			String sql= "SELECT * FROM client WHERE pat_id= ?";
 		
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		    prep= manager.getConnection().prepareStatement(sql);
 		
-		prep.setInt(1, clientId);
+		    prep.setInt(1, clientId);
 				
-		ResultSet rs= prep.executeQuery();
+		    rs= prep.executeQuery();
 		
-		if(rs.next()) {
-			
-			String name= rs.getString("pat_name");
-			Integer healthNumber= rs.getInt("hum");
-			String address= rs.getString("pat_address");
-			String email= rs.getString("pat_email");
-			
-			client= new Client(clientId, name, healthNumber, address, email);
-			
+			if(rs.next()) {
+				
+				String name= rs.getString("pat_name");
+				Integer healthNumber= rs.getInt("hum");
+				String address= rs.getString("pat_address");
+				String email= rs.getString("pat_email");
+				
+				client= new Client(clientId, name, healthNumber, address, email);
+				
+			}
+			else {
+				
+				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+						+ "of the clients");
+		    }
 		}
+		catch(SQLException e) {
+			
+			System.out.println("The requested client can not be returned "+e);
+			e.printStackTrace();
 
-		rs.close();
-		prep.close();
+
+		}catch(IdNotFoundException e) {
+			
+			System.out.println(e);
+
+			
+		}finally {
+			
+			try {
+				
+				if(rs!=null) {
+					rs.close();
+				}
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}	
 		
 		return client;
-		
 	
 	}
 
 	@Override
-	public void createClient(Client client) throws Exception {
+	public void createClient(Client client){
 		// TODO Auto-generated method stub
 		
 
-		String sql= "INSERT INTO client (pat_name,hum,pat_address,pat_email) VALUES (?,?,?,?)";
+		try {
+			
+			String sql= "INSERT INTO client (pat_name,hum,pat_address,pat_email) VALUES (?,?,?,?)";
 		
 			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
@@ -68,49 +107,98 @@ public class JDBCClientManager implements ClientManager {
 			prep.setString(3, client.getPat_address());
 			prep.setString(4, client.getPat_email());
 			prep.executeUpdate();
+		}
+		catch(SQLException e) {
+			
+			System.out.println("The client has not been created successfully "+e);
+			e.printStackTrace();
+
+
+		}
 		
 	}
 
 	@Override
-	public void deleteClient(Integer pat_id) throws Exception {
+	public void deleteClient(Integer pat_id){
 		// TODO Auto-generated method stub
-		String sql= "DELETE FROM client "
+		
+		try {
+			
+			String sql= "DELETE FROM client "
 				+ " WHERE pat_id= ?";
 		
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 	
-		prep.setInt(1, pat_id);
+			prep.setInt(1, pat_id);
 
-		prep.executeUpdate();
+			if(prep.executeUpdate()==0) {
+				
+				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+						+ "of the clients");
+			}	
+		}
+		catch(SQLException e) {
+			
+			System.out.println("The requested client has not been deleted successfully "+e);
+			e.printStackTrace();
+
+
+		}
+		catch(IdNotFoundException e) {
+			
+			System.out.println(e);
+		}
+		
 	}
 
 	@Override
-	public void updateClient(Client client) throws Exception {
+	public void updateClient(Client client){
 		// TODO Auto-generated method stub
 		
-		String sql="UPDATE client "
+		try {
+			
+			String sql="UPDATE client "
 				+ "SET pat_name= ?, hum= ?, pat_address= ?, pat_email= ? WHERE pat_id= ?";
 		
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
-		prep.setString(1, client.getPat_name());
-		prep.setInt(2,client.getHum());
-		prep.setString(3,client.getPat_address());
-		prep.setString(4,client.getPat_email());
-		prep.setInt(5,client.getPat_id());
+			prep.setString(1, client.getPat_name());
+			prep.setInt(2,client.getHum());
+			prep.setString(3,client.getPat_address());
+			prep.setString(4,client.getPat_email());
+			prep.setInt(5,client.getPat_id());
 
-		prep.executeUpdate();
+			if(prep.executeUpdate()==0) {
+				
+				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+						+ "of the clients");
+			}	
+		}catch(SQLException e) {
+			
+			System.out.println("The requested client has not been updated successfully "+e);
+			e.printStackTrace();
+
+		}
+		catch(IdNotFoundException e) {
+			
+			System.out.println(e);
+		}
+		
+		
 		
 	}
 
 	@Override
-	public ArrayList<Client> getListAllClients() throws Exception {
+	public ArrayList<Client> getListAllClients(){
 		// TODO Auto-generated method stub
 		ArrayList<Client> all = new ArrayList<Client>();
+		Statement stmt=null;
+		ResultSet rs=null;
+		
 		try {
-			Statement stmt = manager.getConnection().createStatement();
+			stmt = manager.getConnection().createStatement();
 			String sql = "SELECT * FROM client";
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 			
 			while(rs.next())
 			{
@@ -123,22 +211,35 @@ public class JDBCClientManager implements ClientManager {
 				   
 				 Client c = new Client(id,name,num,add,email);
 				  all.add(c);
-			}
-			
-			rs.close();
-			stmt.close();	
+			}	
 			
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		finally {
+			
+			try {
+				
+				if(rs!=null) {
+					rs.close();
+				}
+				if(stmt!=null) {
+					stmt.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
 		
+		}
 		
 		return all;
 	}
 
 	@Override
-	public ArrayList<Appointment> getAllAppFromClient(Integer clientId) throws Exception {
+	public ArrayList<Appointment> getAllAppFromClient(Integer clientId){
 		// TODO Auto-generated method stub
 		ArrayList <Appointment> appFromClient= new  ArrayList<Appointment>();
 		JDBCAppointmentManager app= new JDBCAppointmentManager(manager);
@@ -155,39 +256,77 @@ public class JDBCClientManager implements ClientManager {
 			    appFromClient.add(appointment);
 				
 			}
+			if(appFromClient.size()==0) {
+				
+				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+						+ "of the clients");
+
+			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		
 		return appFromClient;
 	}
 
 	@Override
-	public Client getClientByName(String clientName) throws Exception {
+	public Client getClientByName(String clientName){
 		// TODO Auto-generated method stub
-          Client client=null;
+        Client client=null;
+        PreparedStatement prep=null;
+  		ResultSet rs= null;
 		
-        String sql= "SELECT * FROM client WHERE pat_name= ?";
+  		try {
+  			
+  			String sql= "SELECT * FROM client WHERE pat_name= ?";
 		
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
-		
-		prep.setString(1,clientName);
+			prep= manager.getConnection().prepareStatement(sql);
+			
+			prep.setString(1,clientName);
+					
+			rs= prep.executeQuery();
+			
+			while (rs.next()) {
+				Integer clientId = rs.getInt("pat_id");
+				String name= rs.getString("pat_name");
+				Integer healthNumber= rs.getInt("hum");
+				String address= rs.getString("pat_address");
+				String email= rs.getString("pat_email");
 				
-		ResultSet rs= prep.executeQuery();
-		
-		while (rs.next()) {
-			Integer clientId = rs.getInt("pat_id");
-			String name= rs.getString("pat_name");
-			Integer healthNumber= rs.getInt("hum");
-			String address= rs.getString("pat_address");
-			String email= rs.getString("pat_email");
-			
-			client= new Client(clientId, name, healthNumber, address, email);
-			
+				client= new Client(clientId, name, healthNumber, address, email);
+				
+			}
+			if(client==null) {
+				
+				throw new NameNotFoundException("The specified name does not correspond to any of the names"
+						+ "of the clients");
+		   }
 		}
-
-		rs.close();
-		prep.close();
+  		catch(SQLException e) {
+			e.printStackTrace();
+		}
+  		catch(NameNotFoundException e) {
+			
+			System.out.println(e);	
+		}
+		finally {
+			
+			try {
+				
+				if(rs!=null) {
+					rs.close();
+				}
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		
+		}
 		
 		return client;
 		

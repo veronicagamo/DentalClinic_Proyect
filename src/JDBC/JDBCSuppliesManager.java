@@ -5,8 +5,11 @@ import POJO.Supply;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import Exceptions.IdNotFoundException;
 
 
 public class JDBCSuppliesManager implements SuppliesManager{
@@ -20,59 +23,109 @@ public class JDBCSuppliesManager implements SuppliesManager{
 	
 
 	@Override
-	public void addSupply (Supply s) throws Exception{
+	public void addSupply (Supply s){
 		
-		String sql= "INSERT INTO supplies (name, amount) "
+		try {
+			
+			String sql= "INSERT INTO supplies (name, amount) "
 				+ " VALUES(?,?)";
 		
-		PreparedStatement prep= this.manager.getConnection().prepareStatement(sql);
-		
-		prep.setString(1, s.getItem_name());
-		prep.setInt(2, s.getItem_amount());
-		
-		prep.executeUpdate();
+			PreparedStatement prep= this.manager.getConnection().prepareStatement(sql);
+			
+			prep.setString(1, s.getItem_name());
+			prep.setInt(2, s.getItem_amount());
+			
+			prep.executeUpdate();
+		}
+		catch(SQLException e) {
+			
+			System.out.println("The supply has not been added successfully "+e);
+
+		}	
 		
 	}
 	
 
 	@Override
-	public void deleteSupply(Integer id) throws Exception {
+	public void deleteSupply(Integer id) {
 		// TODO Auto-generated method stub
-		String sql= "DELETE FROM supplies "
+		
+		try {
+			
+			String sql= "DELETE FROM supplies "
 				+ " WHERE supplies_id= ?";
 		
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		
+			prep.setInt(1, id);
 	
-		prep.setInt(1, id);
-
-		prep.executeUpdate();
+			if(prep.executeUpdate()==0) {
+				
+				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+						+ "of the supplies");
+			}
+		}
+		catch(SQLException e) {
+			
+			System.out.println("The requested supply has not been deleted successfully "+e);
+			e.printStackTrace();
+		}
+		catch(IdNotFoundException e) {
+			
+			System.out.println(e);
+	
+		}
+		
 	}
 
 
 	@Override
-	public ArrayList<Supply> listAllSuppliesByAmount() throws Exception {
+	public ArrayList<Supply> listAllSuppliesByAmount(){
 		// TODO Auto-generated method stub
 		ArrayList <Supply> supplies= new ArrayList<>();
+		Statement stmt=null;
+		ResultSet rs=null;
 		
-		Statement stmt= this.manager.getConnection().createStatement();	
-		
-		String sql="SELECT * FROM supplies ORDER BY amount";
-		
-		ResultSet rs = stmt.executeQuery(sql);
-		
-		while (rs.next()){
+		try {
 			
-			int id = rs.getInt("supplies_id");
-			String name = rs.getString("name");
-			int amount = rs.getInt("amount");
+			stmt= this.manager.getConnection().createStatement();	
+		
+			String sql="SELECT * FROM supplies ORDER BY amount";
 			
-			Supply supply = new Supply(id, name, amount);
+			rs = stmt.executeQuery(sql);
 			
-			supplies.add(supply);
+			while (rs.next()){
+				
+				int id = rs.getInt("supplies_id");
+				String name = rs.getString("name");
+				int amount = rs.getInt("amount");
+				
+				Supply supply = new Supply(id, name, amount);
+				
+				supplies.add(supply);
+			}
+		}catch(SQLException e) {
+			
+			System.out.println("The supplies can not be returned "+e);
+			e.printStackTrace();
+		}
+		finally {
+			
+			try {
+				
+				if(rs!=null) {
+					rs.close();
+				}
+				if(stmt!=null) {
+					stmt.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
 		}
 		
-		rs.close();
-		stmt.close();
 
 		return supplies;
 		
@@ -80,30 +133,65 @@ public class JDBCSuppliesManager implements SuppliesManager{
 
 
 	@Override
-	public Supply viewSupply(Integer supId) throws Exception {
+	public Supply viewSupply(Integer supId){
 		// TODO Auto-generated method stub
-     Supply s=null;
 		
-		String sql= "SELECT * FROM supplies WHERE supplies_id= ?";
+		Supply s=null;
+		ResultSet rs=null;
+		PreparedStatement prep=null;
 		
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		try {
+			
+			String sql= "SELECT * FROM supplies WHERE supplies_id= ?";
 		
-		prep.setInt(1, supId);
+			prep= manager.getConnection().prepareStatement(sql);
+			
+			prep.setInt(1, supId);
+					
+			rs= prep.executeQuery();
+			
+			if(rs.next()) {
 				
-		ResultSet rs= prep.executeQuery();
-		
-		if(rs.next()) {
-			
-			String name= rs.getString("name");
-			Integer amount= rs.getInt("amount");
-
-			
-			s= new Supply(supId,name,amount);
-			
+				String name= rs.getString("name");
+				Integer amount= rs.getInt("amount");
+	
+				
+				s= new Supply(supId,name,amount);
+				
+			}
+			else {
+				   
+				 throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+						+ "of the supplies");
+			}
 		}
+		catch(SQLException e) {
+			
+			System.out.println("The requested supply can not be shown "+e);
+			e.printStackTrace();
 
-		rs.close();
-		prep.close();
+		}
+		catch(IdNotFoundException e) {
+					
+			System.out.println(e);
+		}
+		finally {
+			
+			try {
+				
+				if(rs!=null) {
+					rs.close();
+				}
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+	
 		
 		return s;
 		
@@ -111,33 +199,70 @@ public class JDBCSuppliesManager implements SuppliesManager{
 
 
 	@Override
-	public void increaseAmount(Integer a,Integer itemId) throws Exception {
+	public void increaseAmount(Integer a,Integer itemId) {
 		// TODO Auto-generated method stub
-        String sql= "UPDATE supplies "
+		
+		try {
+			
+			String sql= "UPDATE supplies "
 				+ "SET amount= amount + ? WHERE supplies_id= ?";
-PreparedStatement prep= manager.getConnection().prepareStatement(sql);
-		
-		prep.setInt(1, a);
-		prep.setInt(2,itemId);
-
-
-		prep.executeUpdate();
-		
+	        PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			
+			prep.setInt(1, a);
+			prep.setInt(2,itemId);
+	
+	
+			if(prep.executeUpdate()==0) {
+				
+				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+						+ "of the supplies");
+			}
+		}
+		catch(SQLException e) {
+			
+			System.out.println("The amount of supplies can not increase "+e);
+			e.printStackTrace();
+		}
+		catch(IdNotFoundException e) {
+			
+			System.out.println(e);
+	
+		}
+        	
 	}
 
 
 	@Override
-	public void decreaseAmount(Integer a, Integer itemId) throws Exception {
+	public void decreaseAmount(Integer a, Integer itemId) {
 		// TODO Auto-generated method stub
-		  String sql= "UPDATE supplies "
+		
+		try {
+			
+			String sql= "UPDATE supplies "
 					+ "SET amount= amount - ? WHERE supplies_id= ?";
-	PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 			
 			prep.setInt(1, a);
 			prep.setInt(2,itemId);
 
 
-			prep.executeUpdate();
+			if(prep.executeUpdate()==0) {
+				
+				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+						+ "of the supplies");
+			}
+		}
+		catch(SQLException e) {
+			
+			System.out.println("The amount of supplies can not decrease "+e);
+			e.printStackTrace();
+		}
+		catch(IdNotFoundException e) {
+			
+			System.out.println(e);
+	
+		}
+		  
 	}
 	
 }

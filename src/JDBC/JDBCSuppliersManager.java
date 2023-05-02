@@ -5,8 +5,12 @@ import POJO.Supplier;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import Exceptions.IdNotFoundException;
+import Exceptions.NameNotFoundException;
 
 public class JDBCSuppliersManager implements SuppliersManager{
 	
@@ -19,81 +23,172 @@ public class JDBCSuppliersManager implements SuppliersManager{
 
 
 	@Override
-	public Supplier getSupplierById(Integer supplierId) throws Exception {
+	public Supplier getSupplierById(Integer supplierId){
 		// TODO Auto-generated method stub
+		
         Supplier s= null;
+        PreparedStatement prep=null;
+		ResultSet rs=null;
 		
-		String sql= "SELECT * FROM suppliers WHERE id= ?";
+		try {
+			
+			String sql= "SELECT * FROM suppliers WHERE id= ?";
 		
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
-		
-		prep.setInt(1, supplierId);
+			prep= manager.getConnection().prepareStatement(sql);
+			
+			prep.setInt(1, supplierId);
+					
+			rs= prep.executeQuery();
+			
+			if(rs.next()) {
 				
-		ResultSet rs= prep.executeQuery();
-		
-		if(rs.next()) {
-			
-			String name= rs.getString("name");
-			String address= rs.getString("address");
-			
-			s= new Supplier(supplierId, name, address);
-			
+				String name= rs.getString("name");
+				String address= rs.getString("address");
+				
+				s= new Supplier(supplierId, name, address);
+				
+			}
+			if(s==null) {
+				
+				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+						+ "of the suppliers");
+			}
 		}
+		catch(SQLException e) {
+			
+			System.out.println("The requested supplier can not be returned "+e);
+			e.printStackTrace();
+			
+		}catch(IdNotFoundException e) {
+			
+			System.out.println(e);
 
-		rs.close();
-		prep.close();
+		}
+		
+		finally {
+			
+			try {
+				
+				if(rs!=null) {
+					rs.close();
+				}
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
 		
 		return s;
 		
 	}
 
 	@Override
-	public void updateSupplier(Supplier sup) throws Exception {
+	public void updateSupplier(Supplier sup){
 		// TODO Auto-generated method stub
-		String sql="UPDATE suppliers "
+		
+		try {
+			
+			String sql="UPDATE suppliers "
 				+ "SET name= ?, address= ? WHERE id= ?";
 		
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			
+			prep.setString(1, sup.getSup_name());
+			prep.setString(2,sup.getSup_address());
+			prep.setInt(3,sup.getSup_id());
+
+			if(prep.executeUpdate()==0) {
+				
+				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+						+ "of the suppliers");
+			}
+		}
+		catch(SQLException e) {
+			
+			System.out.println("The requested supplier has not been updated successfully "+e);
+			e.printStackTrace();
+
+		}
+		catch(IdNotFoundException e) {
 		
-		prep.setString(1, sup.getSup_name());
-		prep.setString(2,sup.getSup_address());
-		prep.setInt(3,sup.getSup_id());
-		prep.executeUpdate();
+			System.out.println(e);
+		}
+		
+		
 	}
 
 	@Override
-	public void createSupplier(Supplier s) throws Exception {
+	public void createSupplier(Supplier s) {
 		// TODO Auto-generated method stub
-		String sql= "INSERT INTO suppliers (name,address) VALUES(?,?)";
 		
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
-	
-		prep.setString(1, s.getSup_name());
-		prep.setString(2, s.getSup_address());
-		prep.executeUpdate();
+		try {
+			
+			String sql= "INSERT INTO suppliers (name,address) VALUES(?,?)";
+		
+			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		
+			prep.setString(1, s.getSup_name());
+			prep.setString(2, s.getSup_address());
+			
+			prep.executeUpdate();
+		}
+		catch(SQLException e) {
+			
+			System.out.println("The supplier can not be created "+e);
+			e.printStackTrace();
+
+		}
+		
 		
 	}
 
 	@Override
-	public void deleteSupplier(Integer supplierId) throws Exception {
+	public void deleteSupplier(Integer supplierId){
 		// TODO Auto-generated method stub
-		String sql= "DELETE FROM suppliers WHERE id= ?";
 		
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		try {
+			
+			String sql= "DELETE FROM suppliers WHERE id= ?";
+		
+			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		
+			prep.setInt(1, supplierId);
 	
-		prep.setInt(1, supplierId);
-
-		prep.executeUpdate();
+			if(prep.executeUpdate()==0) {
+				
+				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+						+ "of the suppliers");
+			}
+		}
+		catch(SQLException e) {
+			
+			System.out.println("The requested supplier has not been deleted successfully "+e);
+			e.printStackTrace();
+		}
+		catch(IdNotFoundException e) {
+			
+			System.out.println(e);
+	
+		}
+		
+		
 	}
 
 	@Override
-	public ArrayList<Supplier> getListAllSuppliers() throws Exception {
+	public ArrayList<Supplier> getListAllSuppliers(){
 		// TODO Auto-generated method stub
 		ArrayList<Supplier> all = new ArrayList<Supplier>();
+		Statement stmt=null;
+		ResultSet rs=null;
+		
 		try {
-			Statement stmt = manager.getConnection().createStatement();
+			stmt = manager.getConnection().createStatement();
 			String sql = "SELECT * FROM suppliers";
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = stmt.executeQuery(sql);
 			
 			while(rs.next())
 			{
@@ -105,13 +200,27 @@ public class JDBCSuppliersManager implements SuppliersManager{
 				 Supplier s = new Supplier(id,name,add);
 				  all.add(s);
 			}
-			
-			rs.close();
-			stmt.close();	
-			
+				
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+		}
+		finally {
+			
+			try {
+				
+				if(rs!=null) {
+					rs.close();
+				}
+				if(stmt!=null) {
+					stmt.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		
 		}
 		
 		
@@ -120,16 +229,20 @@ public class JDBCSuppliersManager implements SuppliersManager{
 
 
 	@Override
-	public Supplier getSupplierByName(String supplierName) throws Exception {
+	public Supplier getSupplierByName(String supplierName){
 		// TODO Auto-generated method stub
 		Supplier sup=null;
-		 String sql= "SELECT * FROM suppliers WHERE name= ?";
+		PreparedStatement prep=null;
+		ResultSet rs=null;
+		 
+		try {
+			String sql= "SELECT * FROM suppliers WHERE name= ?";
 			
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			prep= manager.getConnection().prepareStatement(sql);
 			
 			prep.setString(1,supplierName);
 					
-			ResultSet rs= prep.executeQuery();
+			rs= prep.executeQuery();
 			
 			if(rs.next()) {
 				Integer Id = rs.getInt("id");
@@ -139,13 +252,42 @@ public class JDBCSuppliersManager implements SuppliersManager{
 				sup= new Supplier(Id, name, address);
 				
 			}
+			if(sup==null) {
+				
+				throw new NameNotFoundException("The specified name does not correspond to any of the names"
+						+ "of the suppliers");
+			}
+		}
+		catch(SQLException e) {
+			
+			System.out.println("The requested supplier can not be returned "+e);
+			e.printStackTrace();
+			
+		}catch(NameNotFoundException e) {
+			
+			System.out.println(e);
 
-			rs.close();
-			prep.close();
+		}
+		
+		finally {
 			
-			return sup;
-			
-			
+			try {
+				
+				if(rs!=null) {
+					rs.close();
+				}
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+	
+		return sup;
+		
 	}
 
 }
