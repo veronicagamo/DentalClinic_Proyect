@@ -1,6 +1,6 @@
 package POJO;
 
-//Ya domino bases de datos
+
 import java.io.Serializable;
 
 import java.sql.Date;
