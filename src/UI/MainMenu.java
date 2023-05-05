@@ -30,6 +30,7 @@ public class MainMenu {
 	private static BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private static JDBCAppointmentManager appMan;
+	//hola
 	private static JDBCDentistManager docMan;
 	private static JDBCClientManager patMan;
 	private static JDBCRecepcionistManager recMan;
