@@ -104,11 +104,15 @@ public class JDBCManager {
 			stmt.executeUpdate(sql);
 			
 			sql = "CREATE TABLE order_supplies ("
-				+ "	id          INTEGER PRIMARY KEY AUTOINCREMENT,"	
+				+ "	id          INTEGER PRIMARY KEY AUTOINCREMENT,"
+				+ " date	     DATETIME,"
+				+ "	amount       INTEGER NOT NULL,"	
 				+ "	supply_id   INTEGER,"
-				+ "	dentist_id  INTEGER,"+"amount INTEGER NOT NULL,"
+				+ "	supplier_id   INTEGER,"
+				+ "	dentist_id  INTEGER,"
 				
 				+ "	FOREIGN KEY(supply_id) REFERENCES supplies(supplies_id) ON UPDATE CASCADE ON DELETE SET NULL,"
+				+ "	FOREIGN KEY(supplier_id) REFERENCES suppliers(id) ON UPDATE CASCADE ON DELETE SET NULL,"
 				+ "	FOREIGN KEY(dentist_id) REFERENCES dentist(doc_id) ON UPDATE CASCADE ON DELETE SET NULL"
 			+ ");";
 			
@@ -134,8 +138,6 @@ public class JDBCManager {
 			
 			sql = "CREATE TABLE provide_supplies ("
 					+ "	id           INTEGER PRIMARY KEY AUTOINCREMENT,"	
-					+ "	date	     DATETIME NOT NULL,"
-					+ "	amount       INTEGER NOT NULL,"
 					+ "	supply_id    INTEGER,"	
 					+ "	supplier_id	 INTEGER,"
 					

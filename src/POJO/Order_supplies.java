@@ -1,6 +1,7 @@
 package POJO;
 
 import java.io.Serializable;
+import java.sql.Date;
 
 public class Order_supplies implements Serializable {
 
@@ -11,21 +12,29 @@ public class Order_supplies implements Serializable {
 	 private Integer item_id;
 	 private Integer doc_id;
 	 private Integer amount;
+	 private Date date;
+	 private Integer supplierId;
 	 
-	public Order_supplies(Integer order_supp_id, Integer item_id, Integer doc_id,Integer amount) {
+	public Order_supplies(Integer order_supp_id, Integer item_id, Integer doc_id,Integer amount, Date date, Integer supplierId) {
 		super();
 		this.order_supp_id = order_supp_id;
 		this.item_id = item_id;
 		this.doc_id = doc_id;
 		this.amount=amount;
+		this.date = date;
+		this.supplierId = supplierId;
 	}
 
-	public Order_supplies(Integer item_id, Integer doc_id, Integer amount) {
+
+	public Order_supplies(Integer item_id, Integer doc_id, Integer amount, Date date, Integer supplierId) {
 		super();
 		this.item_id = item_id;
 		this.doc_id = doc_id;
 		this.amount = amount;
+		this.date = date;
+		this.supplierId = supplierId;
 	}
+
 
 	public Order_supplies() {
 		super();
@@ -89,10 +98,28 @@ public class Order_supplies implements Serializable {
 		return true;
 	}
 
+
+
 	@Override
 	public String toString() {
 		return "Order_supplies [order_supp_id=" + order_supp_id + ", item_id=" + item_id + ", doc_id=" + doc_id
-				+ ", amount=" + amount + "]";
+				+ ", amount=" + amount + ", date=" + date + ", supplierId=" + supplierId + "]";
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Integer getSupplierId() {
+		return supplierId;
+	}
+
+	public void setSupplierId(Integer supplierId) {
+		this.supplierId = supplierId;
 	}
 
 	

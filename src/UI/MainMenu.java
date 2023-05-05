@@ -1,23 +1,13 @@
 package UI;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.io.*;
 import java.sql.Date;
-import java.time.LocalDate;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
-import JDBC.JDBCAppointmentManager;
-import JDBC.JDBCClientManager;
-import JDBC.JDBCDentistManager;
-import JDBC.JDBCManager;
-import JDBC.JDBCOrder_suppliesManager;
-import JDBC.JDBCProvide_suppliesManager;
-import JDBC.JDBCRecepcionistManager;
-import JDBC.JDBCSuppliersManager;
-import JDBC.JDBCSuppliesManager;
-import JDBC.JDBCUsed_suppliesManager;
+import JDBC.*;
 import JPA.JPAUserManager;
 import POJO.*;
 
@@ -38,7 +28,6 @@ public class MainMenu {
 	private static JPAUserManager userMan;
 	private static JDBCSuppliesManager supplyMan;
 	private static JDBCOrder_suppliesManager orderMan;
-	private static JDBCProvide_suppliesManager provMan;
 	
 	public static void main(String[] args) throws Exception {
 		JDBCManager connection = new JDBCManager();
@@ -46,13 +35,11 @@ public class MainMenu {
 		docMan = new JDBCDentistManager(connection);
 		patMan = new JDBCClientManager(connection);
 		recMan = new JDBCRecepcionistManager(connection);
-		usedMan = new JDBCUsed_suppliesManager(connection);
-		
+		usedMan = new JDBCUsed_suppliesManager(connection);	
 		supplierMan= new JDBCSuppliersManager(connection);
 		userMan = new JPAUserManager();
 		 supplyMan= new JDBCSuppliesManager (connection);
 		 orderMan= new JDBCOrder_suppliesManager (connection);
-		provMan= new JDBCProvide_suppliesManager (connection);
 		while (true) {
 			try {
 				System.out.println("Welcome to the DentalClinic Database!");
@@ -273,7 +260,7 @@ public class MainMenu {
         			break;
         		}
         		case 2:{
-        			viewPatIdForRec();
+        			viewPatId();
         			break;
         		}
         		case 3:
@@ -309,7 +296,7 @@ public class MainMenu {
         			break;
         		}
         		case 11:{
-        			viewMyOrders(den.getDoc_id());
+        			viewMyOrders(den);
         			break;
         		}
         		case 12:{
@@ -362,8 +349,9 @@ public class MainMenu {
 		System.out.println("17. View all receptionist");
 		System.out.println("18. View all dentists");
 		System.out.println ("19. Update date of arrival of supplies");
-		System.out.println ("20. View all delivery notes ordered by date");
-		System.out.println ("21. View a specific delivery note");
+		System.out.println ("20. View all orders ordered by date of arrival");
+		System.out.println ("21. View a specific order");
+		System.out.println ("22. View all appointments from a dentist");
 		System.out.println("0. Back to main menu");
 		
 		int choice = Integer.parseInt(r.readLine());
@@ -380,17 +368,17 @@ public class MainMenu {
 		break;}
 		case 6: {createPat();
 		break;}
-		case 7: {viewPatIdForRec();
+		case 7: {viewPatId();
 		break;}
 		case 8: {viewPatName();
 		break;}
-		case 9: {updatePatForRec();
+		case 9: {updatePat();
 		break;}
-		case 10: {deletePatForRec();
+		case 10: {deletePat();
 		break;}
 		case 11: {viewListPat();
 		break;}
-		case 12: {viewAppFromPatForRec();
+		case 12: {viewAppFromPat();
 		break;}
 		case 13: {viewRecId();
 		break;}
@@ -415,15 +403,19 @@ public class MainMenu {
 			break;
 		}
 		case 19:{
-			updateDateProvideForRec();
+			updateDateOrder();
 			break;
 		}
 		case 20:{
-			viewAllProvidesOrder();
+			viewAllOrders();
 			break;
 		}
 		case 21:{
-			viewOneProvideForRec();
+			viewOneOrder();
+			break;
+		}
+		case 22:{
+			viewAppFromDoc();
 			break;
 		}
 		case 0: return; 
@@ -452,15 +444,15 @@ public class MainMenu {
 	 int choice = Integer.parseInt(r.readLine());
 		switch (choice) {
 		case 1:{
-			viewMyProvides(supplier.getSup_id());
+			viewOneOrder(supplier.getSup_id());
 			break;
 		}
 		case 2: {
-			 viewOneProvideForSupplier(supplier.getSup_id());
+			viewMyOrders(supplier);
 			break;
 		}
 		case 3:{
-			updateDateProvideForProvider();
+			updateDateOrder(supplier.getSup_id());
 			break;
 		}
 		case 4:{
@@ -488,18 +480,18 @@ public class MainMenu {
 	 
 	 int choice = Integer.parseInt(r.readLine());
 	 switch (choice) {
-	 case 1: {updatePatForPat(pat.getPat_id());
+	 case 1: {updatePat(pat.getPat_id());
 	 break;
 	 }
-	 case 2: { deletePatForPat(pat.getPat_id());
+	 case 2: { deletePat(pat.getPat_id());
 	 break;
 		 }
 	 case 3:{
-		 viewAppFromPatForPat(pat.getPat_id());
+		 viewAppFromPat(pat.getPat_id());
 		 break;
 	 }
 	 case 4:{
-		 viewPatIdForPat(pat.getPat_id());
+		 viewPatId(pat.getPat_id());
 		 break;
 	 }
 	 case 0:return;
@@ -510,7 +502,7 @@ public class MainMenu {
 			}
 		 }
      }
-    public static void updatePatForRec() throws Exception {
+    public static void updatePat() throws Exception {
 		Client pat=null;
 		System.out.println("Please, input the client's data you want to update:");
 		System.out.println("Id:");
@@ -536,7 +528,7 @@ public class MainMenu {
 	}
 		
 	}
-    public static void updatePatForPat(Integer patId) throws Exception {
+    public static void updatePat(Integer patId) throws Exception {
 		Client pat=null;
 		String emailOld = patMan.getClientById(patId).getPat_email();
 		System.out.println("Name:");
@@ -567,7 +559,7 @@ public class MainMenu {
 		String date = r.readLine();
 		LocalDate dLocalDate = LocalDate.parse(date, formatter);		
 		Date dobDate = Date.valueOf(dLocalDate);
-		System.out.println("Duration");
+		System.out.println("Duration in minutes");
 		Integer dur = Integer.parseInt(r.readLine());
 		System.out.println("Room:");
 		Integer room = Integer.parseInt(r.readLine());
@@ -737,7 +729,7 @@ Client pat=null;
 
 }
 
-public static void viewPatIdForRec() throws IOException {
+public static void viewPatId() throws IOException {
 	Client pat=null;
 	System.out.println("Please, input the client's id :");
 	Integer id = Integer.parseInt(r.readLine());
@@ -750,7 +742,7 @@ public static void viewPatIdForRec() throws IOException {
 }	
 }
 
-public static void viewPatIdForPat(Integer patId) throws IOException {
+public static void viewPatId(Integer patId) throws IOException {
 	Client pat=null;
    try {
 	pat=patMan.getClientById(patId);
@@ -774,7 +766,7 @@ public static void viewPatName() throws IOException {
 }	
 }
 
-public static void deletePatForRec() throws Exception {
+public static void deletePat() throws Exception {
 	System.out.println("Please, input the client's id you want to delete:");
 	Integer id = Integer.parseInt(r.readLine());
 	 Client pat=patMan.getClientById(id);
@@ -791,7 +783,7 @@ public static void deletePatForRec() throws Exception {
 	
 }
 
-public static void deletePatForPat(Integer patId) throws Exception {
+public static void deletePat(Integer patId) throws Exception {
 
 	 Client pat=patMan.getClientById(patId);
 	 String email= pat.getPat_email();
@@ -821,7 +813,7 @@ public static void viewListPat() throws IOException {
 	
 }
 
-public static void viewAppFromPatForRec() throws IOException {
+public static void viewAppFromPat() throws IOException {
 	System.out.println("Please, input the client's id:");
 	Integer id = Integer.parseInt(r.readLine());
 	ArrayList<Appointment> all = new ArrayList<Appointment>();
@@ -835,7 +827,7 @@ public static void viewAppFromPatForRec() throws IOException {
 	
 }
 
-public static void viewAppFromPatForPat(Integer patId) throws IOException {
+public static void viewAppFromPat(Integer patId) throws IOException {
 
 	ArrayList<Appointment> all = new ArrayList<Appointment>();
    try {
@@ -950,6 +942,20 @@ public static void viewListDoc() throws IOException {
 }
 
 public static void viewAppFromDoc(Integer id) throws IOException {
+	ArrayList<Appointment> all = new ArrayList<Appointment>();
+   try {
+	all.addAll(docMan.getAllAppFromDentist(id));
+	System.out.println(all);
+} catch (Exception e1) {
+	// TODO Auto-generated catch block
+	e1.printStackTrace();
+}
+	
+}
+
+public static void viewAppFromDoc() throws IOException {
+	System.out.println("Please, select the dentist´s id to see the appointments");
+	Integer id=Integer.parseInt(r.readLine());
 	ArrayList<Appointment> all = new ArrayList<Appointment>();
    try {
 	all.addAll(docMan.getAllAppFromDentist(id));
@@ -1120,16 +1126,16 @@ public static void order(Integer docId) throws Exception {
 	Integer id = Integer.parseInt(r.readLine());
 	System.out.println("Please, input the amount:");
 	Integer amount = Integer.parseInt(r.readLine());
-	o= new Order_supplies(id,docId,amount);
+	System.out.println("Date (yyyy-MM-dd):");
+	String date = r.readLine();
+	LocalDate dLocalDate = LocalDate.parse(date, formatter);		
+	Date dobDate = Date.valueOf(dLocalDate);
 	System.out.println(supplierMan.getListAllSuppliers());
-	Integer supplierId=null;
 		System.out.println("Please, input the supplier´s id you want to provide this item.");
-		supplierId = Integer.parseInt(r.readLine());
-		Provide_suplies prov =new Provide_suplies (supplierId,id, amount,Date.valueOf(LocalDate.now()));
-	
+		Integer supplierId = Integer.parseInt(r.readLine());
+		o=new Order_supplies(id,docId,amount,dobDate,supplierId);
 	try {
 		orderMan.placeOrder(o);
-		provMan.createProvide(prov);
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -1149,6 +1155,18 @@ public static void viewOrder() throws IOException {
 		e.printStackTrace();
 	}
 }
+
+public static void viewAllOrders() throws IOException {
+	ArrayList <Order_supplies> all= new ArrayList<Order_supplies>();
+	try {
+		all.addAll(orderMan.getAllOrdersOrder());
+		System.out.println(all);
+		
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+}
 public static void deleteOrder() throws IOException {
 	System.out.println("Please, input the order´s id you want to delete:");
 	Integer id = Integer.parseInt(r.readLine());
@@ -1161,8 +1179,10 @@ public static void deleteOrder() throws IOException {
 		e.printStackTrace();
 	}
 }
-public static void viewMyOrders(Integer id) {
+
+public static void viewMyOrders(Dentists d) {
 	ArrayList <Order_supplies> orders= new ArrayList<Order_supplies>();
+	Integer id=d.getDoc_id();
 	try {
 		orders.addAll(orderMan.getAllOrdersFromDentist(id));
 		System.out.println(orders);
@@ -1174,12 +1194,12 @@ public static void viewMyOrders(Integer id) {
 	
 }
 
-public static void viewMyProvides(Integer id) {
-	ArrayList <Provide_suplies> orders= new ArrayList<Provide_suplies>();
+public static void viewMyOrders(Supplier s) {
+	ArrayList <Order_supplies> orders= new ArrayList<Order_supplies>();
+	Integer id=s.getSup_id();
 	try {
-		orders=provMan.getAllSuppliesFromSupplier(id);
+		orders.addAll(orderMan.getAllOrdersFromSupplier(id));
 		System.out.println(orders);
-		
 		
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
@@ -1187,19 +1207,7 @@ public static void viewMyProvides(Integer id) {
 	}
 	
 }
-public static void viewAllProvidesOrder() {
-	ArrayList <Provide_suplies> orders= new ArrayList<Provide_suplies>();
-	try {
-		orders=provMan.getAll();
-		System.out.println(orders);
-		
-		
-	} catch (Exception e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	
-}
+
 public static void deleteSupplier(Integer id) throws Exception {
 	Supplier sup= supplierMan.getSupplierById(id);
 	String email= sup.getEmail();
@@ -1237,54 +1245,54 @@ public static void updateSupplier(Integer id) throws Exception {
 }
 	
 }
-public static void viewOneProvideForSupplier(Integer supId) throws Exception {
-	System.out.println("Please, input the delivery note´s id you want to see:");
+public static void viewOneOrder(Integer supId) throws Exception {
+	System.out.println("Please, input the order´s id you want to see:");
 	Integer id = Integer.parseInt(r.readLine());
-	ArrayList <Provide_suplies> orders= new ArrayList<Provide_suplies>();
-	Provide_suplies specific= provMan.getProvideById(id);
-		orders=provMan.getAllSuppliesFromSupplier(supId);
+	ArrayList <Order_supplies> orders= new ArrayList<Order_supplies>();
+	Order_supplies specific= orderMan.getOrder(id);
+		orders=orderMan.getAllOrdersFromSupplier(supId);
 		
 	if (orders.contains(specific)) {
 		System.out.println(specific);
 	}
-	else System.out.println("This delivery note is not related with this supplier");
+	else System.out.println("This order is not related with this supplier");
 }
 
-public static void viewOneProvideForRec() throws Exception {
-	System.out.println("Please, input the delivery note´s id you want to see:");
+public static void viewOneOrder() throws Exception {
+	System.out.println("Please, input the order´s id you want to see:");
 	Integer id = Integer.parseInt(r.readLine());
-	System.out.println(provMan.getProvideById(id));
+	System.out.println(orderMan.getOrder(id));
   
 }
-public static void updateDateProvideForProvider() throws Exception {
-	System.out.println("Please, input the delivery note´s id you want to change its date:");
+public static void updateDateOrder(Integer supId) throws Exception {
+	System.out.println("Please, input the order´s id you want to change its date:");
 	Integer id = Integer.parseInt(r.readLine());
-	ArrayList <Provide_suplies> orders= new ArrayList<Provide_suplies>();
-	Provide_suplies specific= provMan.getProvideById(id);
-		orders=provMan.getAllSuppliesFromSupplier(id);	
+	ArrayList <Order_supplies> orders= new ArrayList<Order_supplies>();
+	Order_supplies specific=orderMan.getOrder(id);
+		orders=orderMan.getAllOrdersFromSupplier(supId);
 	if (orders.contains(specific)) {
 		System.out.println("Please, input the new date :");
 		System.out.println("Date (yyyy-MM-dd):");
 		String date = r.readLine();
 		LocalDate dLocalDate = LocalDate.parse(date, formatter);		
 		Date dobDate = Date.valueOf(dLocalDate);
-		provMan.updateProvideDate(id, dobDate);
+		orderMan.updateOrderDate(id, dobDate);
 	}
-	else System.out.println("This delivery note is not related with this supplier");
+	else System.out.println("This order is not related with this supplier");
 }
 
-public static void updateDateProvideForRec() throws Exception {
-	System.out.println("Please, input the delivery note´s id you want to change its date:");
+public static void updateDateOrder() throws Exception {
+	System.out.println("Please, input the order´s id you want to change its date:");
 	Integer id = Integer.parseInt(r.readLine());
-	Provide_suplies proOld= provMan.getProvideById(id);
 		System.out.println("Please, input the new date :");
 		System.out.println("Date (yyyy-MM-dd):");
 		String date = r.readLine();
 		LocalDate dLocalDate = LocalDate.parse(date, formatter);		
 		Date dobDate = Date.valueOf(dLocalDate);
-		provMan.updateProvideDate(id, dobDate);
+        orderMan.updateOrderDate(id, dobDate);
 		if (dLocalDate.equals(LocalDate.now())) {
-		supplyMan.increaseAmount(proOld.getAmount(), proOld.getSupply());}
+		supplyMan.increaseAmount(orderMan.getOrder(id).getAmount(),orderMan.getOrder(id).getItem_id());}
+
 }
 
 public static void updateUsedSupply(Integer docId) throws Exception {

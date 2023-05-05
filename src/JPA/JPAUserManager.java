@@ -12,7 +12,6 @@ import POJO.*;
 
 public class JPAUserManager implements UserManager{
 
-	private static final Receptionist rec = new Receptionist();
 	private EntityManager em;
 
 
