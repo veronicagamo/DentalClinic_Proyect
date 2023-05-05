@@ -3,10 +3,11 @@ package JDBC;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-
+import Exceptions.IdNotFoundException;
 import Interfaces.Used_suppliesManager;
 import POJO.Appointment;
 import POJO.Used_supplies;
@@ -51,20 +52,32 @@ ArrayList <Used_supplies> supplies= new ArrayList<Used_supplies>();
 	}
 
 	@Override
-	public void createUsed(Integer appId, Integer item_id, Integer amount) throws Exception {
+	public void createUsed(Integer appId, Integer item_id, Integer amount){
 		// TODO Auto-generated method stub
-		String sql= "INSERT INTO used_supplies (supply_id,appointment_id,amount) VALUES (?,?,?)";
 		
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
-		prep.setInt(1,item_id);
-		prep.setInt(2,appId);		
-		prep.setInt(3, amount);
-		prep.executeUpdate();
+		try {
+			
+			String sql= "INSERT INTO used_supplies (supply_id,appointment_id,amount) VALUES (?,?,?)";
+		
+			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			prep.setInt(1,item_id);
+			prep.setInt(2,appId);		
+			prep.setInt(3, amount);
+			prep.executeUpdate();
+			
+		}catch(SQLException e) {
+			
+			System.out.println("The used supply can not be created "+e);
+			e.printStackTrace();
+
+		}
+		
 		
 	}
 
 	@Override
-	public ArrayList<Used_supplies> listAllUsedByAppointment(Appointment a) {
+
+	public ArrayList<Used_supplies> listAllUsedByAppointment(Appointment a){
 		// TODO Auto-generated method stub
        ArrayList <Used_supplies> all= new  ArrayList<Used_supplies>();
        
@@ -82,6 +95,12 @@ ArrayList <Used_supplies> supplies= new ArrayList<Used_supplies>();
 				Used_supplies used= new Used_supplies(supId,a.getApp_id(),id, amount);
 				all.add(used);
 				
+			}
+			if(all.size()==0) {
+				
+				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+						+ "of the appointments");
+
 			}
 		}
 		catch(Exception e) {
