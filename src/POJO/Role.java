@@ -3,6 +3,7 @@ package POJO;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.*;
 
 @Entity
 @Table(name="roles")
@@ -23,7 +24,7 @@ public class Role implements Serializable{
 	
 	public Role() {
 		super();
-		this.users = new ArrayList<User>();
+
 	}
 	
 	
@@ -31,7 +32,7 @@ public class Role implements Serializable{
 	public Role(String name) {
 		super();
 		this.name = name;
-		this.users = new ArrayList<User>();
+
 	}
 
 
@@ -65,6 +66,7 @@ public class Role implements Serializable{
 			users.add(user);
 		}
 	}
+	
 
 	@Override
 	public int hashCode() {

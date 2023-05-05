@@ -58,8 +58,7 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 	@Override
 	public void updateReceptionist(Receptionist r) throws Exception{
 		
-		String sql="UPDATE receptionist"
-				+ "SET name= ?, bank_account= ?, email= ?, mobile= ? WHERE recep_id= ?";
+		String sql="UPDATE receptionist SET name= ?, bank_account= ?, email= ?, mobile= ? WHERE recep_id= ?";
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
@@ -67,6 +66,7 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 		prep.setInt(2, r.getBank_account());
 		prep.setString(3, r.getRep_email());
 		prep.setInt(4,r.getRep_mobile());
+		prep.setInt(5,r.getRep_id());
 
 		prep.executeUpdate();
 		
@@ -162,6 +162,35 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 		prep.close();
 		
 		return rec;
+	}
+
+	@Override
+	public Receptionist getRecepByEmail(String recepEmail) throws Exception {
+		// TODO Auto-generated method stub
+		 Receptionist rec= null;
+			
+			String sql= "SELECT * FROM receptionist WHERE email= ?";
+			
+			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			
+			prep.setString(1,  recepEmail);
+					
+			ResultSet rs= prep.executeQuery();
+			
+			if(rs.next()) {
+				Integer id = rs.getInt("recep_id");
+				String name = rs.getString("name");
+				Integer bank = rs.getInt("bank_account");
+				Integer mobile = rs.getInt("mobile");
+				
+				rec= new Receptionist(id, name,bank,recepEmail, mobile);
+				
+			}
+
+			rs.close();
+			prep.close();
+			
+			return rec;
 	}
 
 	

@@ -20,6 +20,13 @@ public class Order_supplies implements Serializable {
 		this.amount=amount;
 	}
 
+	public Order_supplies(Integer item_id, Integer doc_id, Integer amount) {
+		super();
+		this.item_id = item_id;
+		this.doc_id = doc_id;
+		this.amount = amount;
+	}
+
 	public Order_supplies() {
 		super();
 	}

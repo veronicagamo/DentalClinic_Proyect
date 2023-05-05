@@ -39,11 +39,14 @@ private JDBCManager manager;
 			prep.setInt(8, app.getPatient());
 			prep.executeUpdate();
 			
-			String sql2= "SELECT app_id FROM appointment ORDER BY app_id DESC LIMIT 1";
-			PreparedStatement prep2= manager.getConnection().prepareStatement(sql2);
-			ResultSet rs= prep2.executeQuery();
-			Integer id=rs.getInt("app_id");
-			return id;
+			
+			String sql2="SELECT app_id FROM appointment ORDER BY app_id DESC LIMIT 1";
+			 PreparedStatement prep2= manager.getConnection().prepareStatement(sql2);
+						
+				ResultSet rs= prep.executeQuery();
+				Integer id =rs.getInt("app_id");
+				return id;
+			
 		
 	}
 
@@ -58,6 +61,7 @@ private JDBCManager manager;
 		prep.setInt(1, appointmentId);
 
 		prep.executeUpdate();
+		
 	}
 
 	@Override
@@ -87,9 +91,13 @@ private JDBCManager manager;
 		
 		String sql="SELECT * FROM appointment WHERE app_id= ?";
 		
-	   PreparedStatement prep= manager.getConnection().prepareStatement(sql);
-	   ResultSet rs = prep.executeQuery(sql);
+       PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		
+		prep.setInt(1,appointmentId);
+				
+		ResultSet rs= prep.executeQuery();
 	   
+	   while(rs.next()) {
 	   Date dat = rs.getDate("app_date");
 	   Integer duration= rs.getInt("app_duration");
 	   Integer room = rs.getInt("app_room");
@@ -100,7 +108,7 @@ private JDBCManager manager;
 	   Integer patient =rs.getInt("client_id");
 	   
 	   app = new Appointment(appointmentId, (java.sql.Date) dat,duration, room, price, treatment, den, rec, patient);
-
+	   }
 	   rs.close();
 		prep.close();
 		 return app;

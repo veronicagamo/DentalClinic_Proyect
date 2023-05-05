@@ -13,6 +13,7 @@ public interface DentistManager {
 	public ArrayList<Dentists> listAllDentists() throws Exception;
 	public Dentists getDentistById(Integer dentistId) throws Exception;
 	public Dentists getDentistByName(String dentistName) throws Exception;
+	public Dentists getDentistByEmail(String dentistEmail) throws Exception;
 	public ArrayList<Appointment> getAllAppFromDentist(Integer dentistId)throws Exception;
 	
 }

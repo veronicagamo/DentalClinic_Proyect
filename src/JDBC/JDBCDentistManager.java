@@ -162,10 +162,10 @@ public class JDBCDentistManager implements DentistManager{
 		ArrayList <Appointment> appFromDentist= new  ArrayList<Appointment>();
 		JDBCAppointmentManager app= new JDBCAppointmentManager(manager);
 		try {
-			String sql = "SELECT app_id FROM dentist LEFT JOIN appointment ON doc_id=dentist_id WHERE doc_id= ? GROUP BY doc_id";
+			String sql = "SELECT app_id FROM dentist LEFT JOIN appointment ON doc_id=dentist_id WHERE doc_id= ?";
 			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 			prep.setInt(1, dentistId);
-			ResultSet rs = prep.executeQuery(sql);
+			ResultSet rs = prep.executeQuery();
 			
 			while(rs.next())
 			{
@@ -179,6 +179,37 @@ public class JDBCDentistManager implements DentistManager{
 			e.printStackTrace();
 		}
 		return appFromDentist;
+	}
+
+	@Override
+	public Dentists getDentistByEmail(String dentistEmail) throws Exception {
+		// TODO Auto-generated method stub
+Dentists dentist= null;
+		
+		String sql= "SELECT * FROM dentist WHERE doc_email= ?";
+		
+		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		
+		prep.setString(1,dentistEmail);
+				
+		ResultSet rs= prep.executeQuery();
+		
+		while(rs.next()) {
+			
+			Integer id= rs.getInt("doc_id");
+			String name= rs.getString("name");
+			Integer bankAccount= rs.getInt("bank_account");
+			String email= rs.getString("doc_email");
+			String mobile= rs.getString("doc_mobile");
+			
+			dentist= new Dentists(id, name, bankAccount,mobile, email);
+			
+		}
+
+		rs.close();
+		prep.close();
+		
+		return dentist;
 	}
 	
 	

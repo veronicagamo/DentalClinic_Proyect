@@ -12,14 +12,23 @@ public class Supplier implements Serializable {
 	private Integer sup_id;
 	private String sup_name;
 	private String sup_address;
+	private String email;
 
 	
-	public Supplier(Integer sup_id, String sup_name, String sup_address) {
+	public Supplier(Integer sup_id, String sup_name, String sup_address, String email) {
 		super();
 		this.sup_id = sup_id;
 		this.sup_name = sup_name;
 		this.sup_address = sup_address;
+		this.email=email;
 	}
+	public Supplier( String sup_name, String sup_address, String email) {
+		super();
+		this.sup_name = sup_name;
+		this.sup_address = sup_address;
+		this.email=email;
+	}
+	
 
 	public Supplier() {
 		super();
@@ -69,6 +78,14 @@ public class Supplier implements Serializable {
 
 	public void setSup_address(String sup_address) {
 		this.sup_address = sup_address;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	

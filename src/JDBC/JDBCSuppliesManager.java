@@ -52,7 +52,7 @@ public class JDBCSuppliesManager implements SuppliesManager{
 	@Override
 	public ArrayList<Supply> listAllSuppliesByAmount() throws Exception {
 		// TODO Auto-generated method stub
-		ArrayList <Supply> supplies= new ArrayList<>();
+		ArrayList <Supply> supplies= new ArrayList<Supply>();
 		
 		Statement stmt= this.manager.getConnection().createStatement();	
 		
@@ -92,7 +92,7 @@ public class JDBCSuppliesManager implements SuppliesManager{
 				
 		ResultSet rs= prep.executeQuery();
 		
-		if(rs.next()) {
+		while(rs.next()) {
 			
 			String name= rs.getString("name");
 			Integer amount= rs.getInt("amount");

@@ -35,8 +35,9 @@ public class JDBCSuppliersManager implements SuppliersManager{
 			
 			String name= rs.getString("name");
 			String address= rs.getString("address");
+			String email= rs.getString("email");
 			
-			s= new Supplier(supplierId, name, address);
+			s= new Supplier(supplierId, name, address, email);
 			
 		}
 
@@ -51,25 +52,27 @@ public class JDBCSuppliersManager implements SuppliersManager{
 	public void updateSupplier(Supplier sup) throws Exception {
 		// TODO Auto-generated method stub
 		String sql="UPDATE suppliers "
-				+ "SET name= ?, address= ? WHERE id= ?";
+				+ "SET name= ?, address= ?, email= ? WHERE id= ?";
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 		
 		prep.setString(1, sup.getSup_name());
 		prep.setString(2,sup.getSup_address());
-		prep.setInt(3,sup.getSup_id());
+		prep.setString(3,sup.getEmail());
+		prep.setInt(4,sup.getSup_id());
 		prep.executeUpdate();
 	}
 
 	@Override
 	public void createSupplier(Supplier s) throws Exception {
 		// TODO Auto-generated method stub
-		String sql= "INSERT INTO suppliers (name,address) VALUES(?,?)";
+		String sql= "INSERT INTO suppliers (name,address,email) VALUES(?,?,?)";
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 	
 		prep.setString(1, s.getSup_name());
 		prep.setString(2, s.getSup_address());
+		prep.setString(3,s.getEmail());
 		prep.executeUpdate();
 		
 	}
@@ -100,9 +103,9 @@ public class JDBCSuppliersManager implements SuppliersManager{
 				   Integer id= rs.getInt("id");  
 				   String name=  rs.getString("name");
 				   String  add= rs.getString("address");
+				   String email= rs.getString("email");
 				   
-				   
-				 Supplier s = new Supplier(id,name,add);
+				 Supplier s = new Supplier(id,name,add,email);
 				  all.add(s);
 			}
 			
@@ -135,8 +138,9 @@ public class JDBCSuppliersManager implements SuppliersManager{
 				Integer Id = rs.getInt("id");
 				String name= rs.getString("name");
 				String address= rs.getString("address");
+				String email= rs.getString("email");
 				
-				sup= new Supplier(Id, name, address);
+				sup= new Supplier(Id, name, address, email);
 				
 			}
 
@@ -146,6 +150,34 @@ public class JDBCSuppliersManager implements SuppliersManager{
 			return sup;
 			
 			
+	}
+
+
+	@Override
+	public Supplier getSupplierByEmail(String supplierEmail) throws Exception {
+		// TODO Auto-generated method stub
+		Supplier sup=null;
+		 String sql= "SELECT * FROM suppliers WHERE email= ?";
+			
+			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			
+			prep.setString(1,supplierEmail);
+					
+			ResultSet rs= prep.executeQuery();
+			
+			if(rs.next()) {
+				Integer Id = rs.getInt("id");
+				String name= rs.getString("name");
+				String address= rs.getString("address");
+				
+				sup= new Supplier(Id, name, address, supplierEmail);
+				
+			}
+
+			rs.close();
+			prep.close();
+			
+			return sup;
 	}
 
 }

@@ -30,6 +30,14 @@ public class Provide_suplies implements Serializable {
 		this.date = date;
 	}
 
+	public Provide_suplies(Integer supplier, Integer supply, Integer amount, Date date) {
+		super();
+		this.supplier = supplier;
+		this.supply = supply;
+		this.amount = amount;
+		this.date = date;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

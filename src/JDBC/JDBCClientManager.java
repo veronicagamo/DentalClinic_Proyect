@@ -4,7 +4,7 @@ import Interfaces.ClientManager;
 
 import POJO.Appointment;
 import POJO.Client;
-
+import POJO.Dentists;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -143,15 +143,16 @@ public class JDBCClientManager implements ClientManager {
 		ArrayList <Appointment> appFromClient= new  ArrayList<Appointment>();
 		JDBCAppointmentManager app= new JDBCAppointmentManager(manager);
 		try {
-			String sql = "SELECT app_id FROM client LEFT JOIN appointment ON pat_id=patient_id WHERE pat_id= ? GROUP BY pat_id";
+			String sql = "SELECT app_id FROM client LEFT JOIN appointment ON pat_id=client_id WHERE pat_id= ?";
 			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 			prep.setInt(1, clientId);
-			ResultSet rs = prep.executeQuery(sql);
+			ResultSet rs = prep.executeQuery();
+			Appointment appointment=null;
 			
 			while(rs.next())
 			{
 				Integer appId= rs.getInt("app_id");
-				Appointment appointment=app.viewAppointment(appId);
+				 appointment=app.viewAppointment(appId);
 			    appFromClient.add(appointment);
 				
 			}
@@ -191,5 +192,35 @@ public class JDBCClientManager implements ClientManager {
 		
 		return client;
 		
+	}
+
+	@Override
+	public Client getClientByEmail(String clientEmail) throws Exception {
+		// TODO Auto-generated method stub
+		Client client= null;
+String sql= "SELECT * FROM client WHERE pat_email= ?";
+		
+		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		
+		prep.setString(1,clientEmail);
+				
+		ResultSet rs= prep.executeQuery();
+		
+		while(rs.next()) {
+			
+			Integer clientId = rs.getInt("pat_id");
+			String name= rs.getString("pat_name");
+			Integer healthNumber= rs.getInt("hum");
+			String address= rs.getString("pat_address");
+			String email= rs.getString("pat_email");
+			
+			client= new Client(clientId, name, healthNumber, address, email);
+			
+		}
+
+		rs.close();
+		prep.close();
+		
+		return client;
 	}
 }
