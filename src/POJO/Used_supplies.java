@@ -80,7 +80,7 @@ public class Used_supplies implements Serializable {
 	@Override
 	public String toString() {
 		return "Used_supplies [item_id=" + item_id + ", app_id=" + app_id + ", used_supp_id=" + used_supp_id
-				+ ", amount=" + amount + "]";
+				+ ", amount=" + amount + "\n]";
 	}
 	
 	

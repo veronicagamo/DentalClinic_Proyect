@@ -84,16 +84,16 @@ public class JDBCSuppliesManager implements SuppliesManager{
 		// TODO Auto-generated method stub
 		ArrayList <Supply> supplies= new ArrayList<Supply>();
 
-		Statement stmt=null;
 		ResultSet rs=null;
+		PreparedStatement prep=null;
 		
 		try {
 			
-			stmt= this.manager.getConnection().createStatement();	
-		
 			String sql="SELECT * FROM supplies ORDER BY amount";
+			prep= manager.getConnection().prepareStatement(sql);
+		
 			
-			rs = stmt.executeQuery(sql);
+			rs = prep.executeQuery();
 			
 			while (rs.next()){
 				
@@ -104,15 +104,14 @@ public class JDBCSuppliesManager implements SuppliesManager{
 				Supply supply = new Supply(id, name, amount);
 				
 				supplies.add(supply);
-				rs.close();
-				stmt.close();
 			}
+			rs.close();
+			prep.close();
 		}catch(SQLException e) {
 			
 			System.out.println("The supplies can not be returned "+e);
 			e.printStackTrace();
 		}
-
 		return supplies;
 		
 	}

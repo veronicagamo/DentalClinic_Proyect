@@ -103,7 +103,7 @@ public class Order_supplies implements Serializable {
 	@Override
 	public String toString() {
 		return "Order_supplies [order_supp_id=" + order_supp_id + ", item_id=" + item_id + ", doc_id=" + doc_id
-				+ ", amount=" + amount + ", date=" + date + ", supplierId=" + supplierId + "]";
+				+ ", amount=" + amount + ", date=" + date + ", supplierId=" + supplierId + "\n]";
 	}
 
 	public Date getDate() {

@@ -179,7 +179,7 @@ public class MainMenu {
 		System.out.println("Please, input the patient´s data:");
 		System.out.println("Name:");
 		String name=r.readLine();
-		System.out.println("Healh number:");
+		System.out.println("Health number:");
 		Integer hum=Integer.parseInt(r.readLine());
 		System.out.println("Address");
 		String address = r.readLine();
@@ -305,7 +305,7 @@ public class MainMenu {
         		}
         		case 13:{
         			deleteDoc(den.getDoc_id());
-        			break;
+        			return;
         		}
         		case 14:{
         			updateUsedSupply(den.getDoc_id());
@@ -392,7 +392,7 @@ public class MainMenu {
 		}
 		case 16:{
 			deleteRec(rec.getRep_id());
-			break;
+			return;
 		}
 		case 17: {
 			listRec();
@@ -461,7 +461,7 @@ public class MainMenu {
 		}
 		case 5:{
 			deleteSupplier(supplier.getSup_id());
-			break;
+			return;
 		}
 		case 0: return;
 		}
@@ -484,7 +484,7 @@ public class MainMenu {
 	 break;
 	 }
 	 case 2: { deletePat(pat.getPat_id());
-	 break;
+	 return;
 		 }
 	 case 3:{
 		 viewAppFromPat(pat.getPat_id());
@@ -555,10 +555,20 @@ public class MainMenu {
 		Appointment app= null;
 		
 		System.out.println("Please, input the appointment's data:");
+		String date=null;
+		LocalDate dLocalDate=null;
+		Date dobDate= null;
+		try {
 		System.out.println("Date (yyyy-MM-dd):");
-		String date = r.readLine();
-		LocalDate dLocalDate = LocalDate.parse(date, formatter);		
-		Date dobDate = Date.valueOf(dLocalDate);
+		 date = r.readLine();
+		dLocalDate = LocalDate.parse(date, formatter);		
+		 dobDate = Date.valueOf(dLocalDate);}
+		catch(Exception e) {
+			System.out.println(" ERROR. Date (yyyy-MM-dd):");
+			 date = r.readLine();
+			 dLocalDate = LocalDate.parse(date, formatter);		
+			 dobDate = Date.valueOf(dLocalDate);
+		}
 		System.out.println("Duration in minutes");
 		Integer dur = Integer.parseInt(r.readLine());
 		System.out.println("Room:");

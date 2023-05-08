@@ -60,7 +60,7 @@ public class Client implements Serializable {
 	@Override
 	public String toString() {
 		return "Client [pat_id=" + pat_id + ", pat_name=" + pat_name + ", hum=" + hum + ", pat_address=" + pat_address
-				+ ", pat_email=" + pat_email + "]";
+				+ ", pat_email=" + pat_email + "\n]";
 	}
 
 

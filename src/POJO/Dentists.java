@@ -59,7 +59,7 @@ public class Dentists implements Serializable{
 	@Override
 	public String toString() {
 		return "Dentist [doc_id=" + doc_id + ", name=" + name + ", bank_account=" + bank_account + ", doc_mobile="
-				+ doc_mobile + ", doc_email=" + doc_email + "]";
+				+ doc_mobile + ", doc_email=" + doc_email + "\n]";
 	}
 
 	public Integer getDoc_id() {

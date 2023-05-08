@@ -53,7 +53,7 @@ public class Supplier implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Supplier [sup_id=" + sup_id + ", sup_name=" + sup_name + ", sup_address=" + sup_address + "]";
+		return "Supplier [sup_id=" + sup_id + ", sup_name=" + sup_name + ", sup_address=" + sup_address + "\n]";
 	}
 
 	public Integer getSup_id() {
