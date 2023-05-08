@@ -444,11 +444,11 @@ public class MainMenu {
 	 int choice = Integer.parseInt(r.readLine());
 		switch (choice) {
 		case 1:{
-			viewOneOrder(supplier.getSup_id());
+			viewMyOrders(supplier);
 			break;
 		}
 		case 2: {
-			viewMyOrders(supplier);
+			viewOneOrder(supplier.getSup_id());
 			break;
 		}
 		case 3:{
@@ -1314,7 +1314,7 @@ public static void updateUsedSupply(Integer docId) throws Exception {
 	System.out.println("These are all the used supplies for this appointment. Which one do you want to update? Select the id");
 	Integer idUsed = Integer.parseInt(r.readLine());
 	Used_supplies oldUsed= usedMan.viewUsedsupplies(idUsed);
-	System.out.println("Write the real amount that it was used");
+	System.out.println("Write the real amount that was used");
 	Integer amountNew = Integer.parseInt(r.readLine());
 	Used_supplies newUsed = new Used_supplies(oldUsed.getItem_id(),idApp,idUsed,amountNew);
 	Integer difference=null;

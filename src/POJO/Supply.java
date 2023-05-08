@@ -48,7 +48,7 @@ public class Supply implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Supply [item_id=" + item_id + ", item_name=" + item_name + ", item_amount=" + item_amount + "\n]";
+		return "Supply [item_id=" + item_id + ", item_name=" + item_name + ", item_amount=" + item_amount + "]\n";
 	}
 
 	public Integer getItem_id() {

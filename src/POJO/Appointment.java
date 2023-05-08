@@ -77,10 +77,15 @@ public class Appointment implements Serializable{
 	}
 
 
+
+
+
 	@Override
 	public String toString() {
 		return "Appointment [app_id=" + app_id + ", app_date=" + app_date + ", app_duration=" + app_duration
-				+ ", app_room=" + app_room + ", app_price=" + app_price + ", app_treatment=" + app_treatment + "\n]";
+				+ ", app_room=" + app_room + ", app_price=" + app_price + ", app_treatment=" + app_treatment
+				+ ", dentist_id=" + dentist_id + ", receptionist_id=" + receptionist_id + ", patient_id=" + patient_id
+				+ "]\n";
 	}
 
 
