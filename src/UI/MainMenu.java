@@ -250,6 +250,7 @@ public class MainMenu {
         	System.out.println("12. Update my data");
     		System.out.println("13. Delete my account");
     	    System.out.println ("14. Change supplies used in one of my appointments");
+    	    System.out.println("15. Exit");
     		System.out.println("0. Back to main menu");
 
     		
@@ -311,6 +312,9 @@ public class MainMenu {
         			updateUsedSupply(den.getDoc_id());
         			break;
         		}
+        		case 15:{
+        			System.exit(0);
+        		}
         		case 0:{
         			return;
         		}
@@ -352,6 +356,7 @@ public class MainMenu {
 		System.out.println ("20. View all orders ordered by date of arrival");
 		System.out.println ("21. View a specific order");
 		System.out.println ("22. View all appointments from a dentist");
+		System.out.println("23. Exit");
 		System.out.println("0. Back to main menu");
 		
 		int choice = Integer.parseInt(r.readLine());
@@ -418,6 +423,9 @@ public class MainMenu {
 			viewAppFromDoc();
 			break;
 		}
+		case 23:{
+			System.exit(0);
+		}
 		case 0: return; 
 		}
 		
@@ -438,7 +446,8 @@ public class MainMenu {
 	 System.out.println("2. View one of my delivery notes");
 	 System.out.println("3. Update delivery date");
 	 System.out.println("4. Update my data");
-	 System.out.println("5. Delete my account");	
+	 System.out.println("5. Delete my account");
+	 System.out.println("6. Exit");
 	 System.out.println("0. Back to main menu");
 	 
 	 int choice = Integer.parseInt(r.readLine());
@@ -463,6 +472,9 @@ public class MainMenu {
 			deleteSupplier(supplier.getSup_id());
 			return;
 		}
+		case 6:{
+			System.exit(0);
+		}
 		case 0: return;
 		}
 	 
@@ -476,6 +488,7 @@ public class MainMenu {
 	 System.out.println("4. View my data");
 	 //System.out.println("5. View past appointments");
 	 //System.out.println("6. View future appointments");
+	 System.out.println("5. Exit");
 	 System.out.println("0. Back to main menu");
 	 
 	 int choice = Integer.parseInt(r.readLine());
@@ -493,6 +506,9 @@ public class MainMenu {
 	 case 4:{
 		 viewPatId(pat.getPat_id());
 		 break;
+	 }
+	 case 5:{
+		 System.exit(0);
 	 }
 	 case 0:return;
 	 }}
