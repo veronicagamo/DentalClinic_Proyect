@@ -1,7 +1,7 @@
 package POJO;
 
 import java.io.Serializable;
-
+import java.util.ArrayList;
 import java.util.Objects;
 
 
@@ -15,9 +15,11 @@ public class Dentists implements Serializable{
 	private Integer bank_account;
 	private String doc_mobile;
 	private String doc_email;
+	private ArrayList <Appointment> app;
 	
 	public Dentists() {
 		super();
+		this.setApp(new  ArrayList <Appointment>());
 	}
 
 	public Dentists (Integer doc_id, String name, Integer bank_account, String doc_mobile, String doc_email) {
@@ -27,6 +29,7 @@ public class Dentists implements Serializable{
 		this.bank_account = bank_account;
 		this.doc_mobile = doc_mobile;
 		this.doc_email = doc_email;
+		this.setApp(new  ArrayList <Appointment>());
 	}
 	
 
@@ -37,6 +40,7 @@ public class Dentists implements Serializable{
 		this.bank_account = bank_account;
 		this.doc_mobile = doc_mobile;
 		this.doc_email = doc_email;
+		this.setApp(new  ArrayList <Appointment>());
 	}
 
 	@Override
@@ -100,6 +104,14 @@ public class Dentists implements Serializable{
 
 	public void setDoc_email(String doc_email) {
 		this.doc_email = doc_email;
+	}
+
+	public ArrayList <Appointment> getApp() {
+		return app;
+	}
+
+	public void setApp(ArrayList <Appointment> app) {
+		this.app = app;
 	}
 
 

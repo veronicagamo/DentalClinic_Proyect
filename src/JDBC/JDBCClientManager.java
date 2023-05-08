@@ -255,6 +255,7 @@ public class JDBCClientManager implements ClientManager {
 				Integer appId= rs.getInt("app_id");
 				 appointment=app.viewAppointment(appId);
 			    appFromClient.add(appointment);
+			    
 				
 			}
 			if(appFromClient.size()==0) {

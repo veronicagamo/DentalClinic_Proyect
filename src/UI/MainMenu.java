@@ -257,7 +257,7 @@ public class MainMenu {
     		int choice = Integer.parseInt(r.readLine());
         		switch (choice) {
         		case 1: {
-        			viewAppFromDoc(den.getDoc_id());
+        			viewAppFromDoc(den);
         			break;
         		}
         		case 2:{
@@ -309,7 +309,7 @@ public class MainMenu {
         			return;
         		}
         		case 14:{
-        			updateUsedSupply(den.getDoc_id());
+        			updateUsedSupply(den);
         			break;
         		}
         		case 15:{
@@ -500,7 +500,7 @@ public class MainMenu {
 	 return;
 		 }
 	 case 3:{
-		 viewAppFromPat(pat.getPat_id());
+		 viewAppFromPat(pat);
 		 break;
 	 }
 	 case 4:{
@@ -850,27 +850,17 @@ public static void viewListPat() throws IOException {
 public static void viewAppFromPat() throws IOException {
 	System.out.println("Please, input the client's id:");
 	Integer id = Integer.parseInt(r.readLine());
-	ArrayList<Appointment> all = new ArrayList<Appointment>();
-   try {
-	all.addAll(patMan.getAllAppFromClient(id));
-	System.out.println(all);
-} catch (Exception e1) {
-	// TODO Auto-generated catch block
-	e1.printStackTrace();
-}
+	Client pat = patMan.getClientById(id);
+   pat.setApp(patMan.getAllAppFromClient(id));
+	   System.out.println(pat.getApp());
 	
 }
 
-public static void viewAppFromPat(Integer patId) throws IOException {
+public static void viewAppFromPat(Client pat) throws IOException {
+   
+	pat.setApp(patMan.getAllAppFromClient(pat.getPat_id()));
+	   System.out.println(pat.getApp());
 
-	ArrayList<Appointment> all = new ArrayList<Appointment>();
-   try {
-	all.addAll(patMan.getAllAppFromClient(patId));
-	System.out.println(all);
-} catch (Exception e1) {
-	// TODO Auto-generated catch block
-	e1.printStackTrace();
-}
 	
 }
 
@@ -975,29 +965,17 @@ public static void viewListDoc() throws IOException {
 	
 }
 
-public static void viewAppFromDoc(Integer id) throws IOException {
-	ArrayList<Appointment> all = new ArrayList<Appointment>();
-   try {
-	all.addAll(docMan.getAllAppFromDentist(id));
-	System.out.println(all);
-} catch (Exception e1) {
-	// TODO Auto-generated catch block
-	e1.printStackTrace();
-}
-	
+public static void viewAppFromDoc(Dentists den) throws IOException {
+	den.setApp(docMan.getAllAppFromDentist(den.getDoc_id()));
+	System.out.println(den.getApp());
 }
 
 public static void viewAppFromDoc() throws IOException {
 	System.out.println("Please, select the dentist´s id to see the appointments");
 	Integer id=Integer.parseInt(r.readLine());
-	ArrayList<Appointment> all = new ArrayList<Appointment>();
-   try {
-	all.addAll(docMan.getAllAppFromDentist(id));
-	System.out.println(all);
-} catch (Exception e1) {
-	// TODO Auto-generated catch block
-	e1.printStackTrace();
-}
+	Dentists den= docMan.getDentistById(id);
+	den.setApp(docMan.getAllAppFromDentist(den.getDoc_id()));
+	System.out.println(den.getApp());
 	
 }
 
@@ -1329,8 +1307,8 @@ public static void updateDateOrder() throws Exception {
 
 }
 
-public static void updateUsedSupply(Integer docId) throws Exception {
-	viewAppFromDoc(docId);
+public static void updateUsedSupply(Dentists den) throws Exception {
+	viewAppFromDoc(den);
 	System.out.println("These are your appointments. Select the appointment´s id for which you want to update the supplies used");
 	Integer idApp = Integer.parseInt(r.readLine());
 	Appointment app= appMan.viewAppointment(idApp);
