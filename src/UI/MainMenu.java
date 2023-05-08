@@ -746,8 +746,16 @@ Client pat=null;
 	System.out.println("Address:");
 	String add=r.readLine();
 	pat=new Client(name,hum,add,email);
+	System.out.println("Username:");
+	String username = r.readLine();
+	System.out.println("Password:");
+	String password = r.readLine();
+	User u = new User(username, password, email);
+	Role r = userMan.getRole("client");
 	try {
 		patMan.createClient(pat);
+		userMan.register(u);
+		userMan.assignRole(u, r);
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();

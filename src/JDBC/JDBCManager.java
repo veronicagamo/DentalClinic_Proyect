@@ -60,7 +60,7 @@ public class JDBCManager {
 						+ " doc_id            INTEGER PRIMARY KEY AUTOINCREMENT,"
 						+ " name          TEXT NOT NULL,"
 						+ " bank_account  INTEGER NOT NULL,"
-						+ " doc_email         TEXT NOT NULL,"
+						+ " doc_email         TEXT NOT NULL UNIQUE,"
 						+ " doc_mobile        TEXT NOT NULL"
 					+ ");";
 			
@@ -77,7 +77,7 @@ public class JDBCManager {
 			sql = "CREATE TABLE suppliers ("
 				+ "	id	    INTEGER PRIMARY KEY AUTOINCREMENT,"
 				+ "	name	TEXT NOT NULL,"
-				+  "email TEXT NOT NULL,"
+				+  "email TEXT NOT NULL UNIQUE,"
 				+ "	address	TEXT"
 			+ ");";
 			
@@ -87,7 +87,7 @@ public class JDBCManager {
 					+ "	recep_id      	  INTEGER PRIMARY KEY AUTOINCREMENT,"	
 					+ "	name	 	  TEXT NOT NULL,"
 					+ "	bank_account  INTEGER NOT NULL,"
-					+ "	email         TEXT NOT NULL,"	
+					+ "	email         TEXT NOT NULL UNIQUE,"	
 					+ "	mobile	      INTEGER NOT NULL"
 				+ ");";
 				
@@ -98,7 +98,7 @@ public class JDBCManager {
 					+ "	pat_name	       TEXT NOT NULL,"
 					+ "	hum  INTEGER NOT NULL,"
 					+ "	pat_address        TEXT NOT NULL,"	
-					+ "	pat_email	       TEXT NOT NULL"
+					+ "	pat_email	       TEXT NOT NULL UNIQUE"
 				+ ");";
 				
 			stmt.executeUpdate(sql);
