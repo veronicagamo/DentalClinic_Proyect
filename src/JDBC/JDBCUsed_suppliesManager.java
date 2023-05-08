@@ -96,12 +96,6 @@ ArrayList <Used_supplies> supplies= new ArrayList<Used_supplies>();
 				all.add(used);
 				
 			}
-			if(all.size()==0) {
-				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
-						+ "of the appointments");
-
-			}
 		}
 		catch(Exception e) {
 			e.printStackTrace();
