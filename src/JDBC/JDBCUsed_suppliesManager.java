@@ -71,8 +71,7 @@ ArrayList <Used_supplies> supplies= new ArrayList<Used_supplies>();
 			e.printStackTrace();
 
 		}
-		
-		
+
 	}
 
 	@Override

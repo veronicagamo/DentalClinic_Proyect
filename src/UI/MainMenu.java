@@ -596,7 +596,7 @@ public class MainMenu {
 		System.out.println("Treatment(Implants/Cleaning/Braces/Tooth extractions/Whitening):");
 		treat= r.readLine();
 		}
-		while (treat.equals(Implants) && treat.equals(Cleaning)&& treat.equals(Braces)&& treat.equals(Tooth)&& treat.equals(White));
+		while (!treat.equals("Implants") && !treat.equals("Cleaning")&& !treat.equals("Braces")&& !treat.equals("Tooth extractions")&& !treat.equals("Whitening"));
         
 		System.out.println("Name dentist:");
 		String docname= r.readLine();
@@ -609,7 +609,7 @@ public class MainMenu {
 		}
 		System.out.println("Name patient:");
 		String patname= r.readLine();
-		Integer patId=null;;
+		Integer patId=null;
 		try {
 			Client c= patMan.getClientByName(patname);
 			 patId= c.getPat_id();
@@ -621,6 +621,7 @@ public class MainMenu {
 		Integer appId=null;
 		try {
 			appId=appMan.createAppointment(app); 
+			System.out.println(appId);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

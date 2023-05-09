@@ -50,6 +50,8 @@ private JDBCManager manager;
 			PreparedStatement prep2= manager.getConnection().prepareStatement(sql2);
 			ResultSet rs= prep2.executeQuery();
 			id=rs.getInt("app_id");
+			 rs.close();
+			prep2.close();
 		}
 		catch(SQLException e) {
 			
