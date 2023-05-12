@@ -1,8 +1,5 @@
 package UI;
 
-import java.io.BufferedReader;
-
-
 import java.io.*;
 import java.sql.Date;
 import java.time.*;
@@ -352,7 +349,11 @@ public class MainMenu {
 				System.out.println("20. View all orders ordered by date of arrival");
 				System.out.println("21. View a specific order");
 				System.out.println("22. View all appointments from a dentist");
-				System.out.println("23. Exit");
+				System.out.println("23. Print data of patient in a XML file");
+				System.out.println("24. Print data of supplier in a XML file");
+				System.out.println("25. Load patient from XML file");
+				System.out.println("26. Load supplier from XML file");
+				System.out.println("27. Exit");
 				System.out.println("0. Back to main menu");
 
 				int choice = Integer.parseInt(r.readLine());
@@ -446,6 +447,22 @@ public class MainMenu {
 					break;
 				}
 				case 23: {
+				printMeClient();
+					break;
+				}
+				case 24: {
+					printMeSupplier();
+					break;
+				}
+				case 25: {
+				loadClient();
+					break;
+				}
+				case 26: {
+					loadSupplier();
+					break;
+				}
+				case 27:{
 					System.exit(0);
 				}
 				case 0:
@@ -470,7 +487,6 @@ public class MainMenu {
 		System.out.println("4. Update my data");
 		System.out.println("5. Delete my account");
 		System.out.println("6. Exit");
-		System.out.println("7. Print me data");
 		System.out.println("0. Back to main menu");
 
 		int choice = Integer.parseInt(r.readLine());
@@ -495,11 +511,8 @@ public class MainMenu {
 			deleteSupplier(supplier.getSup_id());
 			return;
 		}
-		case 6: {
+		case 6:{
 			System.exit(0);
-		}
-		case 7:{
-			printMe(supplier.getSup_id());
 		}
 		case 0:
 			return;
@@ -537,7 +550,7 @@ public class MainMenu {
 					viewPatId(pat.getPat_id());
 					break;
 				}
-				case 5: {
+				case 5:{
 					System.exit(0);
 				}
 				case 0:
@@ -1374,9 +1387,27 @@ public class MainMenu {
 
 	}
 	
-	public static void printMe(Integer id) {
-		
+	public static void printMeClient() throws  IOException {
+		System.out.println("Please, input the client´s id you want to print in the XML file:");
+		Integer id = Integer.parseInt(r.readLine());
 		xmlMan.client2xml(id);
 	}
+	
+public static void printMeSupplier() throws IOException {
+	System.out.println("Please, input the supplier´s id you want to print in the XML file:");
+	Integer id = Integer.parseInt(r.readLine());
+	Supplier sup= supplierMan.getSupplierById(id);
+		xmlMan.supplier2xml(sup);
+	}
+	
+public static void loadSupplier() {
+	File file = new File ("./xmls/External-Supplier.xml");
+	xmlMan.xml2Supplier(file);
+}
+
+public static void loadClient() {
+	File file = new File ("./xmls/External-Client.xml");
+	xmlMan.xml2Client(file);
+}
 
 }

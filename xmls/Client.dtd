@@ -1,0 +1,7 @@
+<!DOCTYPE Client [
+	<!ELEMENT Client (pat_email,hum,pat_address)> 
+	<!ATTLIST Client pat_name CDATA #REQUIRED>
+	<!ELEMENT pat_email (#PCDATA)>
+	<!ELEMENT hum (#PCDATA)>
+	<!ELEMENT pat_address (#PCDATA)>
+]>

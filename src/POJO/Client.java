@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Client")
-@XmlType(propOrder = {"pat_email","hum","pat_address","app"})
+@XmlType(propOrder = {"pat_email","hum","pat_address"})
 public class Client implements Serializable {
 
 	private static final long serialVersionUID = -2430812566256576791L;
@@ -22,8 +22,7 @@ public class Client implements Serializable {
 	private String pat_address;
 	@XmlElement
 	private String pat_email;
-	@XmlElement (name="Appointment")
-	@XmlElementWrapper(name="Appointments")
+	@XmlTransient
 	private ArrayList <Appointment> app;
 
 	

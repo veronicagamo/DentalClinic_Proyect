@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE Client [
+	<!ELEMENT Client (pat_email,hum,pat_address)> 
+	<!ATTLIST Client pat_name CDATA #REQUIRED>
+	<!ELEMENT pat_email (#PCDATA)>
+	<!ELEMENT hum (#PCDATA)>
+	<!ELEMENT pat_address (#PCDATA)>
+]>
+
+<Client pat_name= "Katerina">
+	<pat_email> aikaterina@gmail.com</pat_email>
+	<hum> 1763117</hum>
+	<pat_address>calle del camino, 12</pat_address>
+	
+</Client>

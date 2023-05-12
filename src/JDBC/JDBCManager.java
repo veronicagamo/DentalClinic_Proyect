@@ -161,7 +161,6 @@ public class JDBCManager {
 			stmt.executeUpdate(sql);
 		
 		} catch (SQLException ex) {
-			// Do not show a message if tables already exist
 			if (!ex.getMessage().contains("already exists")) {
 				
 				ex.printStackTrace();
