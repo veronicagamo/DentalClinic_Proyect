@@ -3,10 +3,8 @@ package Interfaces;
 import java.util.ArrayList;
 
 
-import POJO.Appointment;
-import POJO.Client;
-import POJO.Dentists;
 
+import POJO.*;
 
 public interface ClientManager {
 
