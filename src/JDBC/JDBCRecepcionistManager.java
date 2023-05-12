@@ -2,8 +2,7 @@ package JDBC;
 
 
 import Interfaces.RecepcionistManager;
-import POJO.Client;
-import POJO.Dentists;
+
 import POJO.Receptionist;
 
 import java.sql.PreparedStatement;

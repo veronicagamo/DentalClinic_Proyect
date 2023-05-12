@@ -2,9 +2,8 @@ package JDBC;
 
 import Interfaces.ClientManager;
 
-import POJO.Appointment;
-import POJO.Client;
-import POJO.Dentists;
+
+import POJO.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

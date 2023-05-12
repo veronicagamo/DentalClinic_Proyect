@@ -23,7 +23,7 @@ public class Receptionist implements Serializable {
 		this.bank_account = bank_account;
 		this.rep_email = rep_email;
 		this.rep_mobile = rep_mobile;
-		this.setApp(new  ArrayList <Appointment>());
+		this.app= new ArrayList <Appointment> ();
 	}
   
 	public Receptionist(String rep_name, Integer bank_account, String rep_email, Integer rep_mobile) {
@@ -32,12 +32,12 @@ public class Receptionist implements Serializable {
 		this.bank_account = bank_account;
 		this.rep_email = rep_email;
 		this.rep_mobile = rep_mobile;
-		this.setApp(new  ArrayList <Appointment>());
+		this.app= new ArrayList <Appointment> ();
 	}
 
 	public Receptionist() {
 		super();
-		this.setApp(new  ArrayList <Appointment>());
+		this.app= new ArrayList <Appointment> ();
 	}
 
 	@Override

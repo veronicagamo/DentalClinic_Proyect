@@ -2,12 +2,11 @@ package JDBC;
 
 
 import java.sql.PreparedStatement;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import Exceptions.IdNotFoundException;
 import Interfaces.Used_suppliesManager;
 import POJO.Appointment;
 import POJO.Used_supplies;

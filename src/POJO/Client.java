@@ -4,22 +4,33 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javax.xml.bind.annotation.*;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="Client")
+@XmlType(propOrder = {"pat_email","hum","pat_address","app"})
 public class Client implements Serializable {
 
 	private static final long serialVersionUID = -2430812566256576791L;
-	
+	@XmlTransient
 	private Integer pat_id;
+	@XmlAttribute
 	private String pat_name;
+	@XmlElement
 	private Integer hum;
+	@XmlElement
 	private String pat_address;
+	@XmlElement
 	private String pat_email;
+	@XmlElement (name="Appointment")
+	@XmlElementWrapper(name="Appointments")
 	private ArrayList <Appointment> app;
 
 	
 	
 	public Client() {
 		super();
-		this.setApp(new ArrayList <Appointment>());
+		this.app= new ArrayList <Appointment> ();
 	}
 
 
@@ -30,7 +41,7 @@ public class Client implements Serializable {
 		this.hum = hum;
 		this.pat_address = pat_address;
 		this.pat_email = pat_email;
-		this.setApp(new ArrayList <Appointment>());
+		this.app= new ArrayList <Appointment> ();
 	}
 
 	public Client ( String pat_name, Integer hum, String pat_address, String pat_email) {
@@ -39,7 +50,7 @@ public class Client implements Serializable {
 		this.hum = hum;
 		this.pat_address = pat_address;
 		this.pat_email = pat_email;
-		this.setApp(new ArrayList <Appointment>());
+		this.app= new ArrayList <Appointment> ();
 	}
 
 

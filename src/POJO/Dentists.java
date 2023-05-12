@@ -19,7 +19,7 @@ public class Dentists implements Serializable{
 	
 	public Dentists() {
 		super();
-		this.setApp(new  ArrayList <Appointment>());
+		this.app= new ArrayList <Appointment> ();
 	}
 
 	public Dentists (Integer doc_id, String name, Integer bank_account, String doc_mobile, String doc_email) {
@@ -29,7 +29,7 @@ public class Dentists implements Serializable{
 		this.bank_account = bank_account;
 		this.doc_mobile = doc_mobile;
 		this.doc_email = doc_email;
-		this.setApp(new  ArrayList <Appointment>());
+		this.app= new ArrayList <Appointment> ();
 	}
 	
 
@@ -40,7 +40,7 @@ public class Dentists implements Serializable{
 		this.bank_account = bank_account;
 		this.doc_mobile = doc_mobile;
 		this.doc_email = doc_email;
-		this.setApp(new  ArrayList <Appointment>());
+		this.app= new ArrayList <Appointment> ();
 	}
 
 	@Override

@@ -2,16 +2,31 @@ package POJO;
 
 import java.io.Serializable;
 
+
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name="Supplier")
+@XmlType(propOrder = {"email","sup_address"})
 public class Supplier implements Serializable {
 
 	
 	private static final long serialVersionUID = 8373601696022464169L;
- 
+	@XmlTransient
 	private Integer sup_id;
+	@XmlAttribute
 	private String sup_name;
+	@XmlElement
 	private String sup_address;
+	@XmlElement
 	private String email;
 
 	
