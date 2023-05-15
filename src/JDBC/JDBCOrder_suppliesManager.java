@@ -3,8 +3,10 @@ package JDBC;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import Exceptions.IdNotFoundException;
 import Interfaces.Order_suppliesManager;
 import POJO.Order_supplies;
 
@@ -68,20 +70,35 @@ private JDBCManager manager;
 	}
 
 	@Override
-	public void deleteOrder(Integer orderSupp_Id) throws Exception {
+	public void deleteOrder(Integer orderSupp_Id) {
 		// TODO Auto-generated method stub
+		try {
 		String sql= "DELETE FROM order_supplies "
 				+ " WHERE id= ?";
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 	
 		prep.setInt(1, orderSupp_Id);
+		 if(prep.executeUpdate()==0) {
+				
+				throw new IdNotFoundException("The specified id does not correspond to any of the ids");
+			}
+		}
+      catch(SQLException e) {
+			
+			System.out.println("The requested appointment has not been deleted successfully "+e);
+			e.printStackTrace();
 
-		prep.executeUpdate();
+		}
+		catch(IdNotFoundException e) {
+			
+			System.out.println(e);
+		}
+		
 	}
 
 	@Override
-	public ArrayList<Order_supplies> getAllOrdersFromDentist(Integer dentistId) throws Exception {
+	public ArrayList<Order_supplies> getAllOrdersFromDentist(Integer dentistId) {
 		// TODO Auto-generated method stub
 		 ArrayList <Order_supplies> all= new  ArrayList<Order_supplies>();
 	       
@@ -139,17 +156,24 @@ private JDBCManager manager;
 	}
 
 	@Override
-	public void updateOrderDate(Integer orderId, Date date) throws Exception {
+	public void updateOrderDate(Integer orderId, Date date){
 		// TODO Auto-generated method stub
+		try {
 		  String sql= "UPDATE order_supplies "
 					+ "SET date= ? WHERE id= ?";
 	PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 			
 			prep.setDate(1, date);
 			prep.setInt(2,orderId);
-
-
-			prep.executeUpdate();
+          if(prep.executeUpdate()==0) {
+				
+				throw new IdNotFoundException("The specified id does not correspond to any of the ids");
+			}
+          prep.executeUpdate();
+         }
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

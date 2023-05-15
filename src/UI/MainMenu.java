@@ -6,6 +6,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import Exceptions.IdNotFoundException;
 import JDBC.*;
 import JPA.JPAUserManager;
 import POJO.*;
@@ -761,15 +762,13 @@ public class MainMenu {
 
 	}
 
-	public static void deleteApp() throws IOException {
-		System.out.println("Please, input the appointmnet's id you want to delete:");
-		Integer id = Integer.parseInt(r.readLine());
+	public static void deleteApp()  {
 		try {
+			System.out.println("Please, input the appointmnet's id you want to delete:");
+			Integer id = Integer.parseInt(r.readLine());
 			appMan.deleteAppointment(id);
-			System.out.println("It has been deleted correctly");
-		} catch (Exception e1) {
+		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			System.out.println("Incorrect delete");
 			e1.printStackTrace();
 		}
 	}
@@ -1222,11 +1221,10 @@ public class MainMenu {
 		}
 	}
 
-	public static void deleteOrder() throws IOException {
-		System.out.println("Please, input the order´s id you want to delete:");
-		Integer id = Integer.parseInt(r.readLine());
+	public static void deleteOrder()  {
 		try {
-
+			System.out.println("Please, input the order´s id you want to delete:");
+			Integer id = Integer.parseInt(r.readLine());
 			orderMan.deleteOrder(id);
 
 		} catch (Exception e) {
@@ -1338,7 +1336,8 @@ public class MainMenu {
 			System.out.println("This order is not related with this supplier");
 	}
 
-	public static void updateDateOrder() throws Exception {
+	public static void updateDateOrder()  {
+		try {
 		System.out.println("Please, input the order´s id you want to change its date:");
 		Integer id = Integer.parseInt(r.readLine());
 		System.out.println("Please, input the new date :");
@@ -1349,7 +1348,9 @@ public class MainMenu {
 		orderMan.updateOrderDate(id, dobDate);
 		if (dLocalDate.equals(LocalDate.now())) {
 			supplyMan.increaseAmount(orderMan.getOrder(id).getAmount(), orderMan.getOrder(id).getItem_id());
-		}
+		}}
+	catch(Exception e) {
+		e.printStackTrace();	}
 
 	}
 

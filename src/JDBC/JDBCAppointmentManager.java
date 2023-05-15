@@ -82,6 +82,7 @@ private JDBCManager manager;
 				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
 						+ "of the appointments");
 			}
+			prep.executeUpdate();
 		}
 		catch(SQLException e) {
 			
