@@ -379,7 +379,7 @@ public class MainMenu {
 					break;
 				}
 				case 6: {
-					createPat();
+					registerPat();
 					break;
 				}
 				case 7: {
@@ -779,35 +779,7 @@ public class MainMenu {
 		}
 	}
 
-	public static void createPat() throws IOException {
-		Client pat = null;
-
-		System.out.println("Please, input the client's data:");
-		System.out.println("Name:");
-		String name = r.readLine();
-		System.out.println("Health Number:");
-		Integer hum = Integer.parseInt(r.readLine());
-		System.out.println("Email:");
-		String email = r.readLine();
-		System.out.println("Address:");
-		String add = r.readLine();
-		pat = new Client(name, hum, add, email);
-		System.out.println("Username:");
-		String username = r.readLine();
-		System.out.println("Password:");
-		String password = r.readLine();
-		User u = new User(username, password, email);
-		Role r = userMan.getRole("client");
-		try {
-			patMan.createClient(pat);
-			userMan.register(u);
-			userMan.assignRole(u, r);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
+	
 
 	public static void viewPatId() throws IOException {
 		Client pat = null;
