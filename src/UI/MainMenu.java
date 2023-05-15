@@ -6,6 +6,7 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import Exceptions.IdNotFoundException;
 import JDBC.*;
 import JPA.JPAUserManager;
 import POJO.*;
@@ -24,9 +25,10 @@ public class MainMenu {
 	private static JDBCSuppliesManager supplyMan;
 	private static JDBCOrder_suppliesManager orderMan;
 	private static XMLManagerImpl xmlMan;
+	private static JDBCManager connection;
 
 	public static void main(String[] args) throws Exception {
-		JDBCManager connection = new JDBCManager();
+	    connection = new JDBCManager();
 		appMan = new JDBCAppointmentManager(connection);
 		docMan = new JDBCDentistManager(connection);
 		patMan = new JDBCClientManager(connection);
@@ -74,7 +76,7 @@ public class MainMenu {
 				case 0: {
 					connection.disconnect();
 					userMan.close();
-					return;
+					System.exit(0);
 				}
 				}
 
@@ -308,6 +310,8 @@ public class MainMenu {
 					break;
 				}
 				case 15: {
+					connection.disconnect();
+					userMan.close();
 					System.exit(0);
 				}
 				case 0: {
@@ -379,7 +383,7 @@ public class MainMenu {
 					break;
 				}
 				case 6: {
-					createPat();
+					registerPat();
 					break;
 				}
 				case 7: {
@@ -463,6 +467,8 @@ public class MainMenu {
 					break;
 				}
 				case 27:{
+					connection.disconnect();
+					userMan.close();
 					System.exit(0);
 				}
 				case 0:
@@ -480,7 +486,9 @@ public class MainMenu {
 
 	}
 
-	public static void supMenu(Supplier supplier) throws Exception {
+	public static void supMenu(Supplier supplier){
+		while (true) {
+		try {
 		System.out.println("1. View all my delivery notes");
 		System.out.println("2. View one of my delivery notes");
 		System.out.println("3. Update delivery date");
@@ -509,15 +517,26 @@ public class MainMenu {
 		}
 		case 5: {
 			deleteSupplier(supplier.getSup_id());
-			return;
+			break;
 		}
 		case 6:{
+			connection.disconnect();
+			userMan.close();
 			System.exit(0);
 		}
 		case 0:
 			return;
+		}}catch (NumberFormatException e) {
+			System.out.println("You didn't type a number");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("I/O Exception.");
+			e.printStackTrace();
 		}
-
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		}
 	}
 
 	public static void clientMenu(Client pat) throws IOException {
@@ -551,6 +570,8 @@ public class MainMenu {
 					break;
 				}
 				case 5:{
+					connection.disconnect();
+					userMan.close();
 					System.exit(0);
 				}
 				case 0:
@@ -741,15 +762,13 @@ public class MainMenu {
 
 	}
 
-	public static void deleteApp() throws IOException {
-		System.out.println("Please, input the appointmnet's id you want to delete:");
-		Integer id = Integer.parseInt(r.readLine());
+	public static void deleteApp()  {
 		try {
+			System.out.println("Please, input the appointmnet's id you want to delete:");
+			Integer id = Integer.parseInt(r.readLine());
 			appMan.deleteAppointment(id);
-			System.out.println("It has been deleted correctly");
-		} catch (Exception e1) {
+		} catch (IOException e1) {
 			// TODO Auto-generated catch block
-			System.out.println("Incorrect delete");
 			e1.printStackTrace();
 		}
 	}
@@ -779,35 +798,7 @@ public class MainMenu {
 		}
 	}
 
-	public static void createPat() throws IOException {
-		Client pat = null;
-
-		System.out.println("Please, input the client's data:");
-		System.out.println("Name:");
-		String name = r.readLine();
-		System.out.println("Health Number:");
-		Integer hum = Integer.parseInt(r.readLine());
-		System.out.println("Email:");
-		String email = r.readLine();
-		System.out.println("Address:");
-		String add = r.readLine();
-		pat = new Client(name, hum, add, email);
-		System.out.println("Username:");
-		String username = r.readLine();
-		System.out.println("Password:");
-		String password = r.readLine();
-		User u = new User(username, password, email);
-		Role r = userMan.getRole("client");
-		try {
-			patMan.createClient(pat);
-			userMan.register(u);
-			userMan.assignRole(u, r);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
+	
 
 	public static void viewPatId() throws IOException {
 		Client pat = null;
@@ -1230,11 +1221,10 @@ public class MainMenu {
 		}
 	}
 
-	public static void deleteOrder() throws IOException {
-		System.out.println("Please, input the order´s id you want to delete:");
-		Integer id = Integer.parseInt(r.readLine());
+	public static void deleteOrder()  {
 		try {
-
+			System.out.println("Please, input the order´s id you want to delete:");
+			Integer id = Integer.parseInt(r.readLine());
 			orderMan.deleteOrder(id);
 
 		} catch (Exception e) {
@@ -1346,7 +1336,8 @@ public class MainMenu {
 			System.out.println("This order is not related with this supplier");
 	}
 
-	public static void updateDateOrder() throws Exception {
+	public static void updateDateOrder()  {
+		try {
 		System.out.println("Please, input the order´s id you want to change its date:");
 		Integer id = Integer.parseInt(r.readLine());
 		System.out.println("Please, input the new date :");
@@ -1357,7 +1348,9 @@ public class MainMenu {
 		orderMan.updateOrderDate(id, dobDate);
 		if (dLocalDate.equals(LocalDate.now())) {
 			supplyMan.increaseAmount(orderMan.getOrder(id).getAmount(), orderMan.getOrder(id).getItem_id());
-		}
+		}}
+	catch(Exception e) {
+		e.printStackTrace();	}
 
 	}
 
