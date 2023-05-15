@@ -24,9 +24,10 @@ public class MainMenu {
 	private static JDBCSuppliesManager supplyMan;
 	private static JDBCOrder_suppliesManager orderMan;
 	private static XMLManagerImpl xmlMan;
+	private static JDBCManager connection;
 
 	public static void main(String[] args) throws Exception {
-		JDBCManager connection = new JDBCManager();
+	    connection = new JDBCManager();
 		appMan = new JDBCAppointmentManager(connection);
 		docMan = new JDBCDentistManager(connection);
 		patMan = new JDBCClientManager(connection);
@@ -74,7 +75,7 @@ public class MainMenu {
 				case 0: {
 					connection.disconnect();
 					userMan.close();
-					return;
+					System.exit(0);
 				}
 				}
 
@@ -308,6 +309,8 @@ public class MainMenu {
 					break;
 				}
 				case 15: {
+					connection.disconnect();
+					userMan.close();
 					System.exit(0);
 				}
 				case 0: {
@@ -463,6 +466,8 @@ public class MainMenu {
 					break;
 				}
 				case 27:{
+					connection.disconnect();
+					userMan.close();
 					System.exit(0);
 				}
 				case 0:
@@ -480,7 +485,9 @@ public class MainMenu {
 
 	}
 
-	public static void supMenu(Supplier supplier) throws Exception {
+	public static void supMenu(Supplier supplier){
+		while (true) {
+		try {
 		System.out.println("1. View all my delivery notes");
 		System.out.println("2. View one of my delivery notes");
 		System.out.println("3. Update delivery date");
@@ -509,15 +516,26 @@ public class MainMenu {
 		}
 		case 5: {
 			deleteSupplier(supplier.getSup_id());
-			return;
+			break;
 		}
 		case 6:{
+			connection.disconnect();
+			userMan.close();
 			System.exit(0);
 		}
 		case 0:
 			return;
+		}}catch (NumberFormatException e) {
+			System.out.println("You didn't type a number");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("I/O Exception.");
+			e.printStackTrace();
 		}
-
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		}
 	}
 
 	public static void clientMenu(Client pat) throws IOException {
@@ -551,6 +569,8 @@ public class MainMenu {
 					break;
 				}
 				case 5:{
+					connection.disconnect();
+					userMan.close();
 					System.exit(0);
 				}
 				case 0:
