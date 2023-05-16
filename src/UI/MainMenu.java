@@ -17,7 +17,7 @@ public class MainMenu {
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private static JDBCAppointmentManager appMan;
 	private static JDBCDentistManager docMan;
-	private static JDBCClientManager patMan;
+	private static JDBCClientManager patMan;  
 	private static JDBCRecepcionistManager recMan;
 	private static JDBCUsed_suppliesManager usedMan;
 	private static JDBCSuppliersManager supplierMan;
