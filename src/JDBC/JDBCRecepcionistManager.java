@@ -81,7 +81,7 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 			prep.setInt(2, r.getBank_account());
 			prep.setString(3, r.getRep_email());
 			prep.setInt(4,r.getRep_mobile());
-			//prep.setInt(5,r.getRep_id());
+			prep.setInt(5,r.getRep_id());
 	
 			if(prep.executeUpdate()==0) {
 				
