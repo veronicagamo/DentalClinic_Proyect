@@ -1,12 +1,12 @@
 package UI;
 
 import java.io.*;
+
 import java.sql.Date;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import Exceptions.IdNotFoundException;
 import JDBC.*;
 import JPA.JPAUserManager;
 import POJO.*;

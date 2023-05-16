@@ -73,15 +73,15 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 		
 		try {
 			
-			String sql="UPDATE receptionist"
-				+ "SET name= ?, bank_account= ?, email= ?, mobile= ? WHERE recep_id= ?";
+			String sql="UPDATE receptionist SET name= ?, bank_account= ?, email= ?, mobile= ? WHERE recep_id= ?";
 		
 			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 			
-			prep.setString(1, r.getRep_name());
+			prep.setString(1,r.getRep_name());
 			prep.setInt(2, r.getBank_account());
 			prep.setString(3, r.getRep_email());
 			prep.setInt(4,r.getRep_mobile());
+			prep.setInt(5,r.getRep_id());
 	
 			if(prep.executeUpdate()==0) {
 				
