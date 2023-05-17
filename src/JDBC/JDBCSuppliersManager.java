@@ -98,9 +98,9 @@ public class JDBCSuppliersManager implements SuppliersManager{
 	}
 
 	@Override
-	public void createSupplier(Supplier s) throws SQLException {
+	public void createSupplier(Supplier s) {
 		// TODO Auto-generated method stub
-
+try {
 		String sql= "INSERT INTO suppliers (name,address,email) VALUES(?,?,?)";
 
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
@@ -109,7 +109,13 @@ public class JDBCSuppliersManager implements SuppliersManager{
 		prep.setString(2, s.getSup_address());
 		prep.setString(3,s.getEmail());
 		prep.executeUpdate();
+}
+catch(SQLException e) {
+	
+	System.out.println("The supplier has not been added successfully "+e);
+	e.printStackTrace();
 
+}
 		
 		
 	}

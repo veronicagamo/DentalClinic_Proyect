@@ -334,7 +334,7 @@ public class MainMenu {
 				System.out.println("1. Create an appointment ");
 				System.out.println("2. Update an appointment");
 				System.out.println("3. Delete an appointment");
-				System.out.println("4. View an specific appointment");
+				System.out.println("4. View a specific appointment");
 				System.out.println("5. View all appointments");
 				System.out.println("6. Create a patient");
 				System.out.println("7. View a patient by id");

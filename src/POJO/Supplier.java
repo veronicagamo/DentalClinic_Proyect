@@ -15,14 +15,14 @@ import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name="Supplier")
-@XmlType(propOrder = {"email","sup_address"})
+@XmlType(propOrder = {"sup_name","email","sup_address"})
 public class Supplier implements Serializable {
 
 	
 	private static final long serialVersionUID = 8373601696022464169L;
 	@XmlTransient
 	private Integer sup_id;
-	@XmlAttribute
+	@XmlElement
 	private String sup_name;
 	@XmlElement
 	private String sup_address;

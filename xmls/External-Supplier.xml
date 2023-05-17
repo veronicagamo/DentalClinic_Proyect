@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!DOCTYPE Supplier [
-	<!ELEMENT Supplier (email,sup_address)> 
-	<!ATTLIST Supplier name CDATA #REQUIRED>
+	<!ELEMENT Supplier (sup_name,email,sup_address)> 
+	<!ELEMENT sup_name (#PCDATA)>
 	<!ELEMENT email (#PCDATA)>
 	<!ELEMENT sup_address (#PCDATA)>
 ]>
 
-<Supplier name="Faisher">
+<Supplier>
+	<sup_name> Faisher</sup_name>
 	<email> faisher@faisher.com</email>
 	<sup_address> calle juan sebastian </sup_address>
 </Supplier> 
