@@ -8,6 +8,10 @@ import java.sql.Statement;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import Interfaces.XMLManager;
 import JDBC.JDBCClientManager;
@@ -105,4 +109,16 @@ public class XMLManagerImpl implements XMLManager {
 		return c;
 	}
 
+	@Override
+	public void simpleTransform(String sourcePath, String xsltPath, String resultDir) {
+		// TODO Auto-generated method stub
+		TransformerFactory tFactory = TransformerFactory.newInstance();
+		try {
+			Transformer transformer = tFactory.newTransformer(new StreamSource(new File(xsltPath)));
+			transformer.transform(new StreamSource(new File(sourcePath)),new StreamResult(new File(resultDir)));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

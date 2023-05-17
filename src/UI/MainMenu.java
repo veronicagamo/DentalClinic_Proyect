@@ -1384,6 +1384,7 @@ public class MainMenu {
 		System.out.println("Please, input the client´s id you want to print in the XML file:");
 		Integer id = Integer.parseInt(r.readLine());
 		xmlMan.client2xml(id);
+		xmlMan.simpleTransform("./xmls/Client.xml", "./xmls/client-style.xslt", "./xmls/Client-Report.html");
 	}
 	
 public static void printMeSupplier() throws IOException {
@@ -1391,6 +1392,7 @@ public static void printMeSupplier() throws IOException {
 	Integer id = Integer.parseInt(r.readLine());
 	Supplier sup= supplierMan.getSupplierById(id);
 		xmlMan.supplier2xml(sup);
+		xmlMan.simpleTransform("./xmls/Supplier.xml", "./xmls/supplier-style.xslt", "./xmls/Supplier-Report.html");
 	}
 	
 public static void loadSupplier() {
