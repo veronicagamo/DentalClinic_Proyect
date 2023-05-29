@@ -3,6 +3,7 @@ package POJO;
 
 import java.io.Serializable;
 
+
 import java.sql.Date;
 import java.util.Objects;
 
@@ -80,12 +81,13 @@ public class Appointment implements Serializable{
 
 
 
+
 	@Override
 	public String toString() {
-		return "Appointment [app_id=" + app_id + ", app_date=" + app_date + ", app_duration=" + app_duration
-				+ ", app_room=" + app_room + ", app_price=" + app_price + ", app_treatment=" + app_treatment
-				+ ", dentist_id=" + dentist_id + ", receptionist_id=" + receptionist_id + ", patient_id=" + patient_id
-				+ "]\n";
+		return "\n[Id= " + app_id + ",  Date=" + app_date + ",  Duration(mins)=" + app_duration
+				+ ",  Room=" + app_room + ",  Price=" + app_price + ",  Treatment=" + app_treatment
+				+ ",  Dentist(id)=" + dentist_id + ",  Receptionist(id)=" + receptionist_id + ",  Patient(id)=" + patient_id
+				+ "]";
 	}
 
 

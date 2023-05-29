@@ -1,9 +1,7 @@
 package Interfaces;
 
 import java.util.ArrayList;
-
-import POJO.Appointment;
-import POJO.Used_supplies;
+import POJO.*;
 
 public interface Used_suppliesManager {
     

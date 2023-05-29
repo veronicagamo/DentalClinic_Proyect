@@ -1,6 +1,7 @@
 package POJO;
 
 import java.io.Serializable;
+
 import java.util.Objects;
 
 public class Supply implements Serializable{
@@ -48,7 +49,7 @@ public class Supply implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Supply [item_id=" + item_id + ", item_name=" + item_name + ", item_amount=" + item_amount + "]\n";
+		return "\n[Id=" + item_id + ", Name=" + item_name + ", Amount=" + item_amount + "]";
 	}
 
 	public Integer getItem_id() {

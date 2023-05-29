@@ -3,6 +3,7 @@ package JDBC;
 import java.sql.PreparedStatement;
 
 
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -40,7 +41,7 @@ public class JDBCDentistManager implements DentistManager{
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The dentist has not been added successfully "+e);
+			System.out.println(" \nThe dentist has not been added successfully "+e);
 			e.printStackTrace();
 
 		}
@@ -62,13 +63,13 @@ public class JDBCDentistManager implements DentistManager{
 			
 			if(prep.executeUpdate()==0) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+				throw new IdNotFoundException(" \nThe specified id does not correspond to any of the ids "
 						+ "of the dentists");
 			}	
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The requested dentist has not been deleted successfully "+e);
+			System.out.println("\nThe requested dentist has not been deleted successfully "+e);
 			e.printStackTrace();
 
 		}
@@ -96,13 +97,13 @@ public class JDBCDentistManager implements DentistManager{
 			
 			if(prep.executeUpdate()==0) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+				throw new IdNotFoundException("\nThe specified id does not correspond to any of the ids "
 						+ "of the dentists");
 			}
 		}
 		catch(SQLException e) {
 		
-			System.out.println("The requested dentist has not been updated successfully "+e);
+			System.out.println("\nThe requested dentist has not been updated successfully "+e);
 			e.printStackTrace();
 		}
 		catch(IdNotFoundException e) {
@@ -144,7 +145,7 @@ public class JDBCDentistManager implements DentistManager{
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The dentists can not be returned "+e);
+			System.out.println("\nThe dentists can not be returned "+e);
 			e.printStackTrace();
 		}
 		finally {
@@ -198,14 +199,14 @@ public class JDBCDentistManager implements DentistManager{
 			
 			if(dentist==null) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+				throw new IdNotFoundException("\nThe specified id does not correspond to any of the ids "
 						+ "of the dentists");
 			}
 			
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The requested dentist can not be returned "+e);
+			System.out.println("\nThe requested dentist can not be returned "+e);
 			e.printStackTrace();
 			
 		}catch(IdNotFoundException e) {
@@ -265,13 +266,13 @@ public class JDBCDentistManager implements DentistManager{
 			
 			if(dentist==null) {
 				
-				throw new NameNotFoundException("The specified name does not correspond to any of the names"
+				throw new NameNotFoundException("\nThe specified name does not correspond to any of the names "
 						+ "of the dentists");
 			}
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The requested dentist can not be returned "+e);
+			System.out.println("\nThe requested dentist can not be returned "+e);
 			e.printStackTrace();
 			
 		}catch(NameNotFoundException e) {
@@ -321,7 +322,7 @@ public class JDBCDentistManager implements DentistManager{
 			}
 			if(appFromDentist.size()==0) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+				throw new IdNotFoundException("\nThe specified id does not correspond to any of the ids "
 						+ "of the dentists");
 
 			}

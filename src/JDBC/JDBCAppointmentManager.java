@@ -1,18 +1,13 @@
 package JDBC;
 
 import Interfaces.AppointmentManager;
-
-
 import POJO.Appointment;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Date;
+import java.sql.*;
+import java.sql.Date;
+import java.util.*;
 
-import Exceptions.IdNotFoundException;
+import Exceptions.*;
 
 public class JDBCAppointmentManager implements AppointmentManager{
 	
@@ -53,9 +48,10 @@ private JDBCManager manager;
 			 rs.close();
 			prep2.close();
 		}
+		
 		catch(SQLException e) {
 			
-			System.out.println("The appointment has not been created successfully "+e);
+			System.out.println("\nThe appointment has not been created successfully "+e);
 			e.printStackTrace();
 		}
 		
@@ -79,14 +75,14 @@ private JDBCManager manager;
 
 			if(prep.executeUpdate()==0) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+				throw new IdNotFoundException("\nThe specified id does not correspond to any of the ids "
 						+ "of the appointments");
 			}
 			prep.executeUpdate();
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The requested appointment has not been deleted successfully "+e);
+			System.out.println(" \nThe requested appointment has not been deleted successfully "+e);
 			e.printStackTrace();
 
 		}
@@ -119,14 +115,14 @@ private JDBCManager manager;
 
 			if(prep.executeUpdate()==0) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+				throw new IdNotFoundException(" \nThe specified id does not correspond to any of the ids "
 						+ "of the appointments");
 			}
 		
 		}
 		catch(SQLException e) {
 		
-			System.out.println("The requested appointment has not been updated successfully "+e);
+			System.out.println(" \nThe requested appointment has not been updated successfully "+e);
 			e.printStackTrace();
 
 		}
@@ -137,12 +133,12 @@ private JDBCManager manager;
 	}
 
 	@Override
-	public Appointment viewAppointment (Integer appointmentId) throws SQLException{
+	public Appointment viewAppointment (Integer appointmentId){
 		
 		Appointment app = null;
 		ResultSet rs=null;
 		PreparedStatement prep=null;
-		
+		try {
 			
 			String sql="SELECT * FROM appointment WHERE app_id= ?";
 		
@@ -164,10 +160,35 @@ private JDBCManager manager;
 	   
 	   app = new Appointment(appointmentId, (java.sql.Date) dat,duration, room, price, treatment, den, rec, patient);
 	   }
-
-	   rs.close();
-		prep.close();
-	
+	   if (app==null) {
+			 throw new IdNotFoundException(" \nThe specified id does not correspond to any of the ids "
+						+ "of the appointments");
+		 }
+		}
+		catch(IdNotFoundException e) {
+		
+			System.out.println(e);
+		}
+		catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+finally {
+			
+			try {
+				
+				if(rs!=null) {
+					rs.close();
+				}
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
 			
 		
 		 return app;

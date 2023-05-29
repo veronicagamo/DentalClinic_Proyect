@@ -1,6 +1,7 @@
 package POJO;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -99,8 +100,8 @@ public class Receptionist implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Receptionist [rep_id=" + rep_id + ", rep_name=" + rep_name + ", bank_account=" + bank_account
-				+ ", rep_email=" + rep_email + ", rep_mobile=" + rep_mobile + "]\n";
+		return "\n[Id=" + rep_id + ",  Name=" + rep_name + ",  Bank account=" + bank_account
+				+ ",  Email=" + rep_email + ",  Mobile=" + rep_mobile + "]";
 	}
 
 	public ArrayList <Appointment> getApp() {

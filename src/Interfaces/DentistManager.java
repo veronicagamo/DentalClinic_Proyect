@@ -2,18 +2,18 @@ package Interfaces;
 
 import java.util.ArrayList;
 
-import POJO.Appointment;
-import POJO.Dentists;
+
+import POJO.*;
 
 public interface DentistManager {
 
-	public void addDentist(Dentists d) throws Exception;
-	public void deleteDentist(Integer dentistId) throws Exception;
-	public void updateDentist(Dentists d) throws Exception;
-	public ArrayList<Dentists> listAllDentists() throws Exception;
-	public Dentists getDentistById(Integer dentistId) throws Exception;
-	public Dentists getDentistByName(String dentistName) throws Exception;
+	public void addDentist(Dentists d);
+	public void deleteDentist(Integer dentistId);
+	public void updateDentist(Dentists d);
+	public ArrayList<Dentists> listAllDentists();
+	public Dentists getDentistById(Integer dentistId);
+	public Dentists getDentistByName(String dentistName);
 	public Dentists getDentistByEmail(String dentistEmail) throws Exception;
-	public ArrayList<Appointment> getAllAppFromDentist(Integer dentistId)throws Exception;
+	public ArrayList<Appointment> getAllAppFromDentist(Integer dentistId);
 	
 }

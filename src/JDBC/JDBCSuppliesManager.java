@@ -39,7 +39,7 @@ public class JDBCSuppliesManager implements SuppliesManager{
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The supply has not been added successfully "+e);
+			System.out.println("\nThe supply has not been added successfully "+e);
 
 		}	
 		
@@ -61,13 +61,13 @@ public class JDBCSuppliesManager implements SuppliesManager{
 	
 			if(prep.executeUpdate()==0) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+				throw new IdNotFoundException("\nThe specified id does not correspond to any of the ids"
 						+ "of the supplies");
 			}
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The requested supply has not been deleted successfully "+e);
+			System.out.println("\nThe requested supply has not been deleted successfully "+e);
 			e.printStackTrace();
 		}
 		catch(IdNotFoundException e) {
@@ -109,7 +109,7 @@ public class JDBCSuppliesManager implements SuppliesManager{
 			prep.close();
 		}catch(SQLException e) {
 			
-			System.out.println("The supplies can not be returned "+e);
+			System.out.println("\nThe supplies can not be returned "+e);
 			e.printStackTrace();
 		}
 		return supplies;
@@ -169,13 +169,13 @@ public class JDBCSuppliesManager implements SuppliesManager{
 	
 			if(prep.executeUpdate()==0) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+				throw new IdNotFoundException("\nThe specified id does not correspond to any of the ids "
 						+ "of the supplies");
 			}
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The amount of supplies can not increase "+e);
+			System.out.println("\nThe amount of supplies can not increase "+e);
 			e.printStackTrace();
 		}
 		catch(IdNotFoundException e) {
@@ -203,13 +203,13 @@ public class JDBCSuppliesManager implements SuppliesManager{
 
 			if(prep.executeUpdate()==0) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+				throw new IdNotFoundException("\nThe specified id does not correspond to any of the ids "
 						+ "of the supplies");
 			}
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The amount of supplies can not decrease "+e);
+			System.out.println("\nThe amount of supplies can not decrease "+e);
 			e.printStackTrace();
 		}
 		catch(IdNotFoundException e) {

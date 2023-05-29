@@ -3,11 +3,11 @@ package POJO;
 import java.io.Serializable;
 
 
+
 import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -68,7 +68,7 @@ public class Supplier implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Supplier [sup_id=" + sup_id + ", sup_name=" + sup_name + ", sup_address=" + sup_address + "]\n";
+		return "\n[Id=" + sup_id + ",  Name=" + sup_name + ",  Address=" + sup_address + "]";
 	}
 
 	public Integer getSup_id() {

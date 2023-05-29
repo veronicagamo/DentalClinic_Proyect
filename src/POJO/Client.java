@@ -1,6 +1,7 @@
 package POJO;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -74,8 +75,8 @@ public class Client implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Client [pat_id=" + pat_id + ", pat_name=" + pat_name + ", hum=" + hum + ", pat_address=" + pat_address
-				+ ", pat_email=" + pat_email + "]\n";
+		return "\n[Id=" + pat_id + ",  Name=" + pat_name + ",  Health number=" + hum + ",  Address=" + pat_address
+				+ ",  Email=" + pat_email + "]";
 	}
 
 

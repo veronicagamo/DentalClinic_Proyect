@@ -1,7 +1,6 @@
 package Interfaces;
 
 import java.io.File;
-
 import POJO.*;
 
 public interface XMLManager {

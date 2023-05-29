@@ -1,6 +1,7 @@
 package JDBC;
 
 import Interfaces.SuppliersManager;
+
 import POJO.Supplier;
 
 import java.sql.PreparedStatement;
@@ -51,7 +52,7 @@ public class JDBCSuppliersManager implements SuppliersManager{
 		}}
 		catch(SQLException e) {
 			
-			System.out.println("The requested supplier can not be returned "+e);
+			System.out.println("\nThe requested supplier can not be returned "+e);
 			e.printStackTrace();
 			
 		}
@@ -112,7 +113,7 @@ try {
 }
 catch(SQLException e) {
 	
-	System.out.println("The supplier has not been added successfully "+e);
+	System.out.println("\nThe supplier has not been added successfully "+e);
 	e.printStackTrace();
 
 }
@@ -134,13 +135,13 @@ catch(SQLException e) {
 	
 			if(prep.executeUpdate()==0) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+				throw new IdNotFoundException("\nThe specified id does not correspond to any of the ids"
 						+ "of the suppliers");
 			}
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The requested supplier has not been deleted successfully "+e);
+			System.out.println("\nThe requested supplier has not been deleted successfully "+e);
 			e.printStackTrace();
 		}
 		catch(IdNotFoundException e) {
@@ -229,13 +230,13 @@ catch(SQLException e) {
 			}
 			if(sup==null) {
 				
-				throw new NameNotFoundException("The specified name does not correspond to any of the names"
+				throw new NameNotFoundException("\nThe specified name does not correspond to any of the names"
 						+ "of the suppliers");
 			}
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The requested supplier can not be returned "+e);
+			System.out.println("\nThe requested supplier can not be returned "+e);
 			e.printStackTrace();
 			
 		}catch(NameNotFoundException e) {
@@ -278,7 +279,7 @@ catch(SQLException e) {
 					
 			ResultSet rs= prep.executeQuery();
 			
-			if(rs.next()) {
+			while(rs.next()) {
 				Integer Id = rs.getInt("id");
 				String name= rs.getString("name");
 				String address= rs.getString("address");

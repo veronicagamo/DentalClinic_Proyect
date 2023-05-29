@@ -3,6 +3,7 @@ package JDBC;
 
 import Interfaces.RecepcionistManager;
 
+
 import POJO.Receptionist;
 
 import java.sql.PreparedStatement;
@@ -46,24 +47,31 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The receptionist has not been added successfully "+e);
+			System.out.println("\nThe receptionist has not been added successfully "+e);
 			e.printStackTrace();
 
 		}
 	}
 	
 	@Override
-	public void deleteReceptionist(Integer ReceptionistId) throws SQLException{
-		
+	public void deleteReceptionist(Integer ReceptionistId){
+		try {
 		String sql= "DELETE FROM receptionist WHERE recep_id= ?";
 		
 		
 		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
 	
 		prep.setInt(1, ReceptionistId);
-
-		prep.executeUpdate();
-	
+		
+		if(prep.executeUpdate()==0) {
+			
+			throw new IdNotFoundException("The specified id does not correspond to any of the ids "
+					+ "of the receptionists");
+		}
+	}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	
@@ -85,13 +93,13 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 	
 			if(prep.executeUpdate()==0) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+				throw new IdNotFoundException("\nThe specified id does not correspond to any of the ids "
 						+ "of the receptionists");
 			}
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The requested receptionist has not been updated successfully "+e);
+			System.out.println("\nThe requested receptionist has not been updated successfully "+e);
 			e.printStackTrace();
 
 		}
@@ -135,7 +143,7 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The receptionists can not be returned "+e);
+			System.out.println("\nThe receptionist can not be returned "+e);
 			e.printStackTrace();
 		}
 		finally {
@@ -177,7 +185,7 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 				
 		rs= prep.executeQuery();
 		
-		if(rs.next()) {
+		while(rs.next()) {
 			
 			Integer id = rs.getInt("recep_id");
 			Integer bank = rs.getInt("bank_account");
@@ -187,16 +195,16 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 			rec= new Receptionist(id, recepName,bank,email, mobile);
 			
 		}
-		else {
+		if(rec==null) {
 			
-			throw new NameNotFoundException("The specified name does not correspond to any of the names"
+			throw new NameNotFoundException("\nThe specified name does not correspond to any of the names "
 					+ "of the receptionists");
 		} 
 		
        }
        catch(SQLException e) {
 			
-			System.out.println("The requested receptionist can not be returned "+e);
+			System.out.println("\nThe requested receptionist can not be returned "+e);
 			e.printStackTrace();
 			
 		}catch(NameNotFoundException e) {
@@ -243,7 +251,7 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 					
 			rs= prep.executeQuery();
 			
-			if(rs.next()) {
+			while(rs.next()) {
 				
 				String name = rs.getString("name");
 				Integer bank = rs.getInt("bank_account");
@@ -253,15 +261,15 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 				rec= new Receptionist(receptionistId, name,bank,email, mobile);
 				
 			}
-			else {
+			if (rec==null){
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+				throw new IdNotFoundException("\nThe specified id does not correspond to any of the ids"
 						+ "of the receptionists");
 			}
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The requested receptionist can not be returned "+e);
+			System.out.println("\nThe requested receptionist can not be returned "+e);
 			e.printStackTrace();
 			
 		}catch(IdNotFoundException e) {
@@ -303,7 +311,7 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 					
 			ResultSet rs= prep.executeQuery();
 			
-			if(rs.next()) {
+			while(rs.next()) {
 				Integer id = rs.getInt("recep_id");
 				String name = rs.getString("name");
 				Integer bank = rs.getInt("bank_account");

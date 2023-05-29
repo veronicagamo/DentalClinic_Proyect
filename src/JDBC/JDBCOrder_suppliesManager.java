@@ -1,6 +1,7 @@
 package JDBC;
 
 import java.sql.Date;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,10 +38,10 @@ private JDBCManager manager;
 	}
 
 	@Override
-	public Order_supplies getOrder(Integer orderSupp_Id) throws Exception {
+	public Order_supplies getOrder(Integer orderSupp_Id) {
 		// TODO Auto-generated method stub
 		Order_supplies o = null;
-
+try {
 		String sql = "SELECT * FROM order_supplies WHERE id= ?";
 
 		PreparedStatement prep = manager.getConnection().prepareStatement(sql);
@@ -61,9 +62,20 @@ private JDBCManager manager;
 			o = new Order_supplies(id, itemId, docId, amount,date,supId);
 
 		}
-
+      if (o==null) {
+    	  throw new IdNotFoundException(" \nThe specified id does not correspond to any of the ids");
+      }
 		rs.close();
-		prep.close();
+		prep.close();}
+catch(IdNotFoundException e) {
+	
+	System.out.println(e);
+}   catch(SQLException e) {
+	
+	e.printStackTrace();
+
+}
+
 
 		return o;
 
@@ -81,12 +93,12 @@ private JDBCManager manager;
 		prep.setInt(1, orderSupp_Id);
 		 if(prep.executeUpdate()==0) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids");
+				throw new IdNotFoundException("\nThe specified id does not correspond to any of the ids");
 			}
 		}
       catch(SQLException e) {
 			
-			System.out.println("The requested appointment has not been deleted successfully "+e);
+			System.out.println(" \nThe requested order has not been deleted successfully "+e);
 			e.printStackTrace();
 
 		}
@@ -167,7 +179,7 @@ private JDBCManager manager;
 			prep.setInt(2,orderId);
           if(prep.executeUpdate()==0) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids");
+				throw new IdNotFoundException(" \nThe specified id does not correspond to any of the ids");
 			}
           prep.executeUpdate();
          }
@@ -177,7 +189,7 @@ private JDBCManager manager;
 	}
 
 	@Override
-	public ArrayList<Order_supplies> getAllOrdersOrder() throws Exception {
+	public ArrayList<Order_supplies> getAllOrdersOrder() {
 		// TODO Auto-generated method stub
 		ArrayList <Order_supplies> prov= new  ArrayList<Order_supplies>();
 		try {

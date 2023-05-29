@@ -3,6 +3,7 @@ package JDBC;
 import Interfaces.ClientManager;
 
 
+
 import POJO.*;
 
 import java.sql.PreparedStatement;
@@ -42,7 +43,7 @@ public class JDBCClientManager implements ClientManager {
 				
 		    rs= prep.executeQuery();
 		
-			if(rs.next()) {
+			while(rs.next()) {
 				
 				String name= rs.getString("pat_name");
 				Integer healthNumber= rs.getInt("hum");
@@ -52,15 +53,15 @@ public class JDBCClientManager implements ClientManager {
 				client= new Client(clientId, name, healthNumber, address, email);
 				
 			}
-			else {
+	        if(client==null) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+				throw new IdNotFoundException(" \nThe specified id does not correspond to any of the ids "
 						+ "of the clients");
-		    }
+		   }
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The requested client can not be returned "+e);
+			System.out.println("\nThe requested client can not be returned "+e);
 			e.printStackTrace();
 
 
@@ -109,7 +110,7 @@ public class JDBCClientManager implements ClientManager {
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The client has not been created successfully "+e);
+			System.out.println(" \nThe client has not been created successfully "+e);
 			e.printStackTrace();
 
 
@@ -132,13 +133,13 @@ public class JDBCClientManager implements ClientManager {
 
 			if(prep.executeUpdate()==0) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+				throw new IdNotFoundException(" \nThe specified id does not correspond to any of the ids "
 						+ "of the clients");
 			}	
 		}
 		catch(SQLException e) {
 			
-			System.out.println("The requested client has not been deleted successfully "+e);
+			System.out.println(" \nThe requested client has not been deleted successfully "+e);
 			e.printStackTrace();
 
 
@@ -169,7 +170,7 @@ public class JDBCClientManager implements ClientManager {
 
 			if(prep.executeUpdate()==0) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+				throw new IdNotFoundException(" \nThe specified id does not correspond to any of the ids "
 						+ "of the clients");
 			}	
 		}catch(SQLException e) {
@@ -259,7 +260,7 @@ public class JDBCClientManager implements ClientManager {
 			}
 			if(appFromClient.size()==0) {
 				
-				throw new IdNotFoundException("The specified id does not correspond to any of the ids"
+				throw new IdNotFoundException("\nThe specified id does not correspond to any of the ids "
 						+ "of the clients");
 
 			}
@@ -300,7 +301,7 @@ public class JDBCClientManager implements ClientManager {
 			}
 			if(client==null) {
 				
-				throw new NameNotFoundException("The specified name does not correspond to any of the names"
+				throw new NameNotFoundException("\nThe specified name does not correspond to any of the names "
 						+ "of the clients");
 		   }
 		}

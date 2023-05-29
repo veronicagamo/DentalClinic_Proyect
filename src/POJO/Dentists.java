@@ -1,6 +1,7 @@
 package POJO;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -62,8 +63,8 @@ public class Dentists implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Dentist [doc_id=" + doc_id + ", name=" + name + ", bank_account=" + bank_account + ", doc_mobile="
-				+ doc_mobile + ", doc_email=" + doc_email + "]\n";
+		return "\n[Id=" + doc_id + ",  Name=" + name + ",  Bank account=" + bank_account + ",  Mobile="
+				+ doc_mobile + ",  Email=" + doc_email + "]";
 	}
 
 	public Integer getDoc_id() {

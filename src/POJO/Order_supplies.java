@@ -1,6 +1,7 @@
 package POJO;
 
 import java.io.Serializable;
+
 import java.sql.Date;
 
 public class Order_supplies implements Serializable {
@@ -102,8 +103,8 @@ public class Order_supplies implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Order_supplies [order_supp_id=" + order_supp_id + ", item_id=" + item_id + ", doc_id=" + doc_id
-				+ ", amount=" + amount + ", date=" + date + ", supplierId=" + supplierId + "]\n";
+		return "\n[Id=" + order_supp_id + ",  Supply(id)=" + item_id + ", Dentist(id)=" + doc_id
+				+ ",  Amount=" + amount + ",  Date=" + date + ",  Supplier(id)=" + supplierId + "]";
 	}
 
 	public Date getDate() {
