@@ -106,7 +106,13 @@ public class JDBCClientManager implements ClientManager {
 			prep.setInt(2, client.getHum());
 			prep.setString(3, client.getPat_address());
 			prep.setString(4, client.getPat_email());
-			prep.executeUpdate();
+//			File photo = new File("./Photo/" + fileName);
+//			InputStream streamBlob = new FileInputStream(photo);
+//			byte[] bytesBlob = new byte[streamBlob.available()];
+//			streamBlob.read(bytesBlob);
+//			streamBlob.close();
+//    		prep.setBytes(6, bytesBlob);
+     		prep.executeUpdate();
 		}
 		catch(SQLException e) {
 			

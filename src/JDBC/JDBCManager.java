@@ -99,6 +99,7 @@ public class JDBCManager {
 					+ "	pat_name	       TEXT NOT NULL,"
 					+ "	hum  INTEGER NOT NULL,"
 					+ "	pat_address        TEXT NOT NULL,"	
+					+ " photo	BLOB,"
 					+ "	pat_email	       TEXT NOT NULL UNIQUE"
 				+ ");";
 				

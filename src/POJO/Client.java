@@ -25,6 +25,8 @@ public class Client implements Serializable {
 	private String pat_email;
 	@XmlTransient
 	private ArrayList <Appointment> app;
+	//@XmlTransient
+	//private byte[] photo;
 
 	
 	
@@ -44,7 +46,7 @@ public class Client implements Serializable {
 		this.app= new ArrayList <Appointment> ();
 	}
 
-	public Client ( String pat_name, Integer hum, String pat_address, String pat_email) {
+	public Client (String pat_name, Integer hum, String pat_address, String pat_email) {
 		super();
 		this.pat_name = pat_name;
 		this.hum = hum;
@@ -52,6 +54,20 @@ public class Client implements Serializable {
 		this.pat_email = pat_email;
 		this.app= new ArrayList <Appointment> ();
 	}
+	
+    
+
+//	public Client(Integer pat_id, String pat_name, Integer hum, String pat_address, String pat_email,
+//			 byte[] photo) {
+//		super();
+//		this.pat_id = pat_id;
+//		this.pat_name = pat_name;
+//		this.hum = hum;
+//		this.pat_address = pat_address;
+//		this.pat_email = pat_email;
+//		this.app = new ArrayList <Appointment> ();
+//		this.photo = photo;
+//	}
 
 
 	@Override
@@ -139,7 +155,13 @@ public class Client implements Serializable {
 		this.app = app;
 	}
 
-
+//	public byte[] getPhoto() {
+//		return photo;
+//	}
+//
+//	public void setPhoto(byte[] photo) {
+//		this.photo = photo;
+//	}
 	
 	
 	
