@@ -36,6 +36,7 @@ public class JDBCSuppliesManager implements SuppliesManager{
 			prep.setInt(2, s.getItem_amount());
 			
 			prep.executeUpdate();
+			prep.close();
 		}
 		catch(SQLException e) {
 			
@@ -49,13 +50,13 @@ public class JDBCSuppliesManager implements SuppliesManager{
 	@Override
 	public void deleteSupply(Integer id) {
 		// TODO Auto-generated method stub
-		
-		try {
+		PreparedStatement prep =null;
+		try{
 			
 			String sql= "DELETE FROM supplies "
 				+ " WHERE supplies_id= ?";
 		
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			prep= manager.getConnection().prepareStatement(sql);
 		
 			prep.setInt(1, id);
 	
@@ -75,6 +76,18 @@ public class JDBCSuppliesManager implements SuppliesManager{
 			System.out.println(e);
 	
 		}
+finally {
+			
+			try {
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}	
 		
 	}
 
@@ -156,12 +169,12 @@ public class JDBCSuppliesManager implements SuppliesManager{
 	@Override
 	public void increaseAmount(Integer a,Integer itemId) {
 		// TODO Auto-generated method stub
-		
+		PreparedStatement prep=null;
 		try {
 			
 			String sql= "UPDATE supplies "
 				+ "SET amount= amount + ? WHERE supplies_id= ?";
-	        PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+	         prep= manager.getConnection().prepareStatement(sql);
 			
 			prep.setInt(1, a);
 			prep.setInt(2,itemId);
@@ -183,6 +196,18 @@ public class JDBCSuppliesManager implements SuppliesManager{
 			System.out.println(e);
 	
 		}
+finally {
+			
+			try {
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}	
         	
 	}
 
@@ -190,12 +215,12 @@ public class JDBCSuppliesManager implements SuppliesManager{
 	@Override
 	public void decreaseAmount(Integer a, Integer itemId) {
 		// TODO Auto-generated method stub
-		
+		PreparedStatement prep=null;
 		try {
 			
 			String sql= "UPDATE supplies "
 					+ "SET amount= amount - ? WHERE supplies_id= ?";
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			prep= manager.getConnection().prepareStatement(sql);
 			
 			prep.setInt(1, a);
 			prep.setInt(2,itemId);
@@ -217,6 +242,18 @@ public class JDBCSuppliesManager implements SuppliesManager{
 			System.out.println(e);
 	
 		}
+finally {
+			
+			try {
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}	
 		  
 	}
 	

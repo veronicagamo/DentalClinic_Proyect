@@ -44,6 +44,7 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 			prep.setInt(4, rec.getRep_mobile());
 	
 			prep.executeUpdate();
+			prep.close();
 		}
 		catch(SQLException e) {
 			
@@ -55,11 +56,12 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 	
 	@Override
 	public void deleteReceptionist(Integer ReceptionistId){
+		PreparedStatement prep=null;
 		try {
 		String sql= "DELETE FROM receptionist WHERE recep_id= ?";
 		
 		
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		prep= manager.getConnection().prepareStatement(sql);
 	
 		prep.setInt(1, ReceptionistId);
 		
@@ -72,18 +74,30 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+finally {
+			
+			try {
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}	
 	}
 
 	
 	
 	@Override
 	public void updateReceptionist(Receptionist r){
-		
+		PreparedStatement prep=null;
 		try {
 			
 			String sql="UPDATE receptionist SET name= ?, bank_account= ?, email= ?, mobile= ? WHERE recep_id= ?";
 		
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			prep= manager.getConnection().prepareStatement(sql);
 			
 			prep.setString(1,r.getRep_name());
 			prep.setInt(2, r.getBank_account());
@@ -107,6 +121,18 @@ public class JDBCRecepcionistManager implements RecepcionistManager {
 		
 			System.out.println(e);
 		}
+finally {
+			
+			try {
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}	
 		
 		
 	}

@@ -1,5 +1,6 @@
 package Interfaces;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -9,7 +10,7 @@ import POJO.*;
 public interface ClientManager {
 
 	public void createClient(Client client);
-	public void deleteClient(Integer pat_id);
+	public void deleteClient(Integer pat_id)throws SQLException;
 	public void updateClient(Client client);
 	public Client getClientById(Integer clientId);
 	public Client getClientByName(String clientName);

@@ -161,7 +161,7 @@ public class JDBCManager {
 				+ ");";
 				
 			stmt.executeUpdate(sql);
-		
+		    stmt.close();
 		} catch (SQLException ex) {
 			if (!ex.getMessage().contains("already exists")) {
 				

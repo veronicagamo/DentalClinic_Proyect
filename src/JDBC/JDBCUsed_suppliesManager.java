@@ -63,7 +63,7 @@ ArrayList <Used_supplies> supplies= new ArrayList<Used_supplies>();
 			prep.setInt(2,appId);		
 			prep.setInt(3, amount);
 			prep.executeUpdate();
-			
+			prep.close();
 		}catch(SQLException e) {
 			
 			System.out.println("The used supply can not be created "+e);
@@ -78,12 +78,13 @@ ArrayList <Used_supplies> supplies= new ArrayList<Used_supplies>();
 	public ArrayList<Used_supplies> listAllUsedByAppointment(Appointment a){
 		// TODO Auto-generated method stub
        ArrayList <Used_supplies> all= new  ArrayList<Used_supplies>();
-       
+       PreparedStatement prep=null;
+		ResultSet rs = null;
 		try {
 			String sql = "SELECT * FROM used_supplies WHERE appointment_id= ?";
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			 prep= manager.getConnection().prepareStatement(sql);
 			prep.setInt(1, a.getApp_id());
-			ResultSet rs = prep.executeQuery();
+			 rs = prep.executeQuery();
 
 			while(rs.next())
 			{
@@ -97,6 +98,22 @@ ArrayList <Used_supplies> supplies= new ArrayList<Used_supplies>();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+		}
+finally {
+			
+			try {
+				
+				if(rs!=null) {
+					rs.close();
+				}
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
 		}
 		return all;
 	}
@@ -113,6 +130,7 @@ ArrayList <Used_supplies> supplies= new ArrayList<Used_supplies>();
 			prep.setInt(4, used.getUsed_supp_id());
 
 			prep.executeUpdate();
+			prep.close();
 	}
 	@Override
 	public Used_supplies viewUsedsupplies(Integer id) throws Exception {

@@ -113,6 +113,7 @@ public class JDBCClientManager implements ClientManager {
 //			streamBlob.close();
 //    		prep.setBytes(6, bytesBlob);
      		prep.executeUpdate();
+     		prep.close();
 		}
 		catch(SQLException e) {
 			
@@ -125,15 +126,15 @@ public class JDBCClientManager implements ClientManager {
 	}
 
 	@Override
-	public void deleteClient(Integer pat_id){
+	public void deleteClient(Integer pat_id) {
 		// TODO Auto-generated method stub
-		
+		PreparedStatement prep=null;
 		try {
 			
 			String sql= "DELETE FROM client "
 				+ " WHERE pat_id= ?";
 		
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			 prep= manager.getConnection().prepareStatement(sql);
 	
 			prep.setInt(1, pat_id);
 
@@ -143,30 +144,39 @@ public class JDBCClientManager implements ClientManager {
 						+ "of the clients");
 			}	
 		}
-		catch(SQLException e) {
-			
-			System.out.println(" \nThe requested client has not been deleted successfully "+e);
-			e.printStackTrace();
-
-
-		}
 		catch(IdNotFoundException e) {
 			
 			System.out.println(e);
 		}
-		
+		catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+
+finally {
+			
+			try {
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}	
 	}
 
 	@Override
-	public void updateClient(Client client){
+	public void updateClient(Client client) {
 		// TODO Auto-generated method stub
-		
+		PreparedStatement prep=null;
 		try {
 			
 			String sql="UPDATE client "
 				+ "SET pat_name= ?, hum= ?, pat_address= ?, pat_email= ? WHERE pat_id= ?";
 		
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			 prep= manager.getConnection().prepareStatement(sql);
 		
 			prep.setString(1, client.getPat_name());
 			prep.setInt(2,client.getHum());
@@ -179,18 +189,29 @@ public class JDBCClientManager implements ClientManager {
 				throw new IdNotFoundException(" \nThe specified id does not correspond to any of the ids "
 						+ "of the clients");
 			}	
-		}catch(SQLException e) {
-			
-			System.out.println("The requested client has not been updated successfully "+e);
-			e.printStackTrace();
-
 		}
 		catch(IdNotFoundException e) {
 			
 			System.out.println(e);
 		}
+catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+finally {
+			
+			try {
+				
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
 		
-		
+		}
 		
 	}
 
@@ -249,11 +270,13 @@ public class JDBCClientManager implements ClientManager {
 		// TODO Auto-generated method stub
 		ArrayList <Appointment> appFromClient= new  ArrayList<Appointment>();
 		JDBCAppointmentManager app= new JDBCAppointmentManager(manager);
+		PreparedStatement prep=null;
+		ResultSet rs=null;
 		try {
 			String sql = "SELECT app_id FROM client LEFT JOIN appointment ON pat_id=client_id WHERE pat_id= ?";
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			prep= manager.getConnection().prepareStatement(sql);
 			prep.setInt(1, clientId);
-			ResultSet rs = prep.executeQuery();
+			rs = prep.executeQuery();
 			Appointment appointment=null;
 			
 			while(rs.next())
@@ -271,9 +294,31 @@ public class JDBCClientManager implements ClientManager {
 
 			}
 		}
-		catch(Exception e) {
+catch(SQLException e) {
+			
 			e.printStackTrace();
 		}
+catch(IdNotFoundException e) {
+			
+			System.out.println(e);
+
+			
+		}finally {
+			
+			try {
+				
+				if(rs!=null) {
+					rs.close();
+				}
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}	
 		
 		return appFromClient;
 	}

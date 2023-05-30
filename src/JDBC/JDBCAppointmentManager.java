@@ -19,11 +19,10 @@ private JDBCManager manager;
 	}
 
 	@Override
-	public Integer createAppointment(Appointment app){
+	public Integer createAppointment(Appointment app) throws SQLException{
 		
 		Integer id = null;
 		
-		try {
 			
 			String sql= "INSERT INTO appointment (app_date, app_duration, app_room, app_price, app_treatment, dentist_id,recepcionist_id, client_id) "
 				+ " VALUES(?,?,?,?,?,?,?,?)";
@@ -39,36 +38,28 @@ private JDBCManager manager;
 			prep.setInt(7, app.getReceptionist());
 			prep.setInt(8, app.getPatient());
 			prep.executeUpdate();
-			
+			prep.close();
 
 			String sql2= "SELECT app_id FROM appointment ORDER BY app_id DESC LIMIT 1";
 			PreparedStatement prep2= manager.getConnection().prepareStatement(sql2);
 			ResultSet rs= prep2.executeQuery();
 			id=rs.getInt("app_id");
 			 rs.close();
-			prep2.close();
-		}
-		
-		catch(SQLException e) {
-			
-			System.out.println("\nThe appointment has not been created successfully "+e);
-			e.printStackTrace();
-		}
+			 prep2.close();
 		
 		return id;
-
 	}
 		
 
 	@Override
 	public void deleteAppointment(Integer appointmentId){
-		
+		PreparedStatement prep=null;
 		try {
 			
 			String sql= "DELETE FROM appointment "
 				+ " WHERE app_id= ?";
 		
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		 prep= manager.getConnection().prepareStatement(sql);
 	
 			prep.setInt(1, appointmentId);
 
@@ -78,30 +69,41 @@ private JDBCManager manager;
 				throw new IdNotFoundException("\nThe specified id does not correspond to any of the ids "
 						+ "of the appointments");
 			}
-			prep.executeUpdate();
-		}
-		catch(SQLException e) {
 			
-			System.out.println(" \nThe requested appointment has not been deleted successfully "+e);
-			e.printStackTrace();
-
 		}
 		catch(IdNotFoundException e) {
 			
 			System.out.println(e);
 		}
+		catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+finally {
+			
+			try {
+				
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
 		
+		}
 	}
 
 	@Override
 	public void updateAppointment(Appointment app){
-		
+		PreparedStatement prep=null;
 		try {
 		String sql="UPDATE appointment "
 				+ "SET app_date= ?, app_duration= ?, app_room= ?, app_price= ?, app_treatment= ?, dentist_id= ?, recepcionist_id= ?, client_id= ? "
 				+ "WHERE app_id=?";
 		
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		 prep= manager.getConnection().prepareStatement(sql);
 		
 		prep.setDate(1, (java.sql.Date) app.getApp_date());
 		prep.setInt(2, app.getApp_duration());
@@ -118,17 +120,28 @@ private JDBCManager manager;
 				throw new IdNotFoundException(" \nThe specified id does not correspond to any of the ids "
 						+ "of the appointments");
 			}
-		
-		}
-		catch(SQLException e) {
-		
-			System.out.println(" \nThe requested appointment has not been updated successfully "+e);
-			e.printStackTrace();
-
 		}
 		catch(IdNotFoundException e) {
 		
 			System.out.println(e);
+		}
+catch(SQLException e) {
+			
+			e.printStackTrace();
+		}
+finally {
+			
+			try {
+				
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		
 		}
 	}
 

@@ -34,21 +34,23 @@ private JDBCManager manager;
 		prep.setInt(4, order.getSupplierId());
 		prep.setDate(5, (java.sql.Date) order.getDate());
 		prep.executeUpdate();
-
+        prep.close();
 	}
 
 	@Override
 	public Order_supplies getOrder(Integer orderSupp_Id) {
 		// TODO Auto-generated method stub
 		Order_supplies o = null;
+		PreparedStatement prep=null;
+		ResultSet rs=null;
 try {
 		String sql = "SELECT * FROM order_supplies WHERE id= ?";
 
-		PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+		prep = manager.getConnection().prepareStatement(sql);
 
 		prep.setInt(1, orderSupp_Id);
 
-		ResultSet rs = prep.executeQuery();
+		rs = prep.executeQuery();
 
 		while (rs.next()) {
 
@@ -64,15 +66,30 @@ try {
 		}
       if (o==null) {
     	  throw new IdNotFoundException(" \nThe specified id does not correspond to any of the ids");
-      }
-		rs.close();
-		prep.close();}
+      }}
 catch(IdNotFoundException e) {
 	
 	System.out.println(e);
 }   catch(SQLException e) {
 	
 	e.printStackTrace();
+
+}
+finally {
+	
+	try {
+		
+		if(prep!=null) {
+			prep.close();
+		}    
+		if(rs!=null) {
+			rs.close();
+		}
+	}
+	catch(SQLException e) {
+		
+		e.printStackTrace();
+	}
 
 }
 
@@ -84,11 +101,11 @@ catch(IdNotFoundException e) {
 	@Override
 	public void deleteOrder(Integer orderSupp_Id) {
 		// TODO Auto-generated method stub
+		PreparedStatement prep=null;
 		try {
 		String sql= "DELETE FROM order_supplies "
 				+ " WHERE id= ?";
-		
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		 prep= manager.getConnection().prepareStatement(sql);
 	
 		prep.setInt(1, orderSupp_Id);
 		 if(prep.executeUpdate()==0) {
@@ -106,6 +123,20 @@ catch(IdNotFoundException e) {
 			
 			System.out.println(e);
 		}
+		finally {
+			
+			try {
+				
+				if(prep!=null) {
+					prep.close();
+				}    
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+
+		}
 		
 	}
 
@@ -113,12 +144,13 @@ catch(IdNotFoundException e) {
 	public ArrayList<Order_supplies> getAllOrdersFromDentist(Integer dentistId) {
 		// TODO Auto-generated method stub
 		 ArrayList <Order_supplies> all= new  ArrayList<Order_supplies>();
-	       
+		 PreparedStatement prep= null;
+			ResultSet rs =null;
 			try {
 				String sql = "SELECT * FROM order_supplies INNER JOIN dentist ON dentist_id=doc_id WHERE dentist_id= ?";
-				PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+				 prep= manager.getConnection().prepareStatement(sql);
 				prep.setInt(1, dentistId);
-				ResultSet rs = prep.executeQuery();
+				 rs = prep.executeQuery();
 
 				while(rs.next())
 				{
@@ -136,6 +168,23 @@ catch(IdNotFoundException e) {
 			catch(Exception e) {
 				e.printStackTrace();
 			}
+			finally {
+				
+				try {
+					
+					if(prep!=null) {
+						prep.close();
+					}    
+					if(rs!=null) {
+						rs.close();
+					}
+				}
+				catch(SQLException e) {
+					
+					e.printStackTrace();
+				}
+
+			}
 			return all;
 	}
 
@@ -143,11 +192,13 @@ catch(IdNotFoundException e) {
 	public ArrayList<Order_supplies> getAllOrdersFromSupplier(Integer supplierId)  {
 		// TODO Auto-generated method stub
 		ArrayList <Order_supplies> prov= new  ArrayList<Order_supplies>();
+		PreparedStatement prep= null;
+		ResultSet rs =null;
 		try {
 			String sql = "SELECT * FROM order_supplies WHERE supplier_id= ?";
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			 prep= manager.getConnection().prepareStatement(sql);
 			prep.setInt(1, supplierId);
-			ResultSet rs = prep.executeQuery();
+			 rs = prep.executeQuery();
 			
 			while(rs.next())
 			{
@@ -164,16 +215,34 @@ catch(IdNotFoundException e) {
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		finally {
+			
+			try {
+				
+				if(prep!=null) {
+					prep.close();
+				}    
+				if(rs!=null) {
+					rs.close();
+				}
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+
+		}
 		return prov;
 	}
 
 	@Override
 	public void updateOrderDate(Integer orderId, Date date){
 		// TODO Auto-generated method stub
+		PreparedStatement prep=null;
 		try {
 		  String sql= "UPDATE order_supplies "
 					+ "SET date= ? WHERE id= ?";
-	PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+	 prep= manager.getConnection().prepareStatement(sql);
 			
 			prep.setDate(1, date);
 			prep.setInt(2,orderId);
@@ -181,21 +250,37 @@ catch(IdNotFoundException e) {
 				
 				throw new IdNotFoundException(" \nThe specified id does not correspond to any of the ids");
 			}
-          prep.executeUpdate();
          }
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+		finally {
+			
+			try {
+				
+				if(prep!=null) {
+					prep.close();
+				}    
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+
+		}
+		
 	}
 
 	@Override
 	public ArrayList<Order_supplies> getAllOrdersOrder() {
 		// TODO Auto-generated method stub
 		ArrayList <Order_supplies> prov= new  ArrayList<Order_supplies>();
+		PreparedStatement prep=null;
+		ResultSet rs = null;
 		try {
 			String sql = "SELECT * FROM order_supplies ORDER BY date";
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
-			ResultSet rs = prep.executeQuery();
+			prep= manager.getConnection().prepareStatement(sql);
+			 rs = prep.executeQuery();
 			
 			while(rs.next())
 			{
@@ -212,6 +297,23 @@ catch(IdNotFoundException e) {
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+		}
+		finally {
+			
+			try {
+				
+				if(prep!=null) {
+					prep.close();
+				}    
+				if(rs!=null) {
+					rs.close();
+				}
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+
 		}
 		return prov;
 	}

@@ -37,6 +37,7 @@ public class JDBCDentistManager implements DentistManager{
 			prep.setString(3, d.getDoc_email()); 
 			prep.setString(4, d.getDoc_mobile());
 			prep.executeUpdate();
+			prep.close();
 			
 		}
 		catch(SQLException e) {
@@ -50,14 +51,14 @@ public class JDBCDentistManager implements DentistManager{
 
 	@Override
 	public void deleteDentist(Integer dentistId) {
-
+		PreparedStatement prep=null;
 		try {
 			
 			String sql= "DELETE FROM dentist "
 				+ " WHERE doc_id= ?";
 		
 		
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			 prep= manager.getConnection().prepareStatement(sql);
 	
 			prep.setInt(1, dentistId);
 			
@@ -77,17 +78,29 @@ public class JDBCDentistManager implements DentistManager{
 			
 			System.out.println(e);
 		}
+finally {
+			
+			try {
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}	
 		
 	}
 
 	@Override
 	public void updateDentist(Dentists d) { 
-		
+		PreparedStatement prep=null;
 		try {
 			
 			String sql= "UPDATE dentist SET name= ?, bank_account= ?, doc_email= ?, doc_mobile= ? WHERE doc_id= ?";
 		
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		 prep= manager.getConnection().prepareStatement(sql);
 			
 			prep.setString(1, d.getName());
 			prep.setInt(2, d.getBank_account());
@@ -111,7 +124,18 @@ public class JDBCDentistManager implements DentistManager{
 			System.out.println(e);
 		}
 		
-
+finally {
+			
+			try {
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}	
 		
 	}
 
@@ -307,11 +331,13 @@ public class JDBCDentistManager implements DentistManager{
 		
 		ArrayList <Appointment> appFromDentist= new  ArrayList<Appointment>();
 		JDBCAppointmentManager app= new JDBCAppointmentManager(manager);
+		PreparedStatement prep=null;
+		ResultSet rs=null;
 		try {
 			String sql = "SELECT app_id FROM dentist LEFT JOIN appointment ON doc_id=dentist_id WHERE doc_id= ?";
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			 prep= manager.getConnection().prepareStatement(sql);
 			prep.setInt(1, dentistId);
-			ResultSet rs = prep.executeQuery();
+			rs = prep.executeQuery();
 			
 			while(rs.next())
 			{
@@ -330,6 +356,22 @@ public class JDBCDentistManager implements DentistManager{
 		catch(Exception e) {
 			e.printStackTrace();
 		}
+finally {
+			
+			try {
+				
+				if(rs!=null) {
+					rs.close();
+				}
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}	
 		return appFromDentist;
 	}
 

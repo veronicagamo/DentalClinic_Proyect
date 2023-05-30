@@ -94,6 +94,7 @@ public class JDBCSuppliersManager implements SuppliersManager{
 		prep.setString(3,sup.getEmail());
 		prep.setInt(4,sup.getSup_id());
 		prep.executeUpdate();
+		prep.close();
 
 			
 	}
@@ -110,6 +111,7 @@ try {
 		prep.setString(2, s.getSup_address());
 		prep.setString(3,s.getEmail());
 		prep.executeUpdate();
+		prep.close();
 }
 catch(SQLException e) {
 	
@@ -124,12 +126,12 @@ catch(SQLException e) {
 	@Override
 	public void deleteSupplier(Integer supplierId){
 		// TODO Auto-generated method stub
-		
+		PreparedStatement prep=null;
 		try {
 			
 			String sql= "DELETE FROM suppliers WHERE id= ?";
 		
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+			prep= manager.getConnection().prepareStatement(sql);
 		
 			prep.setInt(1, supplierId);
 	
@@ -149,6 +151,18 @@ catch(SQLException e) {
 			System.out.println(e);
 	
 		}
+finally {
+			
+			try {
+				if(prep!=null) {
+					prep.close();
+				}    	
+			}
+			catch(SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}	
 		
 		
 	}

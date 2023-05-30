@@ -621,7 +621,7 @@ public class MainMenu {
 
 	}
 
-	public static void createApp(Integer id) throws IOException {
+	public static void createApp(Integer id) throws Exception {
 		Appointment app = null;
 
 		System.out.println("\nPlease, input the appointment's data:");
