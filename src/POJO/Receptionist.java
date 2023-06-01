@@ -14,9 +14,8 @@ public class Receptionist implements Serializable {
 	private Integer bank_account;
 	private String rep_email;
 	private Integer rep_mobile;
-	private ArrayList <Appointment> app;
-	
-	
+	private ArrayList<Appointment> app;
+
 	public Receptionist(Integer rep_id, String rep_name, Integer bank_account, String rep_email, Integer rep_mobile) {
 		super();
 		this.rep_id = rep_id;
@@ -24,21 +23,21 @@ public class Receptionist implements Serializable {
 		this.bank_account = bank_account;
 		this.rep_email = rep_email;
 		this.rep_mobile = rep_mobile;
-		this.app= new ArrayList <Appointment> ();
+		this.app = new ArrayList<Appointment>();
 	}
-  
+
 	public Receptionist(String rep_name, Integer bank_account, String rep_email, Integer rep_mobile) {
 		super();
 		this.rep_name = rep_name;
 		this.bank_account = bank_account;
 		this.rep_email = rep_email;
 		this.rep_mobile = rep_mobile;
-		this.app= new ArrayList <Appointment> ();
+		this.app = new ArrayList<Appointment>();
 	}
 
 	public Receptionist() {
 		super();
-		this.app= new ArrayList <Appointment> ();
+		this.app = new ArrayList<Appointment>();
 	}
 
 	@Override
@@ -100,24 +99,16 @@ public class Receptionist implements Serializable {
 
 	@Override
 	public String toString() {
-		return "\n[Id=" + rep_id + ",  Name=" + rep_name + ",  Bank account=" + bank_account
-				+ ",  Email=" + rep_email + ",  Mobile=" + rep_mobile + "]";
+		return "\n[Id=" + rep_id + ",  Name=" + rep_name + ",  Bank account=" + bank_account + ",  Email=" + rep_email
+				+ ",  Mobile=" + rep_mobile + "]";
 	}
 
-	public ArrayList <Appointment> getApp() {
+	public ArrayList<Appointment> getApp() {
 		return app;
 	}
 
-	public void setApp(ArrayList <Appointment> app) {
+	public void setApp(ArrayList<Appointment> app) {
 		this.app = app;
 	}
 
-   
-	 
-	
-	
-	
-	
-
- 
 }

@@ -22,12 +22,13 @@ import POJO.*;
 public class XMLManagerImpl implements XMLManager {
 	JDBCManager manager = new JDBCManager();
 	JDBCSuppliersManager supManager = null;
-	JDBCClientManager clientManager= null;
+	JDBCClientManager clientManager = null;
+
 	@Override
 	public void client2xml(Integer id) {
 		// TODO Auto-generated method stub
 		Client pat = null;
-		
+
 		try {
 			Statement stmt = manager.getConnection().createStatement();
 			String sql = "SELECT * FROM client WHERE pat_id=" + id;
@@ -58,7 +59,7 @@ public class XMLManagerImpl implements XMLManager {
 	@Override
 	public void supplier2xml(Supplier sup) {
 		// TODO Auto-generated method stub
-		
+
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(Supplier.class);
 			Marshaller marshaller = jaxbContext.createMarshaller();
@@ -75,16 +76,15 @@ public class XMLManagerImpl implements XMLManager {
 	@Override
 	public Supplier xml2Supplier(File xml) {
 		// TODO Auto-generated method stub
-		Supplier s= null;
+		Supplier s = null;
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(Supplier.class);
-			Unmarshaller unmarsahller= jaxbContext.createUnmarshaller();
-			s=(Supplier) unmarsahller.unmarshal(xml);
-		  supManager= new JDBCSuppliersManager(manager);
-		  supManager.createSupplier(s);
-		  
-		}
-		catch(Exception e) {
+			Unmarshaller unmarsahller = jaxbContext.createUnmarshaller();
+			s = (Supplier) unmarsahller.unmarshal(xml);
+			supManager = new JDBCSuppliersManager(manager);
+			supManager.createSupplier(s);
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return s;
@@ -92,18 +92,16 @@ public class XMLManagerImpl implements XMLManager {
 
 	@Override
 	public Client xml2Client(File xml) {
-		Client c=null;
+		Client c = null;
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(Client.class);
-			Unmarshaller unmarsahller= jaxbContext.createUnmarshaller();
-			c=(Client) unmarsahller.unmarshal(xml);
-			 System.out.println(c);
-		  clientManager= new JDBCClientManager(manager);
-		  clientManager.createClient(c);
-		 
-		  
-		}
-		catch(Exception e) {
+			Unmarshaller unmarsahller = jaxbContext.createUnmarshaller();
+			c = (Client) unmarsahller.unmarshal(xml);
+			System.out.println(c);
+			clientManager = new JDBCClientManager(manager);
+			clientManager.createClient(c);
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return c;
@@ -115,10 +113,10 @@ public class XMLManagerImpl implements XMLManager {
 		TransformerFactory tFactory = TransformerFactory.newInstance();
 		try {
 			Transformer transformer = tFactory.newTransformer(new StreamSource(new File(xsltPath)));
-			transformer.transform(new StreamSource(new File(sourcePath)),new StreamResult(new File(resultDir)));
+			transformer.transform(new StreamSource(new File(sourcePath)), new StreamResult(new File(resultDir)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 }

@@ -6,26 +6,25 @@ import java.sql.Date;
 
 public class Order_supplies implements Serializable {
 
-	
 	private static final long serialVersionUID = 4505893739020297802L;
 
 	private Integer order_supp_id;
-	 private Integer item_id;
-	 private Integer doc_id;
-	 private Integer amount;
-	 private Date date;
-	 private Integer supplierId;
-	 
-	public Order_supplies(Integer order_supp_id, Integer item_id, Integer doc_id,Integer amount, Date date, Integer supplierId) {
+	private Integer item_id;
+	private Integer doc_id;
+	private Integer amount;
+	private Date date;
+	private Integer supplierId;
+
+	public Order_supplies(Integer order_supp_id, Integer item_id, Integer doc_id, Integer amount, Date date,
+			Integer supplierId) {
 		super();
 		this.order_supp_id = order_supp_id;
 		this.item_id = item_id;
 		this.doc_id = doc_id;
-		this.amount=amount;
+		this.amount = amount;
 		this.date = date;
 		this.supplierId = supplierId;
 	}
-
 
 	public Order_supplies(Integer item_id, Integer doc_id, Integer amount, Date date, Integer supplierId) {
 		super();
@@ -35,7 +34,6 @@ public class Order_supplies implements Serializable {
 		this.date = date;
 		this.supplierId = supplierId;
 	}
-
 
 	public Order_supplies() {
 		super();
@@ -65,7 +63,6 @@ public class Order_supplies implements Serializable {
 		this.doc_id = doc_id;
 	}
 
-	
 	public Integer getAmount() {
 		return amount;
 	}
@@ -99,12 +96,10 @@ public class Order_supplies implements Serializable {
 		return true;
 	}
 
-
-
 	@Override
 	public String toString() {
-		return "\n[Id=" + order_supp_id + ",  Supply(id)=" + item_id + ", Dentist(id)=" + doc_id
-				+ ",  Amount=" + amount + ",  Date=" + date + ",  Supplier(id)=" + supplierId + "]";
+		return "\n[Id=" + order_supp_id + ",  Supply(id)=" + item_id + ", Dentist(id)=" + doc_id + ",  Amount=" + amount
+				+ ",  Date=" + date + ",  Supplier(id)=" + supplierId + "]";
 	}
 
 	public Date getDate() {
@@ -123,7 +118,4 @@ public class Order_supplies implements Serializable {
 		this.supplierId = supplierId;
 	}
 
-	
-	 
-	 
 }

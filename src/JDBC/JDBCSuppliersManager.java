@@ -13,299 +13,276 @@ import java.util.ArrayList;
 import Exceptions.IdNotFoundException;
 import Exceptions.NameNotFoundException;
 
-public class JDBCSuppliersManager implements SuppliersManager{
-	
+public class JDBCSuppliersManager implements SuppliersManager {
+
 	private JDBCManager manager;
-	
+
 	public JDBCSuppliersManager(JDBCManager m) {
-		
-		this.manager=m;
+
+		this.manager = m;
 	}
 
-
 	@Override
-	public Supplier getSupplierById(Integer supplierId){
+	public Supplier getSupplierById(Integer supplierId) {
 		// TODO Auto-generated method stub
-		
-        Supplier s= null;
-        PreparedStatement prep=null;
-		ResultSet rs=null;
-		
+
+		Supplier s = null;
+		PreparedStatement prep = null;
+		ResultSet rs = null;
+
 		try {
-			
-			String sql= "SELECT * FROM suppliers WHERE id= ?";
-		
-			prep= manager.getConnection().prepareStatement(sql);
-			
+
+			String sql = "SELECT * FROM suppliers WHERE id= ?";
+
+			prep = manager.getConnection().prepareStatement(sql);
+
 			prep.setInt(1, supplierId);
-					
-			rs= prep.executeQuery();
-		
-		while(rs.next()) {
-			
-			String name= rs.getString("name");
-			String address= rs.getString("address");
-			String email= rs.getString("email");
-			
-			s= new Supplier(supplierId, name, address, email);
-			
-		}}
-		catch(SQLException e) {
-			
-			System.out.println("\nThe requested supplier can not be returned "+e);
+
+			rs = prep.executeQuery();
+
+			while (rs.next()) {
+
+				String name = rs.getString("name");
+				String address = rs.getString("address");
+				String email = rs.getString("email");
+
+				s = new Supplier(supplierId, name, address, email);
+
+			}
+		} catch (SQLException e) {
+
+			System.out.println("\nThe requested supplier can not be returned " + e);
 			e.printStackTrace();
-			
+
 		}
-		
+
 		finally {
-			
+
 			try {
-				
-				if(rs!=null) {
+
+				if (rs != null) {
 					rs.close();
 				}
-				if(prep!=null) {
+				if (prep != null) {
 					prep.close();
-				}    	
-			}
-			catch(SQLException e) {
-				
+				}
+			} catch (SQLException e) {
+
 				e.printStackTrace();
 			}
 		}
-		
+
 		return s;
-		
+
 	}
 
 	@Override
-	public void updateSupplier(Supplier sup) throws SQLException{
+	public void updateSupplier(Supplier sup) throws SQLException {
 		// TODO Auto-generated method stub
-		String sql="UPDATE suppliers "
-				+ "SET name= ?, address= ?, email= ? WHERE id= ?";
+		String sql = "UPDATE suppliers " + "SET name= ?, address= ?, email= ? WHERE id= ?";
 
-		
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
-			
-
+		PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 
 		prep.setString(1, sup.getSup_name());
-		prep.setString(2,sup.getSup_address());
-		prep.setString(3,sup.getEmail());
-		prep.setInt(4,sup.getSup_id());
+		prep.setString(2, sup.getSup_address());
+		prep.setString(3, sup.getEmail());
+		prep.setInt(4, sup.getSup_id());
 		prep.executeUpdate();
 		prep.close();
 
-			
 	}
 
 	@Override
 	public void createSupplier(Supplier s) {
 		// TODO Auto-generated method stub
-try {
-		String sql= "INSERT INTO suppliers (name,address,email) VALUES(?,?,?)";
+		try {
+			String sql = "INSERT INTO suppliers (name,address,email) VALUES(?,?,?)";
 
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
-	
-		prep.setString(1, s.getSup_name());
-		prep.setString(2, s.getSup_address());
-		prep.setString(3,s.getEmail());
-		prep.executeUpdate();
-		prep.close();
-}
-catch(SQLException e) {
-	
-	System.out.println("\nThe supplier has not been added successfully "+e);
-	e.printStackTrace();
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 
-}
-		
-		
+			prep.setString(1, s.getSup_name());
+			prep.setString(2, s.getSup_address());
+			prep.setString(3, s.getEmail());
+			prep.executeUpdate();
+			prep.close();
+		} catch (SQLException e) {
+
+			System.out.println("\nThe supplier has not been added successfully " + e);
+			e.printStackTrace();
+
+		}
+
 	}
 
 	@Override
-	public void deleteSupplier(Integer supplierId){
+	public void deleteSupplier(Integer supplierId) {
 		// TODO Auto-generated method stub
-		PreparedStatement prep=null;
+		PreparedStatement prep = null;
 		try {
-			
-			String sql= "DELETE FROM suppliers WHERE id= ?";
-		
-			prep= manager.getConnection().prepareStatement(sql);
-		
+
+			String sql = "DELETE FROM suppliers WHERE id= ?";
+
+			prep = manager.getConnection().prepareStatement(sql);
+
 			prep.setInt(1, supplierId);
-	
-			if(prep.executeUpdate()==0) {
-				
-				throw new IdNotFoundException("\nThe specified id does not correspond to any of the ids"
-						+ "of the suppliers");
+
+			if (prep.executeUpdate() == 0) {
+
+				throw new IdNotFoundException(
+						"\nThe specified id does not correspond to any of the ids" + "of the suppliers");
 			}
-		}
-		catch(SQLException e) {
-			
-			System.out.println("\nThe requested supplier has not been deleted successfully "+e);
+		} catch (SQLException e) {
+
+			System.out.println("\nThe requested supplier has not been deleted successfully " + e);
 			e.printStackTrace();
-		}
-		catch(IdNotFoundException e) {
-			
+		} catch (IdNotFoundException e) {
+
 			System.out.println(e);
-	
-		}
-finally {
-			
+
+		} finally {
+
 			try {
-				if(prep!=null) {
+				if (prep != null) {
 					prep.close();
-				}    	
-			}
-			catch(SQLException e) {
-				
+				}
+			} catch (SQLException e) {
+
 				e.printStackTrace();
 			}
-		}	
-		
-		
+		}
+
 	}
 
 	@Override
-	public ArrayList<Supplier> getListAllSuppliers(){
+	public ArrayList<Supplier> getListAllSuppliers() {
 		// TODO Auto-generated method stub
 		ArrayList<Supplier> all = new ArrayList<Supplier>();
-		Statement stmt=null;
-		ResultSet rs=null;
-		
+		Statement stmt = null;
+		ResultSet rs = null;
+
 		try {
 			stmt = manager.getConnection().createStatement();
 			String sql = "SELECT * FROM suppliers";
 			rs = stmt.executeQuery(sql);
-			
-			while(rs.next())
-			{
-				   Integer id= rs.getInt("id");  
-				   String name=  rs.getString("name");
-				   String  add= rs.getString("address");
-				   String email= rs.getString("email");
-				   
-				 Supplier s = new Supplier(id,name,add,email);
-				  all.add(s);
+
+			while (rs.next()) {
+				Integer id = rs.getInt("id");
+				String name = rs.getString("name");
+				String add = rs.getString("address");
+				String email = rs.getString("email");
+
+				Supplier s = new Supplier(id, name, add, email);
+				all.add(s);
 			}
-				
-		}
-		catch(Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		finally {
-			
+		} finally {
+
 			try {
-				
-				if(rs!=null) {
+
+				if (rs != null) {
 					rs.close();
 				}
-				if(stmt!=null) {
+				if (stmt != null) {
 					stmt.close();
-				}    	
-			}
-			catch(SQLException e) {
-				
+				}
+			} catch (SQLException e) {
+
 				e.printStackTrace();
 			}
-		
+
 		}
-		
-		
+
 		return all;
 	}
 
-
 	@Override
-	public Supplier getSupplierByName(String supplierName){
+	public Supplier getSupplierByName(String supplierName) {
 		// TODO Auto-generated method stub
-		Supplier sup=null;
-		PreparedStatement prep=null;
-		ResultSet rs=null;
-		 
+		Supplier sup = null;
+		PreparedStatement prep = null;
+		ResultSet rs = null;
+
 		try {
-			String sql= "SELECT * FROM suppliers WHERE name= ?";
-			
-			prep= manager.getConnection().prepareStatement(sql);
-			
-			prep.setString(1,supplierName);
-					
-			rs= prep.executeQuery();
-			
-			if(rs.next()) {
+			String sql = "SELECT * FROM suppliers WHERE name= ?";
+
+			prep = manager.getConnection().prepareStatement(sql);
+
+			prep.setString(1, supplierName);
+
+			rs = prep.executeQuery();
+
+			if (rs.next()) {
 				Integer Id = rs.getInt("id");
-				String name= rs.getString("name");
-				String address= rs.getString("address");
-				String email= rs.getString("email");
-				
-				sup= new Supplier(Id, name, address, email);
-				
+				String name = rs.getString("name");
+				String address = rs.getString("address");
+				String email = rs.getString("email");
+
+				sup = new Supplier(Id, name, address, email);
+
 			}
-			if(sup==null) {
-				
-				throw new NameNotFoundException("\nThe specified name does not correspond to any of the names"
-						+ "of the suppliers");
+			if (sup == null) {
+
+				throw new NameNotFoundException(
+						"\nThe specified name does not correspond to any of the names" + "of the suppliers");
 			}
-		}
-		catch(SQLException e) {
-			
-			System.out.println("\nThe requested supplier can not be returned "+e);
+		} catch (SQLException e) {
+
+			System.out.println("\nThe requested supplier can not be returned " + e);
 			e.printStackTrace();
-			
-		}catch(NameNotFoundException e) {
-			
+
+		} catch (NameNotFoundException e) {
+
 			System.out.println(e);
 
 		}
-		
+
 		finally {
-			
+
 			try {
-				
-				if(rs!=null) {
+
+				if (rs != null) {
 					rs.close();
 				}
-				if(prep!=null) {
+				if (prep != null) {
 					prep.close();
-				}    	
-			}
-			catch(SQLException e) {
-				
+				}
+			} catch (SQLException e) {
+
 				e.printStackTrace();
 			}
 		}
-	
-		return sup;
-		
-	}
 
+		return sup;
+
+	}
 
 	@Override
 	public Supplier getSupplierByEmail(String supplierEmail) throws Exception {
 		// TODO Auto-generated method stub
-		Supplier sup=null;
-		 String sql= "SELECT * FROM suppliers WHERE email= ?";
-			
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
-			
-			prep.setString(1,supplierEmail);
-					
-			ResultSet rs= prep.executeQuery();
-			
-			while(rs.next()) {
-				Integer Id = rs.getInt("id");
-				String name= rs.getString("name");
-				String address= rs.getString("address");
-				
-				sup= new Supplier(Id, name, address, supplierEmail);
-				
-			}
+		Supplier sup = null;
+		String sql = "SELECT * FROM suppliers WHERE email= ?";
 
-			rs.close();
-			prep.close();
-			
-			return sup;
+		PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+
+		prep.setString(1, supplierEmail);
+
+		ResultSet rs = prep.executeQuery();
+
+		while (rs.next()) {
+			Integer Id = rs.getInt("id");
+			String name = rs.getString("name");
+			String address = rs.getString("address");
+
+			sup = new Supplier(Id, name, address, supplierEmail);
+
+		}
+
+		rs.close();
+		prep.close();
+
+		return sup;
 	}
 
 }

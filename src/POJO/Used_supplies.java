@@ -3,23 +3,21 @@ package POJO;
 import java.io.Serializable;
 
 public class Used_supplies implements Serializable {
-	 
 
 	private static final long serialVersionUID = -5978065005847328945L;
 	private Integer item_id;
 	private Integer app_id;
 	private Integer used_supp_id;
 	private Integer amount;
-	
-	
+
 	public Used_supplies(Integer item_id, Integer app_id, Integer used_supp_id, Integer amount) {
 		super();
 		this.item_id = item_id;
 		this.app_id = app_id;
 		this.used_supp_id = used_supp_id;
-		this.amount=amount;
+		this.amount = amount;
 	}
-	
+
 	public Used_supplies() {
 		super();
 	}
@@ -27,18 +25,23 @@ public class Used_supplies implements Serializable {
 	public Integer getItem_id() {
 		return item_id;
 	}
+
 	public void setItem_id(Integer item_id) {
 		this.item_id = item_id;
 	}
+
 	public Integer getApp_id() {
 		return app_id;
 	}
+
 	public void setApp_id(Integer app_id) {
 		this.app_id = app_id;
 	}
+
 	public Integer getUsed_supp_id() {
 		return used_supp_id;
 	}
+
 	public void setUsed_supp_id(Integer used_supp_id) {
 		this.used_supp_id = used_supp_id;
 	}
@@ -68,7 +71,6 @@ public class Used_supplies implements Serializable {
 		return true;
 	}
 
-
 	public Integer getAmount() {
 		return amount;
 	}
@@ -79,11 +81,8 @@ public class Used_supplies implements Serializable {
 
 	@Override
 	public String toString() {
-		return "\n[Id=" + used_supp_id+",  Supply(id)=" + item_id + ",  Appointment(id)=" + app_id + 
-				",  Amount=" + amount + "]";
+		return "\n[Id=" + used_supp_id + ",  Supply(id)=" + item_id + ",  Appointment(id)=" + app_id + ",  Amount="
+				+ amount + "]";
 	}
-	
-	
-	
 
 }

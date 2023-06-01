@@ -11,15 +11,13 @@ import Exceptions.IdNotFoundException;
 import Interfaces.Order_suppliesManager;
 import POJO.Order_supplies;
 
+public class JDBCOrder_suppliesManager implements Order_suppliesManager {
 
+	private JDBCManager manager;
 
-public class JDBCOrder_suppliesManager implements Order_suppliesManager{
-	
-private JDBCManager manager;
-	
 	public JDBCOrder_suppliesManager(JDBCManager m) {
-		
-		this.manager=m;
+
+		this.manager = m;
 	}
 
 	@Override
@@ -34,65 +32,62 @@ private JDBCManager manager;
 		prep.setInt(4, order.getSupplierId());
 		prep.setDate(5, (java.sql.Date) order.getDate());
 		prep.executeUpdate();
-        prep.close();
+		prep.close();
 	}
 
 	@Override
 	public Order_supplies getOrder(Integer orderSupp_Id) {
 		// TODO Auto-generated method stub
 		Order_supplies o = null;
-		PreparedStatement prep=null;
-		ResultSet rs=null;
-try {
-		String sql = "SELECT * FROM order_supplies WHERE id= ?";
+		PreparedStatement prep = null;
+		ResultSet rs = null;
+		try {
+			String sql = "SELECT * FROM order_supplies WHERE id= ?";
 
-		prep = manager.getConnection().prepareStatement(sql);
+			prep = manager.getConnection().prepareStatement(sql);
 
-		prep.setInt(1, orderSupp_Id);
+			prep.setInt(1, orderSupp_Id);
 
-		rs = prep.executeQuery();
+			rs = prep.executeQuery();
 
-		while (rs.next()) {
+			while (rs.next()) {
 
-			Integer id = rs.getInt("id");
-			Integer itemId = rs.getInt("supply_id");
-			Integer docId = rs.getInt("dentist_id");
-			Integer amount = rs.getInt("amount");
-			Integer supId = rs.getInt("supplier_id");
-			Date date= rs.getDate("date");
+				Integer id = rs.getInt("id");
+				Integer itemId = rs.getInt("supply_id");
+				Integer docId = rs.getInt("dentist_id");
+				Integer amount = rs.getInt("amount");
+				Integer supId = rs.getInt("supplier_id");
+				Date date = rs.getDate("date");
 
-			o = new Order_supplies(id, itemId, docId, amount,date,supId);
+				o = new Order_supplies(id, itemId, docId, amount, date, supId);
+
+			}
+			if (o == null) {
+				throw new IdNotFoundException(" \nThe specified id does not correspond to any of the ids");
+			}
+		} catch (IdNotFoundException e) {
+
+			System.out.println(e);
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+
+		} finally {
+
+			try {
+
+				if (prep != null) {
+					prep.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+			}
 
 		}
-      if (o==null) {
-    	  throw new IdNotFoundException(" \nThe specified id does not correspond to any of the ids");
-      }}
-catch(IdNotFoundException e) {
-	
-	System.out.println(e);
-}   catch(SQLException e) {
-	
-	e.printStackTrace();
-
-}
-finally {
-	
-	try {
-		
-		if(prep!=null) {
-			prep.close();
-		}    
-		if(rs!=null) {
-			rs.close();
-		}
-	}
-	catch(SQLException e) {
-		
-		e.printStackTrace();
-	}
-
-}
-
 
 		return o;
 
@@ -101,133 +96,120 @@ finally {
 	@Override
 	public void deleteOrder(Integer orderSupp_Id) {
 		// TODO Auto-generated method stub
-		PreparedStatement prep=null;
+		PreparedStatement prep = null;
 		try {
-		String sql= "DELETE FROM order_supplies "
-				+ " WHERE id= ?";
-		 prep= manager.getConnection().prepareStatement(sql);
-	
-		prep.setInt(1, orderSupp_Id);
-		 if(prep.executeUpdate()==0) {
-				
+			String sql = "DELETE FROM order_supplies " + " WHERE id= ?";
+			prep = manager.getConnection().prepareStatement(sql);
+
+			prep.setInt(1, orderSupp_Id);
+			if (prep.executeUpdate() == 0) {
+
 				throw new IdNotFoundException("\nThe specified id does not correspond to any of the ids");
 			}
-		}
-      catch(SQLException e) {
-			
-			System.out.println(" \nThe requested order has not been deleted successfully "+e);
+		} catch (SQLException e) {
+
+			System.out.println(" \nThe requested order has not been deleted successfully " + e);
 			e.printStackTrace();
 
-		}
-		catch(IdNotFoundException e) {
-			
+		} catch (IdNotFoundException e) {
+
 			System.out.println(e);
-		}
-		finally {
-			
+		} finally {
+
 			try {
-				
-				if(prep!=null) {
+
+				if (prep != null) {
 					prep.close();
-				}    
-			}
-			catch(SQLException e) {
-				
+				}
+			} catch (SQLException e) {
+
 				e.printStackTrace();
 			}
 
 		}
-		
+
 	}
 
 	@Override
 	public ArrayList<Order_supplies> getAllOrdersFromDentist(Integer dentistId) {
 		// TODO Auto-generated method stub
-		 ArrayList <Order_supplies> all= new  ArrayList<Order_supplies>();
-		 PreparedStatement prep= null;
-			ResultSet rs =null;
-			try {
-				String sql = "SELECT * FROM order_supplies INNER JOIN dentist ON dentist_id=doc_id WHERE dentist_id= ?";
-				 prep= manager.getConnection().prepareStatement(sql);
-				prep.setInt(1, dentistId);
-				 rs = prep.executeQuery();
+		ArrayList<Order_supplies> all = new ArrayList<Order_supplies>();
+		PreparedStatement prep = null;
+		ResultSet rs = null;
+		try {
+			String sql = "SELECT * FROM order_supplies INNER JOIN dentist ON dentist_id=doc_id WHERE dentist_id= ?";
+			prep = manager.getConnection().prepareStatement(sql);
+			prep.setInt(1, dentistId);
+			rs = prep.executeQuery();
 
-				while(rs.next())
-				{
-					Integer id= rs.getInt("id");
-					Integer supId= rs.getInt("supply_id");
-					Integer docId= rs.getInt("dentist_id");
-					Integer amount= rs.getInt("amount");
-					Integer suppId = rs.getInt("supplier_id");
-					Date date= rs.getDate("date");
-					Order_supplies o= new Order_supplies(id, supId, docId, amount, date,suppId);
-					all.add(o);
-					
-				}
+			while (rs.next()) {
+				Integer id = rs.getInt("id");
+				Integer supId = rs.getInt("supply_id");
+				Integer docId = rs.getInt("dentist_id");
+				Integer amount = rs.getInt("amount");
+				Integer suppId = rs.getInt("supplier_id");
+				Date date = rs.getDate("date");
+				Order_supplies o = new Order_supplies(id, supId, docId, amount, date, suppId);
+				all.add(o);
+
 			}
-			catch(Exception e) {
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+
+			try {
+
+				if (prep != null) {
+					prep.close();
+				}
+				if (rs != null) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+
 				e.printStackTrace();
 			}
-			finally {
-				
-				try {
-					
-					if(prep!=null) {
-						prep.close();
-					}    
-					if(rs!=null) {
-						rs.close();
-					}
-				}
-				catch(SQLException e) {
-					
-					e.printStackTrace();
-				}
 
-			}
-			return all;
+		}
+		return all;
 	}
 
 	@Override
-	public ArrayList<Order_supplies> getAllOrdersFromSupplier(Integer supplierId)  {
+	public ArrayList<Order_supplies> getAllOrdersFromSupplier(Integer supplierId) {
 		// TODO Auto-generated method stub
-		ArrayList <Order_supplies> prov= new  ArrayList<Order_supplies>();
-		PreparedStatement prep= null;
-		ResultSet rs =null;
+		ArrayList<Order_supplies> prov = new ArrayList<Order_supplies>();
+		PreparedStatement prep = null;
+		ResultSet rs = null;
 		try {
 			String sql = "SELECT * FROM order_supplies WHERE supplier_id= ?";
-			 prep= manager.getConnection().prepareStatement(sql);
+			prep = manager.getConnection().prepareStatement(sql);
 			prep.setInt(1, supplierId);
-			 rs = prep.executeQuery();
-			
-			while(rs.next())
-			{
-				Integer id= rs.getInt("id");
-				Integer supId= rs.getInt("supply_id");
-				Integer docId= rs.getInt("dentist_id");
-				Integer amount= rs.getInt("amount");
-				Date date= rs.getDate("date");
-				Order_supplies o= new Order_supplies(id, supId, docId, amount, date,supplierId);
+			rs = prep.executeQuery();
+
+			while (rs.next()) {
+				Integer id = rs.getInt("id");
+				Integer supId = rs.getInt("supply_id");
+				Integer docId = rs.getInt("dentist_id");
+				Integer amount = rs.getInt("amount");
+				Date date = rs.getDate("date");
+				Order_supplies o = new Order_supplies(id, supId, docId, amount, date, supplierId);
 				prov.add(o);
-				
+
 			}
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		finally {
-			
+		} finally {
+
 			try {
-				
-				if(prep!=null) {
+
+				if (prep != null) {
 					prep.close();
-				}    
-				if(rs!=null) {
+				}
+				if (rs != null) {
 					rs.close();
 				}
-			}
-			catch(SQLException e) {
-				
+			} catch (SQLException e) {
+
 				e.printStackTrace();
 			}
 
@@ -236,81 +218,73 @@ finally {
 	}
 
 	@Override
-	public void updateOrderDate(Integer orderId, Date date){
+	public void updateOrderDate(Integer orderId, Date date) {
 		// TODO Auto-generated method stub
-		PreparedStatement prep=null;
+		PreparedStatement prep = null;
 		try {
-		  String sql= "UPDATE order_supplies "
-					+ "SET date= ? WHERE id= ?";
-	 prep= manager.getConnection().prepareStatement(sql);
-			
+			String sql = "UPDATE order_supplies " + "SET date= ? WHERE id= ?";
+			prep = manager.getConnection().prepareStatement(sql);
+
 			prep.setDate(1, date);
-			prep.setInt(2,orderId);
-          if(prep.executeUpdate()==0) {
-				
+			prep.setInt(2, orderId);
+			if (prep.executeUpdate() == 0) {
+
 				throw new IdNotFoundException(" \nThe specified id does not correspond to any of the ids");
 			}
-         }
-		catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		finally {
-			
+		} finally {
+
 			try {
-				
-				if(prep!=null) {
+
+				if (prep != null) {
 					prep.close();
-				}    
-			}
-			catch(SQLException e) {
-				
+				}
+			} catch (SQLException e) {
+
 				e.printStackTrace();
 			}
 
 		}
-		
+
 	}
 
 	@Override
 	public ArrayList<Order_supplies> getAllOrdersOrder() {
 		// TODO Auto-generated method stub
-		ArrayList <Order_supplies> prov= new  ArrayList<Order_supplies>();
-		PreparedStatement prep=null;
+		ArrayList<Order_supplies> prov = new ArrayList<Order_supplies>();
+		PreparedStatement prep = null;
 		ResultSet rs = null;
 		try {
 			String sql = "SELECT * FROM order_supplies ORDER BY date";
-			prep= manager.getConnection().prepareStatement(sql);
-			 rs = prep.executeQuery();
-			
-			while(rs.next())
-			{
-				Integer id= rs.getInt("id");
-				Integer supId= rs.getInt("supply_id");
-				Integer docId= rs.getInt("dentist_id");
-				Integer amount= rs.getInt("amount");
-				Date date= rs.getDate("date");
-				Integer supplierId= rs.getInt("supplier_id");
-				Order_supplies o= new Order_supplies(id, supId, docId, amount, (java.sql.Date) date,supplierId);
+			prep = manager.getConnection().prepareStatement(sql);
+			rs = prep.executeQuery();
+
+			while (rs.next()) {
+				Integer id = rs.getInt("id");
+				Integer supId = rs.getInt("supply_id");
+				Integer docId = rs.getInt("dentist_id");
+				Integer amount = rs.getInt("amount");
+				Date date = rs.getDate("date");
+				Integer supplierId = rs.getInt("supplier_id");
+				Order_supplies o = new Order_supplies(id, supId, docId, amount, (java.sql.Date) date, supplierId);
 				prov.add(o);
-				
+
 			}
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		finally {
-			
+		} finally {
+
 			try {
-				
-				if(prep!=null) {
+
+				if (prep != null) {
 					prep.close();
-				}    
-				if(rs!=null) {
+				}
+				if (rs != null) {
 					rs.close();
 				}
-			}
-			catch(SQLException e) {
-				
+			} catch (SQLException e) {
+
 				e.printStackTrace();
 			}
 

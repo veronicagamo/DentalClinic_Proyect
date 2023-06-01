@@ -2,7 +2,6 @@ package UI;
 
 import java.io.*;
 
-
 import java.sql.Date;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -18,7 +17,7 @@ public class MainMenu {
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private static JDBCAppointmentManager appMan;
 	private static JDBCDentistManager docMan;
-	private static JDBCClientManager patMan;  
+	private static JDBCClientManager patMan;
 	private static JDBCRecepcionistManager recMan;
 	private static JDBCUsed_suppliesManager usedMan;
 	private static JDBCSuppliersManager supplierMan;
@@ -28,8 +27,8 @@ public class MainMenu {
 	private static XMLManagerImpl xmlMan;
 	private static JDBCManager connection;
 
-	public static void main(String[] args){
-	    connection = new JDBCManager();
+	public static void main(String[] args) {
+		connection = new JDBCManager();
 		appMan = new JDBCAppointmentManager(connection);
 		docMan = new JDBCDentistManager(connection);
 		patMan = new JDBCClientManager(connection);
@@ -39,7 +38,7 @@ public class MainMenu {
 		userMan = new JPAUserManager();
 		supplyMan = new JDBCSuppliesManager(connection);
 		orderMan = new JDBCOrder_suppliesManager(connection);
-		xmlMan=new XMLManagerImpl();
+		xmlMan = new XMLManagerImpl();
 		while (true) {
 			try {
 				System.out.println("\nWelcome to the DentalClinic Database!");
@@ -87,7 +86,7 @@ public class MainMenu {
 			} catch (Exception e) {
 				System.out.println("I/O Exception.");
 				e.printStackTrace();
-			} 
+			}
 		}
 
 	}
@@ -452,7 +451,7 @@ public class MainMenu {
 					break;
 				}
 				case 23: {
-				printMeClient();
+					printMeClient();
 					break;
 				}
 				case 24: {
@@ -460,14 +459,14 @@ public class MainMenu {
 					break;
 				}
 				case 25: {
-				loadClient();
+					loadClient();
 					break;
 				}
 				case 26: {
 					loadSupplier();
 					break;
 				}
-				case 27:{
+				case 27: {
 					connection.disconnect();
 					userMan.close();
 					System.exit(0);
@@ -487,56 +486,56 @@ public class MainMenu {
 
 	}
 
-	public static void supMenu(Supplier supplier){
+	public static void supMenu(Supplier supplier) {
 		while (true) {
-		try {
-		System.out.println("\n1. View all my delivery notes");
-		System.out.println("2. View one of my delivery notes");
-		System.out.println("3. Update delivery date");
-		System.out.println("4. Update my data");
-		System.out.println("5. Delete my account");
-		System.out.println("6. Exit");
-		System.out.println("0. Back to main menu");
+			try {
+				System.out.println("\n1. View all my delivery notes");
+				System.out.println("2. View one of my delivery notes");
+				System.out.println("3. Update delivery date");
+				System.out.println("4. Update my data");
+				System.out.println("5. Delete my account");
+				System.out.println("6. Exit");
+				System.out.println("0. Back to main menu");
 
-		int choice = Integer.parseInt(r.readLine());
-		switch (choice) {
-		case 1: {
-			viewMyOrders(supplier);
-			break;
-		}
-		case 2: {
-			viewOneOrder(supplier.getSup_id());
-			break;
-		}
-		case 3: {
-			updateDateOrder(supplier.getSup_id());
-			break;
-		}
-		case 4: {
-			updateSupplier(supplier.getSup_id());
-			break;
-		}
-		case 5: {
-			deleteSupplier(supplier.getSup_id());
-			break;
-		}
-		case 6:{
-			connection.disconnect();
-			userMan.close();
-			System.exit(0);
-		}
-		case 0:
-			return;
-		}}catch (NumberFormatException e) {
-			System.out.println("You didn't type a number");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.out.println("I/O Exception.");
-			e.printStackTrace();
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
+				int choice = Integer.parseInt(r.readLine());
+				switch (choice) {
+				case 1: {
+					viewMyOrders(supplier);
+					break;
+				}
+				case 2: {
+					viewOneOrder(supplier.getSup_id());
+					break;
+				}
+				case 3: {
+					updateDateOrder(supplier.getSup_id());
+					break;
+				}
+				case 4: {
+					updateSupplier(supplier.getSup_id());
+					break;
+				}
+				case 5: {
+					deleteSupplier(supplier.getSup_id());
+					return;
+				}
+				case 6: {
+					connection.disconnect();
+					userMan.close();
+					System.exit(0);
+				}
+				case 0:
+					return;
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("You didn't type a number");
+				e.printStackTrace();
+			} catch (IOException e) {
+				System.out.println("I/O Exception.");
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -568,7 +567,7 @@ public class MainMenu {
 					viewPatId(pat.getPat_id());
 					break;
 				}
-				case 5:{
+				case 5: {
 					connection.disconnect();
 					userMan.close();
 					System.exit(0);
@@ -598,8 +597,8 @@ public class MainMenu {
 		System.out.println("Address:");
 		String add = r.readLine();
 		pat = new Client(id, name, hum, add, emailNew);
-			patMan.updateClient(pat);
-			userMan.changeEmail(emailNew, emailOld);
+		patMan.updateClient(pat);
+		userMan.changeEmail(emailNew, emailOld);
 
 	}
 
@@ -615,9 +614,8 @@ public class MainMenu {
 		System.out.println("Address:");
 		String add = r.readLine();
 		pat = new Client(patId, name, hum, add, emailNew);
-			patMan.updateClient(pat);
-			userMan.changeEmail(emailNew, emailOld);
-	
+		patMan.updateClient(pat);
+		userMan.changeEmail(emailNew, emailOld);
 
 	}
 
@@ -655,17 +653,17 @@ public class MainMenu {
 		System.out.println("Name dentist:");
 		String docname = r.readLine();
 		Integer docId = null;
-			Dentists dentist = docMan.getDentistByName(docname);
-			docId = dentist.getDoc_id();
+		Dentists dentist = docMan.getDentistByName(docname);
+		docId = dentist.getDoc_id();
 		System.out.println("Name patient:");
 		String patname = r.readLine();
 		Integer patId = null;
-			Client c = patMan.getClientByName(patname);
-			patId = c.getPat_id();
+		Client c = patMan.getClientByName(patname);
+		patId = c.getPat_id();
 
 		app = new Appointment(dobDate, dur, room, price, treat, docId, id, patId);
 		Integer appId = null;
-			appId = appMan.createAppointment(app);
+		appId = appMan.createAppointment(app);
 		System.out.println("\nThese are the supplies available ordered by amount:");
 		System.out.println(supplyMan.listAllSuppliesByAmount());
 		Integer itemId = null;
@@ -708,60 +706,58 @@ public class MainMenu {
 		System.out.println("Name dentist:");
 		String docname = r.readLine();
 		Integer docId = null;
-			Dentists dentist = docMan.getDentistByName(docname);
-			docId = dentist.getDoc_id();
+		Dentists dentist = docMan.getDentistByName(docname);
+		docId = dentist.getDoc_id();
 		System.out.println("Name patient:");
 		String patname = r.readLine();
 		Integer patId = null;
-			Client c = patMan.getClientByName(patname);
-			patId = c.getPat_id();
+		Client c = patMan.getClientByName(patname);
+		patId = c.getPat_id();
 		app = new Appointment(id, dobDate, dur, room, price, treat, docId, recId, patId);
-			appMan.updateAppointment(app);
+		appMan.updateAppointment(app);
 
 	}
 
-	public static void deleteApp() throws IOException{
-			System.out.println("\nPlease, input the appointmnet's id you want to delete:");
-			Integer id = Integer.parseInt(r.readLine());
-			appMan.deleteAppointment(id);
+	public static void deleteApp() throws IOException {
+		System.out.println("\nPlease, input the appointmnet's id you want to delete:");
+		Integer id = Integer.parseInt(r.readLine());
+		appMan.deleteAppointment(id);
 	}
 
 	public static void viewApp() throws IOException {
 		Appointment app = null;
 		System.out.println("\nPlease, input the appointment's id you want to see:");
 		Integer id = Integer.parseInt(r.readLine());
-			app = appMan.viewAppointment(id);
-			System.out.println(app);
+		app = appMan.viewAppointment(id);
+		System.out.println(app);
 	}
 
 	public static void viewAllApp() throws IOException {
 		ArrayList<Appointment> all = new ArrayList<Appointment>();
-			all = appMan.getListAllAppointments();
-			System.out.println(all);
+		all = appMan.getListAllAppointments();
+		System.out.println(all);
 	}
-
-	
 
 	public static void viewPatId() throws IOException {
 		Client pat = null;
 		System.out.println("\nPlease, input the client's id :");
 		Integer id = Integer.parseInt(r.readLine());
-			pat = patMan.getClientById(id);
-			System.out.println(pat);
+		pat = patMan.getClientById(id);
+		System.out.println(pat);
 	}
 
 	public static void viewPatId(Integer patId) throws IOException {
 		Client pat = null;
-			pat = patMan.getClientById(patId);
-			System.out.println(pat);
+		pat = patMan.getClientById(patId);
+		System.out.println(pat);
 	}
 
 	public static void viewPatName() throws IOException {
 		Client pat = null;
 		System.out.println("\nPlease, input the client's name:");
 		String name = r.readLine();
-			pat = patMan.getClientByName(name);
-			System.out.println(pat);
+		pat = patMan.getClientByName(name);
+		System.out.println(pat);
 	}
 
 	public static void deletePat() throws IOException {
@@ -769,8 +765,8 @@ public class MainMenu {
 		Integer id = Integer.parseInt(r.readLine());
 		Client pat = patMan.getClientById(id);
 		String email = pat.getPat_email();
-			patMan.deleteClient(id);
-			userMan.deleteUser(email);
+		patMan.deleteClient(id);
+		userMan.deleteUser(email);
 
 	}
 
@@ -778,16 +774,16 @@ public class MainMenu {
 
 		Client pat = patMan.getClientById(patId);
 		String email = pat.getPat_email();
-			patMan.deleteClient(patId);
-			userMan.deleteUser(email);
+		patMan.deleteClient(patId);
+		userMan.deleteUser(email);
 
 	}
 
 	public static void viewListPat() throws IOException {
 		System.out.println("\nList of patients:");
 		ArrayList<Client> all = new ArrayList<Client>();
-			all = patMan.getListAllClients();
-			System.out.println(all);
+		all = patMan.getListAllClients();
+		System.out.println(all);
 
 	}
 
@@ -820,7 +816,7 @@ public class MainMenu {
 		System.out.println("Mobile:");
 		String mob = r.readLine();
 		den = new Dentists(name, bank, mob, email);
-			docMan.addDentist(den);
+		docMan.addDentist(den);
 
 	}
 
@@ -828,8 +824,8 @@ public class MainMenu {
 		Dentists den = null;
 		System.out.println("\nPlease, input the dentist's id :");
 		Integer id = Integer.parseInt(r.readLine());
-			den = docMan.getDentistById(id);
-			System.out.println(den);
+		den = docMan.getDentistById(id);
+		System.out.println(den);
 
 	}
 
@@ -837,8 +833,8 @@ public class MainMenu {
 		Dentists den = null;
 		System.out.println("\nPlease, input the patients's name:");
 		String name = r.readLine();
-			den = docMan.getDentistByName(name);
-			System.out.println(den);
+		den = docMan.getDentistByName(name);
+		System.out.println(den);
 	}
 
 	public static void updateDoc(Integer id) throws IOException {
@@ -855,24 +851,24 @@ public class MainMenu {
 		System.out.println("Mobile:");
 		String mob = r.readLine();
 		den = new Dentists(id, name, bank, mob, emailNew);
-			docMan.updateDentist(den);
-			userMan.changeEmail(emailNew, emailOld);
-			System.out.println("It has been updated correctly");
+		docMan.updateDentist(den);
+		userMan.changeEmail(emailNew, emailOld);
+		System.out.println("It has been updated correctly");
 
 	}
 
 	public static void deleteDoc(Integer id) throws IOException {
 		Dentists den = docMan.getDentistById(id);
 		String email = den.getDoc_email();
-			docMan.deleteDentist(id);
-			userMan.deleteUser(email);
+		docMan.deleteDentist(id);
+		userMan.deleteUser(email);
 	}
 
 	public static void viewListDoc() throws IOException {
 		System.out.println("\nList of dentists:");
 		ArrayList<Dentists> all = new ArrayList<Dentists>();
-			all = docMan.listAllDentists();
-			System.out.println(all);
+		all = docMan.listAllDentists();
+		System.out.println(all);
 
 	}
 
@@ -903,7 +899,7 @@ public class MainMenu {
 		System.out.println("Mobile:");
 		Integer mob = Integer.parseInt(r.readLine());
 		rec = new Receptionist(name, bank, email, mob);
-			recMan.addReceptionist(rec);
+		recMan.addReceptionist(rec);
 
 	}
 
@@ -911,16 +907,16 @@ public class MainMenu {
 		Receptionist rec = null;
 		System.out.println("\nPlease, input the receptionist's id :");
 		Integer id = Integer.parseInt(r.readLine());
-			rec = recMan.getreceptionistById(id);
-			System.out.println(rec);
+		rec = recMan.getreceptionistById(id);
+		System.out.println(rec);
 	}
 
 	public static void viewRecName() throws IOException {
 		Receptionist rec = null;
 		System.out.println("\nPlease, input the receptionist's name:");
 		String name = r.readLine();
-			rec = recMan.geRecepByName(name);
-			System.out.println(rec);
+		rec = recMan.geRecepByName(name);
+		System.out.println(rec);
 	}
 
 	public static void updateRec(Integer id) throws IOException {
@@ -937,22 +933,22 @@ public class MainMenu {
 		System.out.println("Mobile:");
 		Integer mob = Integer.parseInt(r.readLine());
 		rec1 = new Receptionist(id, name, bank, emailNew, mob);
-			recMan.updateReceptionist(rec1);
-			userMan.changeEmail(emailNew, emailOld);
+		recMan.updateReceptionist(rec1);
+		userMan.changeEmail(emailNew, emailOld);
 	}
 
 	public static void deleteRec(Integer id) throws IOException {
 		Receptionist rec = recMan.getreceptionistById(id);
 		String email = rec.getRep_email();
-			recMan.deleteReceptionist(id);
-			userMan.deleteUser(email);
+		recMan.deleteReceptionist(id);
+		userMan.deleteUser(email);
 	}
 
 	public static void listRec() throws IOException {
 		System.out.println("\nList of receptionists:");
 		ArrayList<Receptionist> all = new ArrayList<Receptionist>();
-			all = recMan.listAllReceptionists();
-			System.out.println(all);
+		all = recMan.listAllReceptionists();
+		System.out.println(all);
 
 	}
 
@@ -965,7 +961,7 @@ public class MainMenu {
 		System.out.println("Amount:");
 		Integer amount = Integer.parseInt(r.readLine());
 		s = new Supply(name, amount);
-			supplyMan.addSupply(s);
+		supplyMan.addSupply(s);
 
 	}
 
@@ -973,22 +969,22 @@ public class MainMenu {
 		Supply s = null;
 		System.out.println("\nPlease, input the supply's id you want to see:");
 		Integer id = Integer.parseInt(r.readLine());
-			s = supplyMan.viewSupply(id);
-			System.out.println(s);
+		s = supplyMan.viewSupply(id);
+		System.out.println(s);
 
 	}
 
 	public static void deleteSupply() throws IOException {
 		System.out.println("\nPlease, input the supply's id you want to delete:");
 		Integer id = Integer.parseInt(r.readLine());
-			supplyMan.deleteSupply(id);
+		supplyMan.deleteSupply(id);
 
 	}
 
 	public static void orderedSupply() {
 		ArrayList<Supply> supplies = new ArrayList<Supply>();
-			supplies.addAll(supplyMan.listAllSuppliesByAmount());
-			System.out.println(supplies);
+		supplies.addAll(supplyMan.listAllSuppliesByAmount());
+		System.out.println(supplies);
 
 	}
 
@@ -1007,50 +1003,50 @@ public class MainMenu {
 		System.out.println("Please, input the supplier´s id you want to provide this item.");
 		Integer supplierId = Integer.parseInt(r.readLine());
 		o = new Order_supplies(id, docId, amount, dobDate, supplierId);
-			orderMan.placeOrder(o);
+		orderMan.placeOrder(o);
 	}
 
 	public static void viewOrder() throws IOException {
 		Order_supplies o = null;
 		System.out.println("\nPlease, input the order´s id you want to see:");
 		Integer id = Integer.parseInt(r.readLine());
-			o = orderMan.getOrder(id);
-			System.out.println(o);
+		o = orderMan.getOrder(id);
+		System.out.println(o);
 	}
 
 	public static void viewAllOrders() {
 		ArrayList<Order_supplies> all = new ArrayList<Order_supplies>();
-			all.addAll(orderMan.getAllOrdersOrder());
-			System.out.println(all);
+		all.addAll(orderMan.getAllOrdersOrder());
+		System.out.println(all);
 	}
 
-	public static void deleteOrder() throws IOException{
-			System.out.println("\nPlease, input the order´s id you want to delete:");
-			Integer id = Integer.parseInt(r.readLine());
-			orderMan.deleteOrder(id);
+	public static void deleteOrder() throws IOException {
+		System.out.println("\nPlease, input the order´s id you want to delete:");
+		Integer id = Integer.parseInt(r.readLine());
+		orderMan.deleteOrder(id);
 	}
 
 	public static void viewMyOrders(Dentists d) {
 		ArrayList<Order_supplies> orders = new ArrayList<Order_supplies>();
 		Integer id = d.getDoc_id();
-			orders.addAll(orderMan.getAllOrdersFromDentist(id));
-			System.out.println(orders);
+		orders.addAll(orderMan.getAllOrdersFromDentist(id));
+		System.out.println(orders);
 
 	}
 
 	public static void viewMyOrders(Supplier s) {
 		ArrayList<Order_supplies> orders = new ArrayList<Order_supplies>();
 		Integer id = s.getSup_id();
-			orders.addAll(orderMan.getAllOrdersFromSupplier(id));
-			System.out.println(orders);
+		orders.addAll(orderMan.getAllOrdersFromSupplier(id));
+		System.out.println(orders);
 
 	}
 
 	public static void deleteSupplier(Integer id) {
 		Supplier sup = supplierMan.getSupplierById(id);
 		String email = sup.getEmail();
-			supplierMan.deleteSupplier(id);
-			userMan.deleteUser(email);
+		supplierMan.deleteSupplier(id);
+		userMan.deleteUser(email);
 	}
 
 	public static void updateSupplier(Integer id) throws Exception {
@@ -1065,8 +1061,8 @@ public class MainMenu {
 		System.out.println("Email:");
 		String emailNew = r.readLine();
 		supplierNew = new Supplier(id, name, ad, emailNew);
-			supplierMan.updateSupplier(supplierNew);
-			userMan.changeEmail(emailNew, emailOld);
+		supplierMan.updateSupplier(supplierNew);
+		userMan.changeEmail(emailNew, emailOld);
 
 	}
 
@@ -1147,30 +1143,30 @@ public class MainMenu {
 		usedMan.updateUsedsupplies(newUsed);
 
 	}
-	
-	public static void printMeClient() throws  IOException {
+
+	public static void printMeClient() throws IOException {
 		System.out.println("\nPlease, input the client´s id you want to print in the XML file:");
 		Integer id = Integer.parseInt(r.readLine());
 		xmlMan.client2xml(id);
 		xmlMan.simpleTransform("./xmls/Client.xml", "./xmls/client-style.xslt", "./xmls/Client-Report.html");
 	}
-	
-public static void printMeSupplier() throws IOException {
-	System.out.println("\nPlease, input the supplier´s id you want to print in the XML file:");
-	Integer id = Integer.parseInt(r.readLine());
-	Supplier sup= supplierMan.getSupplierById(id);
+
+	public static void printMeSupplier() throws IOException {
+		System.out.println("\nPlease, input the supplier´s id you want to print in the XML file:");
+		Integer id = Integer.parseInt(r.readLine());
+		Supplier sup = supplierMan.getSupplierById(id);
 		xmlMan.supplier2xml(sup);
 		xmlMan.simpleTransform("./xmls/Supplier.xml", "./xmls/supplier-style.xslt", "./xmls/Supplier-Report.html");
 	}
-	
-public static void loadSupplier() {
-	File file = new File ("./xmls/External-Supplier.xml");
-	xmlMan.xml2Supplier(file);
-}
 
-public static void loadClient() {
-	File file = new File ("./xmls/External-Client.xml");
-	xmlMan.xml2Client(file);
-}
+	public static void loadSupplier() {
+		File file = new File("./xmls/External-Supplier.xml");
+		xmlMan.xml2Supplier(file);
+	}
+
+	public static void loadClient() {
+		File file = new File("./xmls/External-Client.xml");
+		xmlMan.xml2Client(file);
+	}
 
 }

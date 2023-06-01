@@ -2,8 +2,6 @@ package POJO;
 
 import java.io.Serializable;
 
-
-
 import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -14,11 +12,10 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlRootElement(name="Supplier")
-@XmlType(propOrder = {"sup_name","email","sup_address"})
+@XmlRootElement(name = "Supplier")
+@XmlType(propOrder = { "sup_name", "email", "sup_address" })
 public class Supplier implements Serializable {
 
-	
 	private static final long serialVersionUID = 8373601696022464169L;
 	@XmlTransient
 	private Integer sup_id;
@@ -29,21 +26,20 @@ public class Supplier implements Serializable {
 	@XmlElement
 	private String email;
 
-	
 	public Supplier(Integer sup_id, String sup_name, String sup_address, String email) {
 		super();
 		this.sup_id = sup_id;
 		this.sup_name = sup_name;
 		this.sup_address = sup_address;
-		this.email=email;
+		this.email = email;
 	}
-	public Supplier( String sup_name, String sup_address, String email) {
+
+	public Supplier(String sup_name, String sup_address, String email) {
 		super();
 		this.sup_name = sup_name;
 		this.sup_address = sup_address;
-		this.email=email;
+		this.email = email;
 	}
-	
 
 	public Supplier() {
 		super();
@@ -103,9 +99,4 @@ public class Supplier implements Serializable {
 		this.email = email;
 	}
 
-	
-	
-	
-	
-	
 }

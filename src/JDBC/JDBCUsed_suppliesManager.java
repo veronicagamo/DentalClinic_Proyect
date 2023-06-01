@@ -1,6 +1,5 @@
 package JDBC;
 
-
 import java.sql.PreparedStatement;
 
 import java.sql.ResultSet;
@@ -13,60 +12,59 @@ import POJO.Used_supplies;
 
 public class JDBCUsed_suppliesManager implements Used_suppliesManager {
 
+	private JDBCManager manager;
 
-
-private JDBCManager manager;
-	
 	public JDBCUsed_suppliesManager(JDBCManager m) {
-		
-		this.manager=m;
+
+		this.manager = m;
 	}
+
 	@Override
 	public ArrayList<Used_supplies> listAllUsed() throws Exception {
 		// TODO Auto-generated method stub
-ArrayList <Used_supplies> supplies= new ArrayList<Used_supplies>();
-		
-		Statement stmt= this.manager.getConnection().createStatement();	
-		
-		String sql="SELECT * FROM used_supplies";
-		
+		ArrayList<Used_supplies> supplies = new ArrayList<Used_supplies>();
+
+		Statement stmt = this.manager.getConnection().createStatement();
+
+		String sql = "SELECT * FROM used_supplies";
+
 		ResultSet rs = stmt.executeQuery(sql);
-		
-		while (rs.next()){
-			
-			Integer id= rs.getInt("id");
-			Integer appId= rs.getInt("appointment_id");
-			Integer supId= rs.getInt("supply_id");
-			Integer amount= rs.getInt("amount");
-			Used_supplies used= new Used_supplies(supId,appId,id, amount);
-			
+
+		while (rs.next()) {
+
+			Integer id = rs.getInt("id");
+			Integer appId = rs.getInt("appointment_id");
+			Integer supId = rs.getInt("supply_id");
+			Integer amount = rs.getInt("amount");
+			Used_supplies used = new Used_supplies(supId, appId, id, amount);
+
 			supplies.add(used);
 		}
-		
+
 		rs.close();
 		stmt.close();
 
 		return supplies;
-		
+
 	}
 
 	@Override
-	public void createUsed(Integer appId, Integer item_id, Integer amount){
+	public void createUsed(Integer appId, Integer item_id, Integer amount) {
 		// TODO Auto-generated method stub
-		
+
 		try {
-			
-			String sql= "INSERT INTO used_supplies (supply_id,appointment_id,amount) VALUES (?,?,?)";
-		
-			PreparedStatement prep= manager.getConnection().prepareStatement(sql);
-			prep.setInt(1,item_id);
-			prep.setInt(2,appId);		
+
+			String sql = "INSERT INTO used_supplies (supply_id,appointment_id,amount) VALUES (?,?,?)";
+
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+			prep.setInt(1, item_id);
+			prep.setInt(2, appId);
 			prep.setInt(3, amount);
 			prep.executeUpdate();
 			prep.close();
-		}catch(SQLException e) {
-			
-			System.out.println("The used supply can not be created "+e);
+		} catch (SQLException e) {
+
+			System.out.println("The used supply can not be created " + e);
 			e.printStackTrace();
 
 		}
@@ -75,79 +73,75 @@ ArrayList <Used_supplies> supplies= new ArrayList<Used_supplies>();
 
 	@Override
 
-	public ArrayList<Used_supplies> listAllUsedByAppointment(Appointment a){
+	public ArrayList<Used_supplies> listAllUsedByAppointment(Appointment a) {
 		// TODO Auto-generated method stub
-       ArrayList <Used_supplies> all= new  ArrayList<Used_supplies>();
-       PreparedStatement prep=null;
+		ArrayList<Used_supplies> all = new ArrayList<Used_supplies>();
+		PreparedStatement prep = null;
 		ResultSet rs = null;
 		try {
 			String sql = "SELECT * FROM used_supplies WHERE appointment_id= ?";
-			 prep= manager.getConnection().prepareStatement(sql);
+			prep = manager.getConnection().prepareStatement(sql);
 			prep.setInt(1, a.getApp_id());
-			 rs = prep.executeQuery();
+			rs = prep.executeQuery();
 
-			while(rs.next())
-			{
-				Integer id= rs.getInt("id");
-				Integer supId= rs.getInt("supply_id");
-				Integer amount= rs.getInt("amount");
-				Used_supplies used= new Used_supplies(supId,a.getApp_id(),id, amount);
+			while (rs.next()) {
+				Integer id = rs.getInt("id");
+				Integer supId = rs.getInt("supply_id");
+				Integer amount = rs.getInt("amount");
+				Used_supplies used = new Used_supplies(supId, a.getApp_id(), id, amount);
 				all.add(used);
-				
+
 			}
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
-finally {
-			
+		} finally {
+
 			try {
-				
-				if(rs!=null) {
+
+				if (rs != null) {
 					rs.close();
 				}
-				if(prep!=null) {
+				if (prep != null) {
 					prep.close();
-				}    	
-			}
-			catch(SQLException e) {
-				
+				}
+			} catch (SQLException e) {
+
 				e.printStackTrace();
 			}
 		}
 		return all;
 	}
+
 	@Override
 	public void updateUsedsupplies(Used_supplies used) throws Exception {
 		// TODO Auto-generated method stub
-		  String sql= "UPDATE used_supplies "
-					+ "SET supply_id= ?, appointment_id= ?, amount= ? WHERE id= ?";
-	PreparedStatement prep= manager.getConnection().prepareStatement(sql);
-			
-			prep.setInt(1, used.getItem_id());
-			prep.setInt(2,used.getApp_id());
-			prep.setInt(3,used.getAmount());
-			prep.setInt(4, used.getUsed_supp_id());
+		String sql = "UPDATE used_supplies " + "SET supply_id= ?, appointment_id= ?, amount= ? WHERE id= ?";
+		PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 
-			prep.executeUpdate();
-			prep.close();
+		prep.setInt(1, used.getItem_id());
+		prep.setInt(2, used.getApp_id());
+		prep.setInt(3, used.getAmount());
+		prep.setInt(4, used.getUsed_supp_id());
+
+		prep.executeUpdate();
+		prep.close();
 	}
+
 	@Override
 	public Used_supplies viewUsedsupplies(Integer id) throws Exception {
 		// TODO Auto-generated method stub
-			Used_supplies used= null;
-		
-		String sql="SELECT * FROM used_supplies WHERE id= ?";
-		PreparedStatement prep= manager.getConnection().prepareStatement(sql);
+		Used_supplies used = null;
+
+		String sql = "SELECT * FROM used_supplies WHERE id= ?";
+		PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 		prep.setInt(1, id);
 		ResultSet rs = prep.executeQuery();
-		while (rs.next()){
+		while (rs.next()) {
 
-			Integer appId= rs.getInt("appointment_id");
-			Integer supId= rs.getInt("supply_id");
-			Integer amount= rs.getInt("amount");
-		 used= new Used_supplies(supId,appId,id, amount);
-			
+			Integer appId = rs.getInt("appointment_id");
+			Integer supId = rs.getInt("supply_id");
+			Integer amount = rs.getInt("amount");
+			used = new Used_supplies(supId, appId, id, amount);
 
 		}
 		rs.close();
@@ -155,7 +149,5 @@ finally {
 		return used;
 
 	}
-	
-	
 
 }

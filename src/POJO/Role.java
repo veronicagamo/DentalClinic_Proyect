@@ -1,13 +1,14 @@
 package POJO;
 
 import java.io.Serializable;
+
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
 
 @Entity
-@Table(name="roles")
-public class Role implements Serializable{
+@Table(name = "roles")
+public class Role implements Serializable {
 
 	/**
 	 * 
@@ -15,27 +16,22 @@ public class Role implements Serializable{
 	private static final long serialVersionUID = 9190683407946135314L;
 	@Id
 	@GeneratedValue(generator = "roles")
-	@TableGenerator(name = "roles", table = "sqlite_sequence",
-		pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "roles")
+	@TableGenerator(name = "roles", table = "sqlite_sequence", pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "roles")
 	private Integer id;
 	private String name;
-	@OneToMany(mappedBy="role", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
 	private List<User> users;
-	
+
 	public Role() {
 		super();
 
 	}
-	
-	
 
 	public Role(String name) {
 		super();
 		this.name = name;
 
 	}
-
-
 
 	public Integer getId() {
 		return id;
@@ -60,13 +56,12 @@ public class Role implements Serializable{
 	public void setUsers(List<User> users) {
 		this.users = users;
 	}
-	
+
 	public void addUser(User user) {
 		if (!users.contains(user)) {
 			users.add(user);
 		}
 	}
-	
 
 	@Override
 	public int hashCode() {
@@ -89,5 +84,5 @@ public class Role implements Serializable{
 	public String toString() {
 		return "Role [id=" + id + ", name=" + name + "\n]";
 	}
-	
+
 }

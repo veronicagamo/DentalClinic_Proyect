@@ -5,35 +5,31 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-
-public class Dentists implements Serializable{
-
+public class Dentists implements Serializable {
 
 	private static final long serialVersionUID = -4597260876619998054L;
-	
+
 	private Integer doc_id;
 	private String name;
 	private Integer bank_account;
 	private String doc_mobile;
 	private String doc_email;
-	private ArrayList <Appointment> app;
-	
+	private ArrayList<Appointment> app;
+
 	public Dentists() {
 		super();
-		this.app= new ArrayList <Appointment> ();
+		this.app = new ArrayList<Appointment>();
 	}
 
-	public Dentists (Integer doc_id, String name, Integer bank_account, String doc_mobile, String doc_email) {
+	public Dentists(Integer doc_id, String name, Integer bank_account, String doc_mobile, String doc_email) {
 		super();
 		this.doc_id = doc_id;
 		this.name = name;
 		this.bank_account = bank_account;
 		this.doc_mobile = doc_mobile;
 		this.doc_email = doc_email;
-		this.app= new ArrayList <Appointment> ();
+		this.app = new ArrayList<Appointment>();
 	}
-	
-
 
 	public Dentists(String name, Integer bank_account, String doc_mobile, String doc_email) {
 		super();
@@ -41,7 +37,7 @@ public class Dentists implements Serializable{
 		this.bank_account = bank_account;
 		this.doc_mobile = doc_mobile;
 		this.doc_email = doc_email;
-		this.app= new ArrayList <Appointment> ();
+		this.app = new ArrayList<Appointment>();
 	}
 
 	@Override
@@ -63,8 +59,8 @@ public class Dentists implements Serializable{
 
 	@Override
 	public String toString() {
-		return "\n[Id=" + doc_id + ",  Name=" + name + ",  Bank account=" + bank_account + ",  Mobile="
-				+ doc_mobile + ",  Email=" + doc_email + "]";
+		return "\n[Id=" + doc_id + ",  Name=" + name + ",  Bank account=" + bank_account + ",  Mobile=" + doc_mobile
+				+ ",  Email=" + doc_email + "]";
 	}
 
 	public Integer getDoc_id() {
@@ -107,19 +103,12 @@ public class Dentists implements Serializable{
 		this.doc_email = doc_email;
 	}
 
-	public ArrayList <Appointment> getApp() {
+	public ArrayList<Appointment> getApp() {
 		return app;
 	}
 
-	public void setApp(ArrayList <Appointment> app) {
+	public void setApp(ArrayList<Appointment> app) {
 		this.app = app;
 	}
 
-
-	
-	 
-	
-	
-	
-	
 }

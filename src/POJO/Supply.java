@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import java.util.Objects;
 
-public class Supply implements Serializable{
+public class Supply implements Serializable {
 
 	private static final long serialVersionUID = -2196147451131341836L;
 
@@ -12,7 +12,6 @@ public class Supply implements Serializable{
 	private String item_name;
 	private Integer item_amount;
 
-	
 	public Supply(Integer item_id, String item_name, Integer item_amount) {
 		super();
 		this.item_id = item_id;
@@ -76,10 +75,4 @@ public class Supply implements Serializable{
 		this.item_amount = item_amount;
 	}
 
-
-	
-	
-	
-	
-	
 }

@@ -78,8 +78,8 @@ public class JPAUserManager implements UserManager{
 	@Override
 	public List<Role> getRoles() {
 		Query q = em.createNativeQuery("SELECT * FROM roles", Role.class);
-		List<Role> roles = q.getResultList();
-		return roles;
+		List<Role> resultList = (List<Role>) q.getResultList();
+		return resultList;
 	}
 
 	@Override
