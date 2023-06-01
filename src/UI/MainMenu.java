@@ -28,7 +28,7 @@ public class MainMenu {
 	private static XMLManagerImpl xmlMan;
 	private static JDBCManager connection;
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args){
 	    connection = new JDBCManager();
 		appMan = new JDBCAppointmentManager(connection);
 		docMan = new JDBCDentistManager(connection);
@@ -84,10 +84,10 @@ public class MainMenu {
 			} catch (NumberFormatException e) {
 				System.out.println("You didn't type a number");
 				e.printStackTrace();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				System.out.println("I/O Exception.");
 				e.printStackTrace();
-			}
+			} 
 		}
 
 	}
@@ -666,7 +666,6 @@ public class MainMenu {
 		app = new Appointment(dobDate, dur, room, price, treat, docId, id, patId);
 		Integer appId = null;
 			appId = appMan.createAppointment(app);
-			System.out.println(appId);
 		System.out.println("\nThese are the supplies available ordered by amount:");
 		System.out.println(supplyMan.listAllSuppliesByAmount());
 		Integer itemId = null;
